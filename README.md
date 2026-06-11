@@ -81,6 +81,15 @@ git pull origin main   # traé cambios del otro ANTES de pushear (evita conflict
 git push origin main
 ```
 
+### 📝 Documentar los cambios (obligatorio)
+
+Cada vez que hagas un cambio, **dejá registro de qué hiciste**. Esto es clave para que el equipo (y el profesor) entienda la evolución del proyecto:
+
+1. **Mensaje de commit claro**: describí *qué* cambiaste y *por qué*, no `"cambios"` ni `"update"`.
+   - ✅ Bien: `git commit -m "agrego validación de fechas en createPackage"`
+   - ❌ Mal: `git commit -m "arreglos"`
+2. **Actualizá el [`CHANGELOG.md`](CHANGELOG.md)**: anotá tu cambio en una línea bajo la sección "Sin publicar" antes de pushear. Así queda un historial legible sin tener que leer todos los commits.
+
 ### Consejos para no chocarse
 
 - **Hablen antes de arrancar**: dividan el trabajo por carpetas (uno `frontend/`, otro `backend/`) para no editar los mismos archivos.
