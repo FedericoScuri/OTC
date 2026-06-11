@@ -1,0 +1,29 @@
+{
+  "name": "otc",
+  "version": "0.1.0",
+  "description": "OTC (Open Tourism Commerce) - Plataforma descentralizada de paquetes turísticos sobre blockchain",
+  "license": "MIT",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "test:gas": "REPORT_GAS=true hardhat test",
+    "node": "hardhat node",
+    "deploy:local": "hardhat run scripts/deploy.js --network localhost"
+  },
+  "keywords": [
+    "blockchain",
+    "solidity",
+    "turismo",
+    "smart-contracts",
+    "escrow"
+  ],
+  "author": "Federico Scuri",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.17"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.1.0",
+    "dotenv": "^17.4.2"
+  }
+}
