@@ -19,6 +19,10 @@ Formato: `[Fecha] — Descripción del cambio (autor)`
 - [2026-06-11] — Saldo USDC y faucet de demo (+1000 USDC) en el catálogo (Claude)
 - [2026-06-11] — `scripts/sync-abis.js` (`npm run sync:abis`): genera `frontend/lib/abis.ts` desde los artifacts compilados (Claude)
 - [2026-06-11] — `scripts/deploy.js` ahora copia las direcciones a `frontend/public/deployments.json` para que el frontend las lea en runtime (Claude)
+- [2026-06-11] — Panel del proveedor (`/proveedor`): formulario para publicar paquetes (RF-B02) con validación de fechas/precio/cupo (Claude)
+- [2026-06-11] — Panel del proveedor: confirmar servicio (libera el escrow 85/12/3) y reembolsar reservas dentro del plazo (Claude)
+- [2026-06-11] — Panel del proveedor: lista de paquetes propios con pausar/activar la venta (Claude)
+- [2026-06-11] — Helpers de frontend: `useTx` (envío de tx + espera de recibo) y `ConnectGate` (exige wallet conectada) (Claude)
 
 ---
 

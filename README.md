@@ -157,7 +157,7 @@ El proyecto se construye por fases. Prioridad: **contratos → tests → fronten
 | **1 — Contratos core** | `MockUSDC`, `TourPackageNFT`, `CommissionEscrow`, `SecondaryMarket` | ✅ Hecho |
 | **2 — Testing** | 21 tests (split, reembolsos, royalty, permisos) + reporte de gas | ✅ Hecho |
 | **3 — Deploy local** | Script de deploy con datos de demo | ✅ Hecho |
-| **4 — Frontend** | Next.js + wagmi: wallet, catálogo, compra, dashboard de agente (links de afiliado), panel de proveedor | 🔄 En curso (wallet + catálogo + compra ✅; proveedor y agente pendientes) |
+| **4 — Frontend** | Next.js + wagmi: wallet, catálogo, compra, dashboard de agente (links de afiliado), panel de proveedor | 🔄 En curso (wallet + catálogo + compra + panel de proveedor ✅; agente pendiente) |
 | **5 — Backend** | API REST Node.js: mock de PMS/CRS (RF-B01) + on-ramp fiat sandbox MoonPay/Transak (RF-D01) | ⏳ Pendiente |
 | **6 — Presentación** | Guion de demo + cierre de documentación | ⏳ Pendiente |
 

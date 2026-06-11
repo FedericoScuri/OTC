@@ -79,3 +79,62 @@ export function usePackages() {
     },
   };
 }
+
+/** Estados del ciclo de vida de una reserva (enum Status del escrow). */
+export const BOOKING_STATUS = ["None", "Pendiente", "Liberada", "Reembolsada"] as const;
+
+/** Forma decodificada del struct Booking de CommissionEscrow. */
+export type Booking = {
+  id: number;
+  packageId: bigint;
+  customer: `0x${string}`;
+  provider: `0x${string}`;
+  agent: `0x${string}`;
+  amount: bigint;
+  quantity: bigint;
+  refundDeadline: bigint;
+  status: number;
+};
+
+/**
+ * Lee todas las reservas registradas en el escrow: totalBookings() y luego
+ * getBooking(id) en batch. Las páginas filtran por proveedor / cliente.
+ */
+export function useBookings() {
+  const { escrow } = useContracts();
+
+  const totalQuery = useReadContract({
+    ...escrow,
+    functionName: "totalBookings",
+  });
+
+  const total = totalQuery.data ? Number(totalQuery.data) : 0;
+  const ids = Array.from({ length: total }, (_, i) => i + 1);
+
+  const bookingsQuery = useReadContracts({
+    contracts: ids.map((id) => ({
+      ...escrow,
+      functionName: "getBooking" as const,
+      args: [BigInt(id)] as const,
+    })),
+    query: { enabled: total > 0 },
+  });
+
+  const bookings: Booking[] = (bookingsQuery.data ?? [])
+    .map((res, i) => {
+      if (res.status !== "success" || !res.result) return null;
+      const b = res.result as unknown as Omit<Booking, "id">;
+      return { id: ids[i], ...b };
+    })
+    .filter((b): b is Booking => b !== null);
+
+  return {
+    bookings,
+    total,
+    isLoading: totalQuery.isLoading || bookingsQuery.isLoading,
+    refetch: () => {
+      totalQuery.refetch();
+      bookingsQuery.refetch();
+    },
+  };
+}
