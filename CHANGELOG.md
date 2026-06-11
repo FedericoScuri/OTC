@@ -9,9 +9,16 @@ Formato: `[Fecha] — Descripción del cambio (autor)`
 
 ## Sin publicar
 
-<!-- Agregá acá tus cambios antes de hacer push, ej:
-- [2026-06-12] — Agrego panel de proveedor en el frontend (Tu Nombre)
--->
+### Fase 4 — Frontend (en curso)
+
+- [2026-06-11] — Scaffold del frontend en `frontend/`: Next.js 14 (App Router) + TypeScript + Tailwind + wagmi v2/viem (Claude)
+- [2026-06-11] — Login Web3 con MetaMask y verificación/cambio de red a Hardhat local (RF-A01) (Claude)
+- [2026-06-11] — Catálogo de paquetes: lee `TourPackageNFT` on-chain (totalPackages + getPackage) y los muestra en tarjetas (Claude)
+- [2026-06-11] — Flujo de compra desde la UI: approve USDC + `purchase` en el escrow, con cantidad y estado de transacción (RF-C01) (Claude)
+- [2026-06-11] — Compra por link de afiliado: el catálogo toma `?ref=<agente>` y lo pasa como agente de la venta (base de RF-D02) (Claude)
+- [2026-06-11] — Saldo USDC y faucet de demo (+1000 USDC) en el catálogo (Claude)
+- [2026-06-11] — `scripts/sync-abis.js` (`npm run sync:abis`): genera `frontend/lib/abis.ts` desde los artifacts compilados (Claude)
+- [2026-06-11] — `scripts/deploy.js` ahora copia las direcciones a `frontend/public/deployments.json` para que el frontend las lea en runtime (Claude)
 
 ---
 

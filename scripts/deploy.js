@@ -96,7 +96,15 @@ async function main() {
   const dir = path.join(__dirname, "..", "deployments");
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, `${network.name}.json`), JSON.stringify(out, null, 2));
-  console.log(`\n✓ Direcciones guardadas en deployments/${network.name}.json\n`);
+  console.log(`\n✓ Direcciones guardadas en deployments/${network.name}.json`);
+
+  // También las dejamos donde el frontend las lee en runtime.
+  const frontendPublic = path.join(__dirname, "..", "frontend", "public");
+  if (fs.existsSync(frontendPublic)) {
+    fs.writeFileSync(path.join(frontendPublic, "deployments.json"), JSON.stringify(out, null, 2));
+    console.log(`✓ Direcciones copiadas a frontend/public/deployments.json`);
+  }
+  console.log("");
 }
 
 main().catch((error) => {

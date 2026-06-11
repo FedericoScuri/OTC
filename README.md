@@ -139,8 +139,8 @@ El deploy crea 3 paquetes de ejemplo (bodega, hotel, aventura), reparte USDC de 
 | RF-C01 | Dispersión automática de fondos 85/12/3 | ✅ Implementado |
 | RF-C02 | Royalty forzoso en reventa | ✅ Implementado |
 | RF-D01 | On-ramp fiat (tarjeta → USDC) | 🔜 Integración sandbox |
-| RF-D02 | Generador de links de afiliado | 🔜 Frontend |
-| RF-A01 | Login Web3 (MetaMask/WalletConnect) | 🔜 Frontend |
+| RF-D02 | Generador de links de afiliado | 🔄 Parcial (la compra por `?ref=` ya funciona; falta el generador) |
+| RF-A01 | Login Web3 (MetaMask/WalletConnect) | ✅ Implementado (MetaMask) |
 | RF-B01 | Sincronización con PMS/CRS | 🔜 Backend mock |
 | RNF-P02 | Gas < $0.05 en L2 | ✅ Verificado (~111k gas en el split) |
 | RNF-S01 | Auditoría externa de contratos | ⏳ Fase de producción |
@@ -157,7 +157,7 @@ El proyecto se construye por fases. Prioridad: **contratos → tests → fronten
 | **1 — Contratos core** | `MockUSDC`, `TourPackageNFT`, `CommissionEscrow`, `SecondaryMarket` | ✅ Hecho |
 | **2 — Testing** | 21 tests (split, reembolsos, royalty, permisos) + reporte de gas | ✅ Hecho |
 | **3 — Deploy local** | Script de deploy con datos de demo | ✅ Hecho |
-| **4 — Frontend** | Next.js + wagmi: wallet, catálogo, compra, dashboard de agente (links de afiliado), panel de proveedor | 🔜 En curso |
+| **4 — Frontend** | Next.js + wagmi: wallet, catálogo, compra, dashboard de agente (links de afiliado), panel de proveedor | 🔄 En curso (wallet + catálogo + compra ✅; proveedor y agente pendientes) |
 | **5 — Backend** | API REST Node.js: mock de PMS/CRS (RF-B01) + on-ramp fiat sandbox MoonPay/Transak (RF-D01) | ⏳ Pendiente |
 | **6 — Presentación** | Guion de demo + cierre de documentación | ⏳ Pendiente |
 
