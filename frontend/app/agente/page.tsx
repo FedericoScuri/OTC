@@ -1,11 +1,31 @@
+"use client";
+
+import { ConnectGate } from "@/components/ConnectGate";
+import { AffiliateLink } from "@/components/AffiliateLink";
+import { AgentDashboard } from "@/components/AgentDashboard";
+
 export default function AgentePage() {
   return (
-    <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
-      <h1 className="text-xl font-bold">Panel del agente</h1>
-      <p className="mt-2 text-sm text-slate-500">
-        En construcción — próximo chunk de la Fase 4: generador de links de afiliado (RF-D02) y
-        dashboard de comisiones.
-      </p>
+    <div className="space-y-8">
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight">Panel del agente</h1>
+        <p className="text-slate-500">
+          Generá tu link de afiliado y seguí tus comisiones. Cobrás el 12% de cada venta cuando el
+          proveedor confirma el servicio.
+        </p>
+      </div>
+
+      <ConnectGate>
+        {(address) => (
+          <div className="space-y-8">
+            <AffiliateLink agent={address} />
+            <section className="space-y-3">
+              <h2 className="text-lg font-semibold">Mis comisiones</h2>
+              <AgentDashboard agent={address} />
+            </section>
+          </div>
+        )}
+      </ConnectGate>
     </div>
   );
 }

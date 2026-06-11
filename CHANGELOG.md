@@ -23,6 +23,8 @@ Formato: `[Fecha] — Descripción del cambio (autor)`
 - [2026-06-11] — Panel del proveedor: confirmar servicio (libera el escrow 85/12/3) y reembolsar reservas dentro del plazo (Claude)
 - [2026-06-11] — Panel del proveedor: lista de paquetes propios con pausar/activar la venta (Claude)
 - [2026-06-11] — Helpers de frontend: `useTx` (envío de tx + espera de recibo) y `ConnectGate` (exige wallet conectada) (Claude)
+- [2026-06-11] — Panel del agente (`/agente`): generador de link de afiliado con copiar al portapapeles (RF-D02 completo) (Claude)
+- [2026-06-11] — Panel del agente: dashboard de comisiones (cobradas/pendientes 12%) con tabla de ventas atribuidas (Claude)
 
 ---
 
