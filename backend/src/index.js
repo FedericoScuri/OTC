@@ -3,6 +3,7 @@ const cors = require("cors");
 const config = require("./config");
 const chain = require("./chain");
 const pmsRouter = require("./routes/pms");
+const onrampRouter = require("./routes/onramp");
 
 const app = express();
 app.use(cors());
@@ -20,6 +21,9 @@ app.get("/health", async (_req, res) => {
 
 // RF-B01 — sincronización con PMS/CRS.
 app.use("/api/pms", pmsRouter);
+
+// RF-D01 — on-ramp fiat (tarjeta → USDC).
+app.use("/api/onramp", onrampRouter);
 
 app.use((_req, res) => res.status(404).json({ error: "Ruta no encontrada" }));
 

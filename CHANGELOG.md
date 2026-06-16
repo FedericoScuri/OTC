@@ -9,7 +9,7 @@ Formato: `[Fecha] — Descripción del cambio (autor)`
 
 ## Sin publicar
 
-### Fase 5 — Backend (en curso)
+### Fase 5 — Backend
 
 - [2026-06-15] — Scaffold del backend en `backend/`: API REST con Express + ethers v6 (CommonJS) (Claude)
 - [2026-06-15] — `GET /health`: estado del backend y de la conexión al nodo (RPC) (Claude)
@@ -17,6 +17,8 @@ Formato: `[Fecha] — Descripción del cambio (autor)`
 - [2026-06-15] — RF-B01: `POST /api/pms/sync` publica on-chain los items del PMS faltantes (createPackage), idempotente por nombre; `GET /api/pms/sync-status` compara PMS vs cadena (Claude)
 - [2026-06-15] — `NonceManager` en el sync para mandar varias createPackage seguidas sin error de nonce (Claude)
 - [2026-06-15] — Script `npm run backend` en la raíz para levantar el backend (Claude)
+- [2026-06-15] — RF-D01 (on-ramp): `POST /api/onramp/quote` cotiza tarjeta → USDC con fee del 1.5% (Claude)
+- [2026-06-15] — RF-D01: `POST /api/onramp/buy` simula el pago y acredita USDC en la wallet (mintea MockUSDC), con validación de monto y dirección (Claude)
 
 ### Fase 4 — Frontend
 

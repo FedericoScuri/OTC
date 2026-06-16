@@ -41,7 +41,7 @@ Cliente paga con tarjeta
 - **Testing:** Hardhat + Chai (21 tests)
 - **Red:** Hardhat local para la demo · en producción una L2 EVM (Base / Polygon) para gas < $0.05 (RNF-P02)
 - **Frontend:** Next.js + wagmi *(en construcción)*
-- **Backend:** Node.js + REST, sincronización con PMS/CRS *(en construcción)*
+- **Backend:** Node.js + Express + ethers, mock de PMS/CRS y on-ramp fiat sandbox
 
 ---
 
@@ -138,10 +138,10 @@ El deploy crea 3 paquetes de ejemplo (bodega, hotel, aventura), reparte USDC de 
 | RF-B02 | Tokenización de paquetes (ERC-1155) | ✅ Implementado |
 | RF-C01 | Dispersión automática de fondos 85/12/3 | ✅ Implementado |
 | RF-C02 | Royalty forzoso en reventa | ✅ Implementado |
-| RF-D01 | On-ramp fiat (tarjeta → USDC) | 🔜 Integración sandbox |
+| RF-D01 | On-ramp fiat (tarjeta → USDC) | ✅ Implementado (sandbox) |
 | RF-D02 | Generador de links de afiliado | ✅ Implementado |
 | RF-A01 | Login Web3 (MetaMask/WalletConnect) | ✅ Implementado (MetaMask) |
-| RF-B01 | Sincronización con PMS/CRS | 🔄 Parcial (mock de PMS + sync on-chain ✅) |
+| RF-B01 | Sincronización con PMS/CRS | ✅ Implementado (mock de PMS + sync on-chain) |
 | RNF-P02 | Gas < $0.05 en L2 | ✅ Verificado (~111k gas en el split) |
 | RNF-S01 | Auditoría externa de contratos | ⏳ Fase de producción |
 
@@ -158,14 +158,14 @@ El proyecto se construye por fases. Prioridad: **contratos → tests → fronten
 | **2 — Testing** | 21 tests (split, reembolsos, royalty, permisos) + reporte de gas | ✅ Hecho |
 | **3 — Deploy local** | Script de deploy con datos de demo | ✅ Hecho |
 | **4 — Frontend** | Next.js + wagmi: wallet, catálogo, compra, dashboard de agente (links de afiliado), panel de proveedor | ✅ Hecho |
-| **5 — Backend** | API REST Node.js: mock de PMS/CRS (RF-B01) + on-ramp fiat sandbox MoonPay/Transak (RF-D01) | 🔄 En curso (PMS/CRS ✅; on-ramp pendiente) |
+| **5 — Backend** | API REST Node.js: mock de PMS/CRS (RF-B01) + on-ramp fiat sandbox MoonPay/Transak (RF-D01) | ✅ Hecho |
 | **6 — Presentación** | Guion de demo + cierre de documentación | ⏳ Pendiente |
 
 ### Próximos pasos concretos
 
 1. ~~**Frontend (Fase 4)**~~ ✅ Hecho — Next.js + wagmi: catálogo, compra, panel de proveedor y panel de agente con links de afiliado. Ver [`frontend/README.md`](frontend/README.md) para correrlo.
-2. **Backend (Fase 5)** — API que simula la sincronización con un PMS/CRS y la pasarela on-ramp. *(próximo)*
-3. **Presentación (Fase 6)** — guion de demo en vivo y los 3 argumentos de defensa (eficiencia real, mercado regional bodegas/aventura, reventa secundaria).
+2. ~~**Backend (Fase 5)**~~ ✅ Hecho — API REST (Express + ethers): mock de PMS/CRS con sync on-chain y on-ramp fiat sandbox. Ver [`backend/README.md`](backend/README.md).
+3. **Presentación (Fase 6)** — guion de demo en vivo y los 3 argumentos de defensa (eficiencia real, mercado regional bodegas/aventura, reventa secundaria). *(próximo)*
 
 ---
 
@@ -176,8 +176,8 @@ OTC/
 ├── contracts/        # Smart contracts en Solidity
 ├── test/             # Tests con Hardhat + Chai
 ├── scripts/          # Script de deploy
-├── frontend/         # Next.js + wagmi (en construcción)
-├── backend/          # API REST Node.js (en construcción)
+├── frontend/         # Next.js + wagmi: catálogo, compra, paneles
+├── backend/          # API REST Node.js: PMS/CRS + on-ramp fiat
 ├── hardhat.config.js
 └── package.json
 ```
