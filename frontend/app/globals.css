@@ -13,15 +13,15 @@ html {
 body {
   @apply text-slate-800 antialiased;
   background:
-    radial-gradient(1200px 600px at 10% -10%, rgba(45, 212, 191, 0.18), transparent 60%),
-    radial-gradient(1000px 600px at 100% 0%, rgba(56, 189, 248, 0.16), transparent 55%),
-    linear-gradient(180deg, #f6fbfa 0%, #eef2f7 100%);
+    radial-gradient(1200px 600px at 8% -10%, rgba(139, 92, 246, 0.14), transparent 60%),
+    radial-gradient(1000px 600px at 100% 0%, rgba(251, 111, 146, 0.12), transparent 55%),
+    linear-gradient(180deg, #f8f5fc 0%, #f1ecf7 100%);
   background-attachment: fixed;
   min-height: 100vh;
 }
 
 ::selection {
-  background: rgba(13, 148, 136, 0.2);
+  background: rgba(124, 58, 237, 0.18);
 }
 
 /* Scrollbar sutil */
@@ -62,6 +62,15 @@ body {
     @apply inline-flex items-center justify-center gap-2 rounded-xl border border-white/60
       bg-white/50 px-4 py-2.5 text-sm font-semibold text-slate-700 backdrop-blur
       transition-all duration-200 hover:bg-white/80 hover:shadow-md;
+  }
+
+  /* Botón de acento (coral) — para el buscador / CTA destacado */
+  .btn-accent {
+    @apply relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-xl
+      bg-gradient-to-r from-accent-light to-accent bg-200 px-4 py-2.5 text-sm font-semibold
+      text-white shadow-lg shadow-accent/30 transition-all duration-300
+      hover:-translate-y-0.5 hover:shadow-accent/45 active:translate-y-0
+      disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0;
   }
 
   /* Elevación al pasar el mouse */

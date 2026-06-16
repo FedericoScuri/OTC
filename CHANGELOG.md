@@ -9,6 +9,14 @@ Formato: `[Fecha] — Descripción del cambio (autor)`
 
 ## Sin publicar
 
+### UI — Estilo sitio de reservas + paleta atardecer
+
+- [2026-06-16] — Nueva paleta: violeta como color de marca + rosa coral de acento (en `tailwind.config.ts` y `globals.css`); botón de acento `.btn-accent` (Claude)
+- [2026-06-16] — Catálogo rediseñado como sitio de reservas: barra de búsqueda (destino/fechas/personas) con filtro en vivo por nombre (Claude)
+- [2026-06-16] — Fichas tipo alojamiento: "foto" por categoría, badge, favoritos, ubicación, rating con estrellas, "cancelación gratis hasta {fecha}" (fecha real del refundDeadline) y stepper de cantidad (Claude)
+- [2026-06-16] — Set de íconos SVG inline (`components/icons.tsx`); fondo aurora más sutil y recoloreado; botón de compra renombrado a "Reservar" (Claude)
+- [2026-06-16] — NOTA: foto, ubicación, rating y reseñas son placeholders de demo (el contrato aún no guarda esa metadata); la fecha de cancelación y el cupo sí son datos on-chain reales (Claude)
+
 ### UI — Rediseño visual del frontend
 
 - [2026-06-15] — Sistema de diseño glassmorphism: tarjetas translúcidas con blur, fondo "aurora" animado (blobs flotantes) y grilla sutil (Claude)

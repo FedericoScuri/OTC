@@ -80,8 +80,8 @@ export function BuyButton({
 
   if (!isConnected) {
     return (
-      <p className="rounded-lg bg-white/40 py-2 text-center text-sm text-slate-400">
-        Conectá tu wallet para comprar
+      <p className="rounded-lg bg-slate-50 py-2 text-center text-xs text-slate-400">
+        Conectá tu wallet
       </p>
     );
   }
@@ -99,12 +99,12 @@ export function BuyButton({
           : !pkg.active
             ? "No disponible"
             : status === "approving"
-              ? "Aprobando USDC…"
+              ? "Aprobando…"
               : status === "purchasing"
-                ? "Confirmando compra…"
+                ? "Reservando…"
                 : status === "done"
-                  ? "¡Comprado! ✓"
-                  : "Comprar"}
+                  ? "¡Reservado! ✓"
+                  : "Reservar"}
       </button>
       {error && <p className="text-xs text-red-600">{error}</p>}
     </div>

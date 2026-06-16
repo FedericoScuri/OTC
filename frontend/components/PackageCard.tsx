@@ -4,13 +4,19 @@ import { useState } from "react";
 import type { Address } from "viem";
 import type { Package } from "@/lib/contracts";
 import { BuyButton } from "./BuyButton";
-import { categoryLabel, formatDate, formatUSDC, shortAddress } from "@/lib/format";
+import { categoryLabel, formatDate, formatUSDC } from "@/lib/format";
+import { MapPinIcon, StarIcon, HeartIcon, CheckIcon, WineIcon, BuildingIcon, MountainIcon, LandmarkIcon } from "./icons";
 
-const CATEGORY_STYLE: Record<number, string> = {
-  0: "from-blue-500 to-sky-400", // Hotel
-  1: "from-purple-500 to-fuchsia-400", // Bodega
-  2: "from-emerald-500 to-teal-400", // Aventura
-  3: "from-amber-500 to-orange-400", // Cultural
+/**
+ * Datos visuales por categoría. NOTA: la foto, la ubicación y el rating son
+ * PLACEHOLDERS de demo (el contrato aún no guarda imagen/ubicación/reseñas).
+ * Se derivan de forma estable por categoría/id para que no cambien entre renders.
+ */
+const CATEGORY_UI: Record<number, { grad: string; badge: string; loc: string; Icon: typeof WineIcon }> = {
+  0: { grad: "from-[#6d5bd0] to-[#b06fb8]", badge: "text-[#4a2a8c]", loc: "Ciudad de Mendoza", Icon: BuildingIcon },
+  1: { grad: "from-[#c0506e] to-[#e0915f]", badge: "text-[#9c2b48]", loc: "Luján de Cuyo", Icon: WineIcon },
+  2: { grad: "from-[#4f7a6a] to-[#d98f5a]", badge: "text-[#2f6a4f]", loc: "Potrerillos", Icon: MountainIcon },
+  3: { grad: "from-[#8a5cc0] to-[#d08fb0]", badge: "text-[#6b2f8c]", loc: "Área Fundacional", Icon: LandmarkIcon },
 };
 
 export function PackageCard({
@@ -25,88 +31,102 @@ export function PackageCard({
   index?: number;
 }) {
   const [qty, setQty] = useState(1);
+  const [fav, setFav] = useState(false);
   const available = Number(pkg.maxSupply - pkg.minted);
-  const total = pkg.price * BigInt(qty);
-  const soldRatio = Number(pkg.minted) / Math.max(Number(pkg.maxSupply), 1);
+  const ui = CATEGORY_UI[pkg.category] ?? CATEGORY_UI[0];
+  const Icon = ui.Icon;
+
+  // Placeholders de demo, estables por paquete.
+  const rating = (4.3 + ((pkg.id * 7) % 7) / 10).toFixed(1);
+  const reviews = 40 + ((pkg.id * 13) % 150);
 
   return (
     <div
-      className="glass card-hover group flex animate-fade-in-up flex-col gap-3 rounded-2xl p-5"
+      className="card-hover group flex animate-fade-in-up flex-col overflow-hidden rounded-2xl border border-slate-200/70 bg-white shadow-sm"
       style={{ animationDelay: `${index * 70}ms` }}
     >
-      <div className="flex items-start justify-between gap-2">
+      {/* "Foto" del destino (placeholder por categoría) */}
+      <div className={`relative h-28 bg-gradient-to-br ${ui.grad}`}>
         <span
-          className={`rounded-full bg-gradient-to-r ${
-            CATEGORY_STYLE[pkg.category] ?? "from-slate-400 to-slate-300"
-          } px-2.5 py-0.5 text-xs font-semibold text-white shadow-sm`}
+          className={`absolute left-2.5 top-2.5 rounded-full bg-white/90 px-2.5 py-0.5 text-[11px] font-bold ${ui.badge}`}
         >
           {categoryLabel(pkg.category)}
         </span>
-        <span className="text-xs font-medium text-slate-400">#{pkg.id}</span>
+        <button
+          onClick={() => setFav((v) => !v)}
+          aria-label="Favorito"
+          className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-white/90 text-accent-dark transition hover:scale-110"
+        >
+          <HeartIcon size={15} className={fav ? "fill-accent-dark" : ""} />
+        </button>
+        <Icon size={34} className="absolute bottom-2 right-3 text-white/45" />
+        <span className="absolute bottom-2 left-2.5 rounded-md bg-black/25 px-2 py-0.5 text-[11px] font-medium text-white backdrop-blur-sm">
+          #{pkg.id}
+        </span>
       </div>
 
-      <h3 className="text-lg font-bold leading-tight text-slate-800 group-hover:text-brand-dark">
-        {pkg.name}
-      </h3>
+      <div className="flex flex-1 flex-col p-4">
+        <h3 className="text-[15px] font-bold leading-tight text-slate-800">{pkg.name}</h3>
 
-      <dl className="space-y-1.5 text-sm text-slate-500">
-        <div className="flex justify-between">
-          <dt>Check-in</dt>
-          <dd className="font-medium text-slate-700">{formatDate(pkg.checkInDate)}</dd>
-        </div>
-        <div className="flex justify-between">
-          <dt>Reembolso hasta</dt>
-          <dd className="font-medium text-slate-700">{formatDate(pkg.refundDeadline)}</dd>
-        </div>
-        <div className="flex justify-between">
-          <dt>Proveedor</dt>
-          <dd className="font-mono text-xs text-slate-600">{shortAddress(pkg.provider)}</dd>
-        </div>
-      </dl>
-
-      {/* Barra de disponibilidad */}
-      <div className="space-y-1">
-        <div className="flex justify-between text-xs text-slate-500">
-          <span>Disponibles</span>
-          <span className="font-semibold text-slate-700">
-            {available} / {Number(pkg.maxSupply)}
+        <div className="mt-1.5 flex items-center gap-3 text-xs text-slate-500">
+          <span className="inline-flex items-center gap-1">
+            <MapPinIcon size={13} /> {ui.loc}
+          </span>
+          <span className="inline-flex items-center gap-1 font-medium text-slate-700">
+            <StarIcon size={13} className="text-accent" /> {rating}
+            <span className="font-normal text-slate-400">({reviews})</span>
           </span>
         </div>
-        <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-200/70">
-          <div
-            className="h-full rounded-full bg-gradient-to-r from-brand to-brand-light transition-all duration-500"
-            style={{ width: `${Math.min(soldRatio * 100, 100)}%` }}
-          />
-        </div>
-      </div>
 
-      <div className="mt-auto space-y-3 border-t border-white/60 pt-3">
-        <div className="flex items-end justify-between">
+        <div className="mt-2 inline-flex items-center gap-1 text-[11px] font-medium text-emerald-600">
+          <CheckIcon size={13} /> Cancelación gratis hasta {formatDate(pkg.refundDeadline)}
+        </div>
+
+        <div className="mt-3 flex items-center justify-between text-xs text-slate-500">
+          <span>
+            {available > 0 ? (
+              <>
+                Quedan <span className="font-semibold text-slate-700">{available}</span>
+              </>
+            ) : (
+              <span className="font-semibold text-accent-dark">Agotado</span>
+            )}
+          </span>
+          {available > 1 && (
+            <span className="inline-flex items-center gap-1.5">
+              <button
+                onClick={() => setQty((q) => Math.max(1, q - 1))}
+                className="flex h-6 w-6 items-center justify-center rounded-md border border-slate-200 text-slate-600 hover:bg-slate-50"
+                aria-label="Menos"
+              >
+                −
+              </button>
+              <span className="w-5 text-center font-semibold text-slate-700">{qty}</span>
+              <button
+                onClick={() => setQty((q) => Math.min(available, q + 1))}
+                className="flex h-6 w-6 items-center justify-center rounded-md border border-slate-200 text-slate-600 hover:bg-slate-50"
+                aria-label="Más"
+              >
+                +
+              </button>
+            </span>
+          )}
+        </div>
+
+        <div className="mt-auto flex items-end justify-between border-t border-slate-100 pt-3">
           <div>
-            <p className="text-xs text-slate-500">Precio unitario</p>
-            <p className="text-2xl font-extrabold text-gradient">{formatUSDC(pkg.price)}</p>
-            <p className="-mt-1 text-xs font-medium text-slate-400">USDC</p>
+            <span className="text-xl font-extrabold text-brand-dark">{formatUSDC(pkg.price)}</span>
+            <span className="text-xs font-medium text-slate-400"> USDC</span>
+            {qty > 1 && (
+              <p className="text-[11px] text-slate-400">
+                Total {formatUSDC(pkg.price * BigInt(qty))} USDC
+              </p>
+            )}
           </div>
-          <label className="flex items-center gap-2 text-sm">
-            <span className="text-slate-500">Cant.</span>
-            <input
-              type="number"
-              min={1}
-              max={Math.max(available, 1)}
-              value={qty}
-              onChange={(e) =>
-                setQty(Math.max(1, Math.min(available || 1, Number(e.target.value) || 1)))
-              }
-              className="w-16 rounded-lg border border-white/70 bg-white/60 px-2 py-1 text-right font-semibold focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20"
-            />
-          </label>
+          <div className="w-[44%]">
+            <BuyButton pkg={pkg} quantity={qty} agent={agent} onDone={onPurchased} />
+          </div>
         </div>
-
-        <p className="text-right text-sm text-slate-500">
-          Total: <span className="font-bold text-slate-800">{formatUSDC(total)} USDC</span>
-        </p>
-
-        <BuyButton pkg={pkg} quantity={qty} agent={agent} onDone={onPurchased} />
       </div>
     </div>
   );
