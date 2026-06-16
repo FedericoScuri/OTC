@@ -44,13 +44,13 @@ export function AgentDashboard({ agent }: { agent: `0x${string}` }) {
       </div>
 
       {mias.length === 0 ? (
-        <p className="rounded-xl bg-white px-4 py-6 text-center text-sm text-slate-500 ring-1 ring-slate-200">
+        <p className="glass rounded-xl px-4 py-6 text-center text-sm text-slate-500">
           Todavía no registrás ventas. Compartí tu link de afiliado para empezar.
         </p>
       ) : (
-        <div className="overflow-hidden rounded-xl ring-1 ring-slate-200">
+        <div className="glass overflow-hidden rounded-xl">
           <table className="w-full text-sm">
-            <thead className="bg-slate-50 text-left text-xs uppercase text-slate-500">
+            <thead className="bg-white/50 text-left text-xs uppercase text-slate-500">
               <tr>
                 <th className="px-4 py-2">Reserva</th>
                 <th className="px-4 py-2">Cliente</th>
@@ -60,7 +60,7 @@ export function AgentDashboard({ agent }: { agent: `0x${string}` }) {
                 <th className="px-4 py-2">Vence</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 bg-white">
+            <tbody className="divide-y divide-white/50 bg-white/30">
               {mias.map((b) => (
                 <tr key={b.id}>
                   <td className="px-4 py-2 font-medium">#{b.id}</td>
@@ -85,7 +85,7 @@ export function AgentDashboard({ agent }: { agent: `0x${string}` }) {
 
 function Stat({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
   return (
-    <div className="rounded-xl bg-white p-4 ring-1 ring-slate-200">
+    <div className="glass card-hover rounded-xl p-4">
       <p className="text-xs text-slate-500">{label}</p>
       <p className={`text-xl font-bold ${accent ? "text-brand" : "text-slate-800"}`}>{value}</p>
     </div>

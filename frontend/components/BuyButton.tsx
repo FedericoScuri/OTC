@@ -80,7 +80,9 @@ export function BuyButton({
 
   if (!isConnected) {
     return (
-      <p className="text-center text-sm text-slate-400">Conectá tu wallet para comprar</p>
+      <p className="rounded-lg bg-white/40 py-2 text-center text-sm text-slate-400">
+        Conectá tu wallet para comprar
+      </p>
     );
   }
 
@@ -89,8 +91,9 @@ export function BuyButton({
       <button
         onClick={handleBuy}
         disabled={busy || soldOut || !pkg.active}
-        className="w-full rounded-lg bg-brand px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-50"
+        className="btn-primary shine w-full"
       >
+        {busy && <Spinner />}
         {soldOut
           ? "Agotado"
           : !pkg.active
@@ -105,6 +108,15 @@ export function BuyButton({
       </button>
       {error && <p className="text-xs text-red-600">{error}</p>}
     </div>
+  );
+}
+
+function Spinner() {
+  return (
+    <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
+      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+      <path className="opacity-90" fill="currentColor" d="M4 12a8 8 0 0 1 8-8v4a4 4 0 0 0-4 4H4z" />
+    </svg>
   );
 }
 

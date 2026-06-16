@@ -6,6 +6,88 @@
   color-scheme: light;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  @apply bg-slate-50 text-slate-900 antialiased;
+  @apply text-slate-800 antialiased;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(45, 212, 191, 0.18), transparent 60%),
+    radial-gradient(1000px 600px at 100% 0%, rgba(56, 189, 248, 0.16), transparent 55%),
+    linear-gradient(180deg, #f6fbfa 0%, #eef2f7 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+::selection {
+  background: rgba(13, 148, 136, 0.2);
+}
+
+/* Scrollbar sutil */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.3);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.5);
+  background-clip: content-box;
+}
+
+@layer components {
+  /* Tarjeta de vidrio translúcida */
+  .glass {
+    @apply border border-white/60 bg-white/55 shadow-xl shadow-slate-900/5 backdrop-blur-xl;
+  }
+  .glass-soft {
+    @apply border border-white/50 bg-white/40 backdrop-blur-md;
+  }
+
+  /* Botón principal con degradé y brillo */
+  .btn-primary {
+    @apply relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-xl
+      bg-gradient-to-r from-brand to-brand-light bg-200 px-4 py-2.5 text-sm font-semibold
+      text-white shadow-lg shadow-brand/25 transition-all duration-300
+      hover:-translate-y-0.5 hover:shadow-brand/40 active:translate-y-0
+      disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-white/60
+      bg-white/50 px-4 py-2.5 text-sm font-semibold text-slate-700 backdrop-blur
+      transition-all duration-200 hover:bg-white/80 hover:shadow-md;
+  }
+
+  /* Elevación al pasar el mouse */
+  .card-hover {
+    @apply transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-slate-900/10;
+  }
+
+  /* Texto con degradé */
+  .text-gradient {
+    @apply bg-gradient-to-r from-brand-dark via-brand to-brand-light bg-clip-text text-transparent;
+  }
+}
+
+/* Brillo que recorre un elemento (efecto shimmer) */
+.shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent
+  );
+}
+.shine:hover::after {
+  animation: shimmer 1.1s ease;
 }

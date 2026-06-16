@@ -20,7 +20,7 @@ export function ProviderPackages({ provider }: { provider: `0x${string}` }) {
 
   if (propios.length === 0) {
     return (
-      <p className="rounded-xl bg-white px-4 py-6 text-center text-sm text-slate-500 ring-1 ring-slate-200">
+      <p className="glass rounded-xl px-4 py-6 text-center text-sm text-slate-500">
         Todavía no publicaste paquetes.
       </p>
     );
@@ -36,7 +36,7 @@ export function ProviderPackages({ provider }: { provider: `0x${string}` }) {
       {propios.map((p) => (
         <div
           key={p.id}
-          className="flex items-center justify-between gap-3 rounded-xl bg-white p-4 ring-1 ring-slate-200"
+          className="glass card-hover flex items-center justify-between gap-3 rounded-xl p-4"
         >
           <div className="text-sm">
             <p className="font-semibold">

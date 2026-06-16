@@ -70,7 +70,7 @@ export function CreatePackageForm({ onCreated }: { onCreated?: () => void }) {
     "w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand focus:outline-none";
 
   return (
-    <form onSubmit={submit} className="space-y-4 rounded-2xl bg-white p-6 ring-1 ring-slate-200">
+    <form onSubmit={submit} className="glass animate-fade-in-up space-y-4 rounded-2xl p-6">
       <h2 className="text-lg font-semibold">Publicar un paquete</h2>
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -159,7 +159,7 @@ export function CreatePackageForm({ onCreated }: { onCreated?: () => void }) {
       <button
         type="submit"
         disabled={pending}
-        className="rounded-lg bg-brand px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-50"
+        className="btn-primary shine"
       >
         {pending ? "Publicando…" : "Publicar paquete"}
       </button>

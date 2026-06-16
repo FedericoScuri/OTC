@@ -44,21 +44,35 @@ export function UsdcBalance() {
   }
 
   return (
-    <div className="flex items-center gap-3 rounded-xl bg-white px-4 py-3 ring-1 ring-slate-200">
+    <div className="glass flex items-center gap-4 rounded-2xl px-5 py-3">
+      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-brand to-brand-light text-white shadow-md shadow-brand/30">
+        <CoinIcon />
+      </div>
       <div>
         <p className="text-xs text-slate-500">Tu saldo</p>
-        <p className="text-lg font-semibold">
-          {balance.data !== undefined ? formatUSDC(balance.data as bigint) : "—"} USDC
+        <p className="text-lg font-extrabold text-slate-800">
+          {balance.data !== undefined ? formatUSDC(balance.data as bigint) : "—"}{" "}
+          <span className="text-sm font-semibold text-slate-400">USDC</span>
         </p>
       </div>
       <button
         onClick={faucet}
         disabled={minting}
-        className="ml-auto rounded-lg bg-slate-100 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-200 disabled:opacity-50"
+        className="btn-ghost ml-2 shine relative overflow-hidden disabled:opacity-50"
         title="Acuña 1000 USDC de prueba (solo demo)"
       >
-        {minting ? "Acuñando…" : "+1000 USDC (faucet)"}
+        {minting ? "Acuñando…" : "+1000 faucet"}
       </button>
     </div>
+  );
+}
+
+function CoinIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M14.5 9.5a2.5 2 0 0 0-2.5-1.5c-1.4 0-2.5.7-2.5 2s1 1.7 2.5 2 2.5.8 2.5 2-1.1 2-2.5 2a2.5 2 0 0 1-2.5-1.5" />
+      <path d="M12 6.5v11" />
+    </svg>
   );
 }

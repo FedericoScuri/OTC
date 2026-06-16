@@ -28,7 +28,7 @@ export function ProviderBookings({ provider }: { provider: `0x${string}` }) {
 
   if (pendientes.length === 0) {
     return (
-      <p className="rounded-xl bg-white px-4 py-6 text-center text-sm text-slate-500 ring-1 ring-slate-200">
+      <p className="glass rounded-xl px-4 py-6 text-center text-sm text-slate-500">
         No tenés reservas pendientes de confirmar.
       </p>
     );
@@ -53,7 +53,7 @@ export function ProviderBookings({ provider }: { provider: `0x${string}` }) {
         return (
           <div
             key={b.id}
-            className="flex flex-col gap-3 rounded-xl bg-white p-4 ring-1 ring-slate-200 sm:flex-row sm:items-center sm:justify-between"
+            className="glass card-hover flex flex-col gap-3 rounded-xl p-4 sm:flex-row sm:items-center sm:justify-between"
           >
             <div className="text-sm">
               <p className="font-semibold">
@@ -78,7 +78,7 @@ export function ProviderBookings({ provider }: { provider: `0x${string}` }) {
               <button
                 onClick={() => confirmar(b)}
                 disabled={pending}
-                className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark disabled:opacity-50"
+                className="btn-primary"
               >
                 Confirmar servicio
               </button>

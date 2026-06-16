@@ -9,6 +9,14 @@ Formato: `[Fecha] — Descripción del cambio (autor)`
 
 ## Sin publicar
 
+### UI — Rediseño visual del frontend
+
+- [2026-06-15] — Sistema de diseño glassmorphism: tarjetas translúcidas con blur, fondo "aurora" animado (blobs flotantes) y grilla sutil (Claude)
+- [2026-06-15] — Apartado de wallet terminado: avatar generado de la dirección, badge de red, copiar al portapapeles y dropdown animado para desconectar; aviso si no hay MetaMask (Claude)
+- [2026-06-15] — Header sticky con blur, logo animado e indicador de sección en el nav; tipografía Inter (Claude)
+- [2026-06-15] — Catálogo con hero degradé, animación de entrada escalonada de las tarjetas, barra de disponibilidad y skeletons de carga (Claude)
+- [2026-06-15] — Botones con degradé + efecto shine/glow, micro-interacciones (hover/elevación) y estados con spinner; paneles de proveedor/agente con el mismo estilo glass (Claude)
+
 ### Fase 5 — Backend
 
 - [2026-06-15] — Scaffold del backend en `backend/`: API REST con Express + ethers v6 (CommonJS) (Claude)

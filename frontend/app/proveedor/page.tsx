@@ -8,9 +8,9 @@ import { ProviderBookings } from "@/components/ProviderBookings";
 export default function ProveedorPage() {
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Panel del proveedor</h1>
-        <p className="text-slate-500">
+      <div className="animate-fade-in-up">
+        <h1 className="text-3xl font-extrabold tracking-tight text-gradient">Panel del proveedor</h1>
+        <p className="mt-1 text-slate-500">
           Publicá paquetes y confirmá los servicios prestados para liberar los fondos retenidos en
           el escrow.
         </p>

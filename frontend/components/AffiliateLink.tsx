@@ -23,7 +23,7 @@ export function AffiliateLink({ agent }: { agent: `0x${string}` }) {
   }
 
   return (
-    <div className="space-y-3 rounded-2xl bg-white p-6 ring-1 ring-slate-200">
+    <div className="glass animate-fade-in-up space-y-3 rounded-2xl p-6">
       <h2 className="text-lg font-semibold">Tu link de afiliado</h2>
       <p className="text-sm text-slate-500">
         Compartí este link. Cada compra hecha a través de él te asigna como agente y te paga el{" "}
@@ -38,7 +38,7 @@ export function AffiliateLink({ agent }: { agent: `0x${string}` }) {
         />
         <button
           onClick={copy}
-          className="shrink-0 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark"
+          className="btn-primary shine shrink-0"
         >
           {copied ? "¡Copiado! ✓" : "Copiar"}
         </button>
