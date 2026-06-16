@@ -141,7 +141,7 @@ El deploy crea 3 paquetes de ejemplo (bodega, hotel, aventura), reparte USDC de 
 | RF-D01 | On-ramp fiat (tarjeta → USDC) | 🔜 Integración sandbox |
 | RF-D02 | Generador de links de afiliado | ✅ Implementado |
 | RF-A01 | Login Web3 (MetaMask/WalletConnect) | ✅ Implementado (MetaMask) |
-| RF-B01 | Sincronización con PMS/CRS | 🔜 Backend mock |
+| RF-B01 | Sincronización con PMS/CRS | 🔄 Parcial (mock de PMS + sync on-chain ✅) |
 | RNF-P02 | Gas < $0.05 en L2 | ✅ Verificado (~111k gas en el split) |
 | RNF-S01 | Auditoría externa de contratos | ⏳ Fase de producción |
 
@@ -158,7 +158,7 @@ El proyecto se construye por fases. Prioridad: **contratos → tests → fronten
 | **2 — Testing** | 21 tests (split, reembolsos, royalty, permisos) + reporte de gas | ✅ Hecho |
 | **3 — Deploy local** | Script de deploy con datos de demo | ✅ Hecho |
 | **4 — Frontend** | Next.js + wagmi: wallet, catálogo, compra, dashboard de agente (links de afiliado), panel de proveedor | ✅ Hecho |
-| **5 — Backend** | API REST Node.js: mock de PMS/CRS (RF-B01) + on-ramp fiat sandbox MoonPay/Transak (RF-D01) | ⏳ Pendiente |
+| **5 — Backend** | API REST Node.js: mock de PMS/CRS (RF-B01) + on-ramp fiat sandbox MoonPay/Transak (RF-D01) | 🔄 En curso (PMS/CRS ✅; on-ramp pendiente) |
 | **6 — Presentación** | Guion de demo + cierre de documentación | ⏳ Pendiente |
 
 ### Próximos pasos concretos

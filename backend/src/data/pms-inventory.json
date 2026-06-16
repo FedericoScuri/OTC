@@ -1,0 +1,45 @@
+{
+  "source": "PMS/CRS mock (Cloudbeds-like) — inventario externo del proveedor",
+  "items": [
+    {
+      "extId": "PMS-WINE-001",
+      "name": "Almuerzo maridaje en Bodega Salentein",
+      "category": 1,
+      "pricePerUnitUsd": 95,
+      "maxSupply": 25,
+      "checkInDays": 21,
+      "durationDays": 1,
+      "refundWindowDays": 5
+    },
+    {
+      "extId": "PMS-HOTEL-014",
+      "name": "3 noches Hotel Sheraton Mendoza",
+      "category": 0,
+      "pricePerUnitUsd": 360,
+      "maxSupply": 10,
+      "checkInDays": 40,
+      "durationDays": 3,
+      "refundWindowDays": 10
+    },
+    {
+      "extId": "PMS-ADV-007",
+      "name": "Cabalgata al atardecer en Uspallata",
+      "category": 2,
+      "pricePerUnitUsd": 70,
+      "maxSupply": 18,
+      "checkInDays": 14,
+      "durationDays": 1,
+      "refundWindowDays": 3
+    },
+    {
+      "extId": "PMS-CULT-003",
+      "name": "City tour histórico + Museo del Área Fundacional",
+      "category": 3,
+      "pricePerUnitUsd": 35,
+      "maxSupply": 40,
+      "checkInDays": 10,
+      "durationDays": 1,
+      "refundWindowDays": 2
+    }
+  ]
+}

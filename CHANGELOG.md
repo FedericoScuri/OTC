@@ -9,7 +9,16 @@ Formato: `[Fecha] — Descripción del cambio (autor)`
 
 ## Sin publicar
 
-### Fase 4 — Frontend (en curso)
+### Fase 5 — Backend (en curso)
+
+- [2026-06-15] — Scaffold del backend en `backend/`: API REST con Express + ethers v6 (CommonJS) (Claude)
+- [2026-06-15] — `GET /health`: estado del backend y de la conexión al nodo (RPC) (Claude)
+- [2026-06-15] — RF-B01 (PMS/CRS): `GET /api/pms/inventory` expone el inventario externo del proveedor (mock) (Claude)
+- [2026-06-15] — RF-B01: `POST /api/pms/sync` publica on-chain los items del PMS faltantes (createPackage), idempotente por nombre; `GET /api/pms/sync-status` compara PMS vs cadena (Claude)
+- [2026-06-15] — `NonceManager` en el sync para mandar varias createPackage seguidas sin error de nonce (Claude)
+- [2026-06-15] — Script `npm run backend` en la raíz para levantar el backend (Claude)
+
+### Fase 4 — Frontend
 
 - [2026-06-11] — Scaffold del frontend en `frontend/`: Next.js 14 (App Router) + TypeScript + Tailwind + wagmi v2/viem (Claude)
 - [2026-06-11] — Login Web3 con MetaMask y verificación/cambio de red a Hardhat local (RF-A01) (Claude)

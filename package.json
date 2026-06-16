@@ -9,7 +9,8 @@
     "test:gas": "REPORT_GAS=true hardhat test",
     "node": "hardhat node",
     "deploy:local": "hardhat run scripts/deploy.js --network localhost",
-    "sync:abis": "node scripts/sync-abis.js"
+    "sync:abis": "node scripts/sync-abis.js",
+    "backend": "npm --prefix backend run dev"
   },
   "keywords": [
     "blockchain",
