@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { zeroAddress } from "viem";
 import { useReadContract, useReadContracts } from "wagmi";
 import { useDeployment } from "./deployments";
 import { MockUSDCAbi, TourPackageNFTAbi, CommissionEscrowAbi, SecondaryMarketAbi } from "./abis";
@@ -136,5 +137,92 @@ export function useBookings() {
       totalQuery.refetch();
       bookingsQuery.refetch();
     },
+  };
+}
+
+/** Forma decodificada del struct Listing de SecondaryMarket. */
+export type Listing = {
+  id: number;
+  seller: `0x${string}`;
+  packageId: bigint;
+  quantity: bigint;
+  pricePerUnit: bigint;
+  active: boolean;
+};
+
+/**
+ * Lee todas las publicaciones del mercado secundario: totalListings() y luego
+ * getListing(id) en batch. La página filtra las activas / las propias.
+ */
+export function useListings() {
+  const { market } = useContracts();
+
+  const totalQuery = useReadContract({
+    ...market,
+    functionName: "totalListings",
+  });
+
+  const total = totalQuery.data ? Number(totalQuery.data) : 0;
+  const ids = Array.from({ length: total }, (_, i) => i + 1);
+
+  const listingsQuery = useReadContracts({
+    contracts: ids.map((id) => ({
+      ...market,
+      functionName: "getListing" as const,
+      args: [BigInt(id)] as const,
+    })),
+    query: { enabled: total > 0 },
+  });
+
+  const listings: Listing[] = (listingsQuery.data ?? [])
+    .map((res, i) => {
+      if (res.status !== "success" || !res.result) return null;
+      const l = res.result as unknown as Omit<Listing, "id">;
+      return { id: ids[i], ...l };
+    })
+    .filter((l): l is Listing => l !== null);
+
+  return {
+    listings,
+    total,
+    isLoading: totalQuery.isLoading || listingsQuery.isLoading,
+    refetch: () => {
+      totalQuery.refetch();
+      listingsQuery.refetch();
+    },
+  };
+}
+
+/** Un paquete que el usuario posee, con su saldo de unidades (para revender). */
+export type OwnedReservation = { pkg: Package; balance: bigint };
+
+/**
+ * Reservas (NFTs ERC-1155) que tiene el `owner`: recorre todos los paquetes y
+ * lee balanceOf(owner, packageId) en batch, devolviendo los de saldo > 0.
+ */
+export function useOwnedReservations(owner?: `0x${string}`) {
+  const { nft } = useContracts();
+  const { packages, isLoading: pkgLoading } = usePackages();
+
+  const balancesQuery = useReadContracts({
+    contracts: packages.map((p) => ({
+      ...nft,
+      functionName: "balanceOf" as const,
+      args: [owner ?? zeroAddress, BigInt(p.id)] as const,
+    })),
+    query: { enabled: !!owner && packages.length > 0 },
+  });
+
+  const owned: OwnedReservation[] = (balancesQuery.data ?? [])
+    .map((res, i) => {
+      const balance = res.status === "success" ? (res.result as bigint) : 0n;
+      return { pkg: packages[i], balance };
+    })
+    .filter((o) => o.balance > 0n);
+
+  return {
+    owned,
+    isLoading: pkgLoading || balancesQuery.isLoading,
+    refetch: () => balancesQuery.refetch(),
   };
 }

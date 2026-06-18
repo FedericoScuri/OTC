@@ -137,7 +137,7 @@ El deploy crea 3 paquetes de ejemplo (bodega, hotel, aventura), reparte USDC de 
 |----|-----------|--------|
 | RF-B02 | Tokenización de paquetes (ERC-1155) | ✅ Implementado |
 | RF-C01 | Dispersión automática de fondos 85/12/3 | ✅ Implementado |
-| RF-C02 | Royalty forzoso en reventa | ✅ Implementado |
+| RF-C02 | Royalty forzoso en reventa | ✅ Implementado (contrato + UI `/mercado`) |
 | RF-D01 | On-ramp fiat (tarjeta → USDC) | ✅ Implementado (sandbox) |
 | RF-D02 | Generador de links de afiliado | ✅ Implementado |
 | RF-A01 | Login Web3 (MetaMask/WalletConnect) | ✅ Implementado (MetaMask) |

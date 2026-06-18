@@ -77,13 +77,12 @@ Orden de arranque el día de la demo:
 - Frase: *"El usuario final nunca toca una billetera cripto si no quiere; la complejidad queda escondida."*
 
 ### Escena 6 — "Si no podés viajar, revendés" (mercado secundario) ⭐
-> El frontend de reventa todavía no está, así que **se demuestra con el contrato y su test** (igual de válido para mostrar que funciona).
+1. Con la cuenta **Cliente** (que ya reservó en la Escena 2), andá a `/mercado`.
+2. En **"Revender mi reserva"** poné un precio (ej. más alto que el original) y **Publicar en reventa**.
+3. Cambiá a **otra cuenta** (otro viajero), volvé a `/mercado` → en **"Reservas en reventa"** mostrá el **desglose del reparto**: royalty 5% al proveedor, fee 2% a la plataforma, resto al vendedor. Comprala.
+4. Frase: *"Las OTAs PROHÍBEN revender tu reserva. Acá, si no podés viajar, la revendés: vos recuperás tu plata, el hotel cobra un royalty forzoso y no pierde la ocupación. Ganan todos."* (RF-C02)
 
-```bash
-npx hardhat test --grep "revende"
-```
-- Mostrá el test ✓ *"revende aplicando royalty 5% al proveedor..."*.
-- Frase: *"Las OTAs PROHÍBEN revender tu reserva. Acá, si no podés viajar, la revendés: vos recuperás tu plata, el hotel cobra un royalty forzoso y no pierde la ocupación. Ganan todos."* (RF-C02)
+> 🛟 **Plan B**: si la UI falla, el comportamiento está testeado — `npx hardhat test --grep "revende"`.
 
 ---
 
@@ -102,7 +101,7 @@ npx hardhat test --grep "revende"
 | RF-A01 | Login Web3 (MetaMask) | ✅ |
 | RF-B02 | Tokenización de paquetes (ERC-1155) | ✅ |
 | RF-C01 | Dispersión automática 85/12/3 | ✅ |
-| RF-C02 | Royalty forzoso en reventa | ✅ contrato + test (sin UI) |
+| RF-C02 | Royalty forzoso en reventa | ✅ contrato + test + UI (`/mercado`) |
 | RF-D01 | On-ramp fiat (tarjeta → USDC) | ✅ sandbox |
 | RF-D02 | Links de afiliado | ✅ |
 | RF-B01 | Sync con PMS/CRS | ✅ mock + sync on-chain |

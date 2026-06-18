@@ -6,6 +6,7 @@ import { WalletButton } from "./WalletButton";
 
 const NAV = [
   { href: "/", label: "Catálogo" },
+  { href: "/mercado", label: "Mercado" },
   { href: "/proveedor", label: "Proveedor" },
   { href: "/agente", label: "Agente" },
 ];
