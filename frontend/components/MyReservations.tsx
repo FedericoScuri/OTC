@@ -13,6 +13,24 @@ import { useTx } from "@/lib/useTx";
 import { formatUSDC, formatDate, shortAddress, categoryLabel } from "@/lib/format";
 
 /**
+ * Banner que aclara qué wallet se está viendo (las reservas son on-chain,
+ * atadas a la wallet conectada y no al login). Evita la confusión de "no veo
+ * mis reservas" cuando está conectada otra cuenta.
+ */
+function WalletBanner({ owner, count }: { owner: `0x${string}`; count: number }) {
+  return (
+    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 rounded-xl border border-violet-100 bg-violet-50/70 px-4 py-2.5 text-sm text-brand-dark">
+      <span className="inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+      Mostrando las reservas de la wallet{" "}
+      <span className="font-mono font-semibold">{shortAddress(owner)}</span>
+      <span className="text-brand-dark/60">
+        · {count} {count === 1 ? "reserva" : "reservas"}
+      </span>
+    </div>
+  );
+}
+
+/**
  * "Mis reservas" — las reservas (on-chain) del cliente conectado. Lee todas las
  * bookings del escrow y filtra por customer == wallet conectada. Muestra estado
  * (pendiente / liberada / reembolsada) y permite cancelar las que siguen dentro
@@ -36,13 +54,21 @@ export function MyReservations({ owner }: { owner: `0x${string}` }) {
 
   if (mias.length === 0) {
     return (
-      <p className="glass rounded-xl px-4 py-6 text-center text-sm text-slate-500">
-        Todavía no tenés reservas. Reservá un paquete en el{" "}
-        <a href="/catalogo" className="font-semibold text-brand hover:text-brand-dark">
-          catálogo
-        </a>
-        .
-      </p>
+      <div className="space-y-3">
+        <WalletBanner owner={owner} count={0} />
+        <div className="glass rounded-xl px-4 py-6 text-center text-sm text-slate-500">
+          <p className="font-medium text-slate-700">Esta wallet no tiene reservas.</p>
+          <p className="mt-1">
+            Las reservas viven on-chain atadas a la wallet conectada (no al login).{" "}
+            Para la demo, conectá en MetaMask la <strong>cuenta Cliente</strong> (la que termina en{" "}
+            <span className="font-mono">…b906</span>), o reservá un paquete en el{" "}
+            <a href="/catalogo" className="font-semibold text-brand hover:text-brand-dark">
+              catálogo
+            </a>
+            .
+          </p>
+        </div>
+      </div>
     );
   }
 
@@ -59,6 +85,7 @@ export function MyReservations({ owner }: { owner: `0x${string}` }) {
 
   return (
     <div className="space-y-3">
+      <WalletBanner owner={owner} count={mias.length} />
       {error && <p className="text-sm text-red-600">{error}</p>}
       {mias.map((b) => {
         const pkg = packages.find((p) => p.id === Number(b.packageId));

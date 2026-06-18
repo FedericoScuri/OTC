@@ -9,6 +9,11 @@ Formato: `[Fecha] — Descripción del cambio (autor)`
 
 ## Sin publicar
 
+### UX — Claridad de "Mis reservas" (wallet vs login)
+
+- [2026-06-18] — "Mis reservas" ahora muestra un banner con la wallet conectada y la cantidad de reservas, aclarando que las reservas son on-chain (atadas a la wallet, no al login) (Claude)
+- [2026-06-18] — Si la wallet conectada no tiene reservas, el aviso explica que para la demo hay que conectar la cuenta Cliente (…b906) o reservar en el catálogo (Claude)
+
 ### Fix — z-index del calendario en el buscador
 
 - [2026-06-18] — El popover del calendario quedaba tapado por las tarjetas de paquetes; ahora el buscador vive en un contexto de apilamiento `z-30` (sobre las tarjetas, bajo el header sticky) y el calendario se muestra sólido por encima (Claude)
