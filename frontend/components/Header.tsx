@@ -8,6 +8,7 @@ import { useAuth, ROLE_LABELS } from "@/lib/auth";
 
 const NAV = [
   { href: "/catalogo", label: "Catálogo" },
+  { href: "/reservas", label: "Mis reservas" },
   { href: "/mercado", label: "Mercado" },
   { href: "/proveedor", label: "Proveedor" },
   { href: "/agente", label: "Agente" },

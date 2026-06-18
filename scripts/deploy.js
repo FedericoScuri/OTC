@@ -72,14 +72,25 @@ async function main() {
     }
     console.log(`✓ ${demo.length} paquetes de demo creados por el proveedor`);
 
-    // Repartimos USDC de prueba para poder comprar en la demo.
+    // Repartimos USDC de prueba GRATIS de sobra: la wallet del cliente (admin1)
+    // puede crear todas las reservas que quiera para testing sin costo real.
     await (await usdc.mint(customer.address, USDC(10_000))).wait();
-    console.log(`✓ 10.000 USDC de prueba acuñados al cliente de demo`);
+    console.log(`✓ 10.000 USDC de prueba (gratis) acuñados al cliente de demo`);
+
+    // Pre-cargamos 2 reservas REALES on-chain en la wallet del cliente (admin1),
+    // para que su perfil "Mis reservas" ya tenga datos en la presentación.
+    // El cliente aprueba el escrow una vez y compra dos paquetes.
+    await (await usdc.connect(customer).approve(await escrow.getAddress(), USDC(10_000))).wait();
+    // Reserva 1: Cata en Bodega (paquete #1), comprada a través del AGENTE (comisión 12%).
+    await (await escrow.connect(customer).purchase(1n, 1n, agent.address)).wait();
+    // Reserva 2: Rafting (paquete #3), venta DIRECTA (sin agente).
+    await (await escrow.connect(customer).purchase(3n, 1n, ethers.ZeroAddress)).wait();
+    console.log(`✓ 2 reservas pre-cargadas en la wallet del cliente (1 vía agente, 1 directa)`);
 
     console.log(`\nCuentas de demo:`);
     console.log(`  Proveedor : ${provider.address}`);
     console.log(`  Agente    : ${agent.address}`);
-    console.log(`  Cliente   : ${customer.address}`);
+    console.log(`  Cliente (admin1) : ${customer.address}`);
   }
 
   // Guardamos las direcciones para el frontend/backend.

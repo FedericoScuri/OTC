@@ -9,6 +9,13 @@ Formato: `[Fecha] — Descripción del cambio (autor)`
 
 ## Sin publicar
 
+### Demo — Reservas pre-cargadas + página "Mis reservas"
+
+- [2026-06-18] — El deploy pre-carga 2 reservas REALES on-chain en la wallet del cliente/admin1 (Bodega vía agente + Rafting directa), para que el perfil ya tenga datos en la presentación (Claude)
+- [2026-06-18] — El cliente queda con ~9.800 USDC de prueba gratis para crear más reservas en vivo sin costo (Claude)
+- [2026-06-18] — Nueva página `/reservas` ("Mis reservas"): lista las reservas on-chain de la wallet conectada con estado (pendiente/liberada/reembolsada), fechas y monto; permite cancelar dentro del plazo. "Mis reservas" agregado al nav (Claude)
+- [2026-06-18] — NOTA: admin1 (cuenta de login) usa la wallet Cliente de Hardhat (cuenta #3) para ver estas reservas, ya que viven on-chain por wallet (Claude)
+
 ### Frontend — Login/registro, landing y buscador funcional (RF-A01)
 
 - [2026-06-18] — Autenticación Web2 de demo (`lib/auth.tsx`): registro, login y sesión persistente en localStorage, con roles cliente/proveedor/agente (RF-A01, lado Web2 de la "autenticación híbrida") (Claude)

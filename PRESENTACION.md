@@ -39,7 +39,9 @@ Orden de arranque el día de la demo:
 |-----|-----------|--------------------------------------|
 | Proveedor | `0x7099...79C8` | `0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d` |
 | Agente | `0x3C44...93BC` | `0x5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a` |
-| Cliente | `0x90F7...b906` | `0x7c852118294e51e653712a81e05800f419141751be58f605c371e15141b007a6` |
+| Cliente (**admin1**) | `0x90F7...b906` | `0x7c852118294e51e653712a81e05800f419141751be58f605c371e15141b007a6` |
+
+> 🎒 **Datos pre-cargados para la demo:** la wallet **Cliente** (que usás logueado como **admin1**) ya viene con **2 reservas reales** en `/reservas` (una Bodega vía agente, una Rafting directa) y **~9.800 USDC gratis** para reservar más en vivo. Así "Mis reservas" no está vacío y podés ir directo a confirmar/revender sin tener que comprar primero.
 
 > El cliente ya arranca con 10.000 USDC de prueba. Cualquier cuenta puede usar el **faucet** del catálogo (+1000 USDC).
 
