@@ -58,21 +58,27 @@ async function main() {
     const day = 24 * 3600;
 
     // Las 3 primeras se mantienen (IDs 1-3) porque las reservas pre-cargadas
-    // apuntan a los paquetes #1 y #3. Después agregamos más variedad, incluidas
-    // 2 actividades GRATUITAS (precio 0) para mostrar el flujo sin costo.
+    // apuntan a los paquetes #1 y #3. Después, variedad + 5 actividades
+    // GRATUITAS (precio 0) para mostrar el flujo sin costo en la demo.
     const demo = [
       [Category.Bodega, "Cata premium en Bodega Mendoza", USDC(120), 20],
       [Category.Hotel, "2 noches Hotel Cordillera", USDC(250), 15],
       [Category.Aventura, "Rafting + trekking Potrerillos", USDC(80), 30],
-      // --- Gratuitas (precio 0) ---
+      // --- Gratuitas (precio 0): ideales para mostrar el flujo sin costo ---
       [Category.Cultural, "Caminata guiada GRATIS por el centro histórico", USDC(0), 50],
       [Category.Bodega, "Degustación introductoria GRATIS en bodega boutique", USDC(0), 40],
-      // --- Más actividades ---
+      [Category.Cultural, "Clase de tango GRATIS en Plaza Independencia", USDC(0), 60],
+      [Category.Aventura, "Senderismo GRATIS al Cerro de la Gloria", USDC(0), 45],
+      [Category.Hotel, "Welcome drink GRATIS + late checkout", USDC(0), 35],
+      // --- Más actividades (pagas) ---
       [Category.Cultural, "City tour + Museo del Vino", USDC(15), 35],
       [Category.Bodega, "Almuerzo maridaje en Valle de Uco", USDC(95), 18],
       [Category.Aventura, "Cabalgata al atardecer en los Andes", USDC(60), 25],
       [Category.Hotel, "Noche en cabaña de montaña", USDC(140), 12],
       [Category.Aventura, "Parapente en Cuchilla del Tigre", USDC(110), 10],
+      [Category.Bodega, "Tour en bici entre viñedos + picada", USDC(45), 22],
+      [Category.Cultural, "Show de folklore + cena regional", USDC(35), 28],
+      [Category.Aventura, "Travesía 4x4 a la Alta Montaña", USDC(130), 14],
     ];
     for (const [cat, name, price, supply] of demo) {
       const checkIn = now + 30 * day;

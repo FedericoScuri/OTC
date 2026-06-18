@@ -3,7 +3,7 @@
 import { Suspense, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useAuth } from "@/lib/auth";
+import { useAuth, DEMO_ACCOUNTS, ROLE_LABELS } from "@/lib/auth";
 
 function LoginForm() {
   const { login } = useAuth();
@@ -27,6 +27,18 @@ function LoginForm() {
       setBusy(false);
     }
   }
+
+  // Login directo con una cuenta de demo (un click en la presentación).
+  function quickLogin(demoEmail: string, demoPassword: string) {
+    setEmail(demoEmail);
+    setPassword(demoPassword);
+    const res = login(demoEmail, demoPassword);
+    if (res.ok) router.replace(next);
+    else setError(res.error);
+  }
+
+  // Mostramos una cuenta por rol (admin1 como usuario general).
+  const demoShown = DEMO_ACCOUNTS.filter((a) => a.email !== "usuario@otc.com");
 
   return (
     <div className="mx-auto max-w-md">
@@ -70,6 +82,33 @@ function LoginForm() {
           <Link href="/registro" className="font-semibold text-brand hover:text-brand-dark">
             Creá una gratis
           </Link>
+        </p>
+      </div>
+
+      {/* Acceso rápido para la demo */}
+      <div className="glass animate-fade-in-up mt-4 rounded-2xl p-4" style={{ animationDelay: "80ms" }}>
+        <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-400">
+          Cuentas de demo (entrar con un click)
+        </p>
+        <div className="space-y-1.5">
+          {demoShown.map((a) => (
+            <button
+              key={a.email}
+              onClick={() => quickLogin(a.email, a.password)}
+              className="flex w-full items-center justify-between gap-2 rounded-xl border border-white/60 bg-white/50 px-3 py-2 text-left text-sm transition hover:bg-white/80"
+            >
+              <span>
+                <span className="font-semibold text-slate-700">{a.name}</span>
+                <span className="ml-2 font-mono text-xs text-slate-400">{a.email}</span>
+              </span>
+              <span className="shrink-0 rounded-full bg-brand/10 px-2 py-0.5 text-[11px] font-semibold text-brand-dark">
+                {ROLE_LABELS[a.role].split(" ")[0]}
+              </span>
+            </button>
+          ))}
+        </div>
+        <p className="mt-2 text-[11px] text-slate-400">
+          Contraseñas: cada email con su par (admin123, creador123, agente123).
         </p>
       </div>
     </div>

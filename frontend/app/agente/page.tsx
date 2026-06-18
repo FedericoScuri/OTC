@@ -7,7 +7,7 @@ import { AgentDashboard } from "@/components/AgentDashboard";
 
 export default function AgentePage() {
   return (
-    <AuthGate>
+    <AuthGate role="agente">
     <div className="space-y-8">
       <div className="animate-fade-in-up">
         <h1 className="text-3xl font-extrabold tracking-tight text-gradient">Panel del agente</h1>

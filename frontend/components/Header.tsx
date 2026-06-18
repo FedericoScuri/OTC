@@ -6,12 +6,13 @@ import { useEffect, useRef, useState } from "react";
 import { WalletButton } from "./WalletButton";
 import { useAuth, ROLE_LABELS } from "@/lib/auth";
 
-const NAV = [
+// `roles` limita el ítem a esos roles; sin `roles`, lo ve cualquier usuario.
+const NAV: { href: string; label: string; roles?: string[] }[] = [
   { href: "/catalogo", label: "Catálogo" },
   { href: "/reservas", label: "Mis reservas" },
   { href: "/mercado", label: "Mercado" },
-  { href: "/proveedor", label: "Proveedor" },
-  { href: "/agente", label: "Agente" },
+  { href: "/proveedor", label: "Crear actividades", roles: ["proveedor"] },
+  { href: "/agente", label: "Agente", roles: ["agente"] },
 ];
 
 export function Header() {
@@ -31,7 +32,7 @@ export function Header() {
 
           {user && (
             <nav className="hidden gap-1 sm:flex">
-              {NAV.map((item) => {
+              {NAV.filter((item) => !item.roles || item.roles.includes(user.role)).map((item) => {
                 const active = pathname === item.href;
                 return (
                   <Link

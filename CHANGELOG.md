@@ -9,6 +9,14 @@ Formato: `[Fecha] — Descripción del cambio (autor)`
 
 ## Sin publicar
 
+### Roles y actividades — separación creador / usuario + más demo
+
+- [2026-06-18] — Gateo por rol en `AuthGate` (prop `role`): `/proveedor` ahora es solo para el rol creador (proveedor) y `/agente` solo para agente; quien no corresponde ve un aviso de "Sección restringida" con link al catálogo (Claude)
+- [2026-06-18] — Nav del Header según rol: el usuario general solo ve Catálogo / Mis reservas / Mercado; "Crear actividades" aparece solo para el creador y "Agente" solo para el agente (Claude)
+- [2026-06-18] — Cuenta de demo del agente (`agente@otc.com` / agente123); ya hay una por rol. admin1 sigue siendo usuario general (cliente) (Claude)
+- [2026-06-18] — Login con acceso rápido a las cuentas de demo (un click por rol) para la presentación (Claude)
+- [2026-06-18] — Deploy con más variedad: 16 actividades, **5 gratuitas (precio 0)** para mostrar el flujo de reserva sin costo (Claude)
+
 ### UX — Claridad de "Mis reservas" (wallet vs login)
 
 - [2026-06-18] — "Mis reservas" ahora muestra un banner con la wallet conectada y la cantidad de reservas, aclarando que las reservas son on-chain (atadas a la wallet, no al login) (Claude)

@@ -58,12 +58,14 @@ const obfuscate = (s: string) => (typeof window === "undefined" ? s : btoa(unesc
 /**
  * Cuentas pre-cargadas para la demo/presentación. Se siembran al abrir la app
  * (si no existen) así no hay que registrarse en vivo. Credenciales fijas y
- * conocidas. admin1 queda como "usuario general" (cliente).
+ * conocidas. admin1 queda como "usuario general" (cliente). Hay una cuenta por
+ * cada rol para mostrar la separación de permisos.
  */
-const DEMO_ACCOUNTS: { name: string; email: string; password: string; role: Role }[] = [
+export const DEMO_ACCOUNTS: { name: string; email: string; password: string; role: Role }[] = [
   { name: "Admin Uno", email: "admin1@otc.com", password: "admin123", role: "cliente" },
   { name: "Usuario Demo", email: "usuario@otc.com", password: "usuario123", role: "cliente" },
   { name: "Creador de Actividades", email: "creador@otc.com", password: "creador123", role: "proveedor" },
+  { name: "Agente Demo", email: "agente@otc.com", password: "agente123", role: "agente" },
 ];
 
 /**

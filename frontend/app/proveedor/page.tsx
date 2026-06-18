@@ -8,7 +8,7 @@ import { ProviderBookings } from "@/components/ProviderBookings";
 
 export default function ProveedorPage() {
   return (
-    <AuthGate>
+    <AuthGate role="proveedor">
     <div className="space-y-8">
       <div className="animate-fade-in-up">
         <h1 className="text-3xl font-extrabold tracking-tight text-gradient">Panel del proveedor</h1>
