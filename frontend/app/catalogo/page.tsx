@@ -38,7 +38,7 @@ function Catalog() {
         </p>
       </div>
 
-      <div className="animate-fade-in-up" style={{ animationDelay: "60ms" }}>
+      <div className="relative z-30 animate-fade-in-up" style={{ animationDelay: "60ms" }}>
         <SearchBar
           query={query}
           onQuery={setQuery}

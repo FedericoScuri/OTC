@@ -9,6 +9,10 @@ Formato: `[Fecha] — Descripción del cambio (autor)`
 
 ## Sin publicar
 
+### Fix — z-index del calendario en el buscador
+
+- [2026-06-18] — El popover del calendario quedaba tapado por las tarjetas de paquetes; ahora el buscador vive en un contexto de apilamiento `z-30` (sobre las tarjetas, bajo el header sticky) y el calendario se muestra sólido por encima (Claude)
+
 ### Demo — Reservas pre-cargadas + página "Mis reservas"
 
 - [2026-06-18] — El deploy pre-carga 2 reservas REALES on-chain en la wallet del cliente/admin1 (Bodega vía agente + Rafting directa), para que el perfil ya tenga datos en la presentación (Claude)
