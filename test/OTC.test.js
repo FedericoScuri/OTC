@@ -212,6 +212,21 @@ describe("OTC - Open Tourism Commerce", function () {
         escrow.connect(customer).purchase(id, 3, agent.address)
       ).to.be.revertedWith("TourPackageNFT: sin cupo disponible");
     });
+
+    it("permite reservar una actividad GRATUITA (precio 0) sin pago", async function () {
+      const { nft, escrow, provider, customer } = await loadFixture(deployFixture);
+      // Una actividad gratuita: precio 0 (ej. experiencia de cortesía).
+      const id = await createPackage(nft, provider, { price: 0n });
+      // No hace falta approve ni USDC: el monto es 0.
+      await escrow.connect(customer).purchase(id, 1, ethers.ZeroAddress);
+      // El cliente igual recibe su reserva tokenizada.
+      expect(await nft.balanceOf(customer.address, id)).to.equal(1n);
+      const b = await escrow.getBooking(1);
+      expect(b.amount).to.equal(0n);
+      // Y el proveedor puede confirmar el servicio (libera 0, sin error).
+      await escrow.connect(provider).confirmService(1);
+      expect((await escrow.getBooking(1)).status).to.equal(Status.Released);
+    });
   });
 
   describe("CommissionEscrow - cancelación y reembolso", function () {

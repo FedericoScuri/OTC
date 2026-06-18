@@ -57,10 +57,22 @@ async function main() {
     const now = Math.floor(Date.now() / 1000);
     const day = 24 * 3600;
 
+    // Las 3 primeras se mantienen (IDs 1-3) porque las reservas pre-cargadas
+    // apuntan a los paquetes #1 y #3. Después agregamos más variedad, incluidas
+    // 2 actividades GRATUITAS (precio 0) para mostrar el flujo sin costo.
     const demo = [
       [Category.Bodega, "Cata premium en Bodega Mendoza", USDC(120), 20],
       [Category.Hotel, "2 noches Hotel Cordillera", USDC(250), 15],
       [Category.Aventura, "Rafting + trekking Potrerillos", USDC(80), 30],
+      // --- Gratuitas (precio 0) ---
+      [Category.Cultural, "Caminata guiada GRATIS por el centro histórico", USDC(0), 50],
+      [Category.Bodega, "Degustación introductoria GRATIS en bodega boutique", USDC(0), 40],
+      // --- Más actividades ---
+      [Category.Cultural, "City tour + Museo del Vino", USDC(15), 35],
+      [Category.Bodega, "Almuerzo maridaje en Valle de Uco", USDC(95), 18],
+      [Category.Aventura, "Cabalgata al atardecer en los Andes", USDC(60), 25],
+      [Category.Hotel, "Noche en cabaña de montaña", USDC(140), 12],
+      [Category.Aventura, "Parapente en Cuchilla del Tigre", USDC(110), 10],
     ];
     for (const [cat, name, price, supply] of demo) {
       const checkIn = now + 30 * day;

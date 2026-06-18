@@ -55,13 +55,53 @@ function writeUsers(users: StoredUser[]) {
 /** Ofuscación mínima de demo (NO es seguridad real). */
 const obfuscate = (s: string) => (typeof window === "undefined" ? s : btoa(unescape(encodeURIComponent(s))));
 
+/**
+ * Cuentas pre-cargadas para la demo/presentación. Se siembran al abrir la app
+ * (si no existen) así no hay que registrarse en vivo. Credenciales fijas y
+ * conocidas. admin1 queda como "usuario general" (cliente).
+ */
+const DEMO_ACCOUNTS: { name: string; email: string; password: string; role: Role }[] = [
+  { name: "Admin Uno", email: "admin1@otc.com", password: "admin123", role: "cliente" },
+  { name: "Usuario Demo", email: "usuario@otc.com", password: "usuario123", role: "cliente" },
+  { name: "Creador de Actividades", email: "creador@otc.com", password: "creador123", role: "proveedor" },
+];
+
+/**
+ * Asegura que existan las cuentas de demo. Si una ya existe, NO le pisa la
+ * contraseña (respeta la que el usuario haya puesto), solo corrige el rol.
+ */
+function seedDemoAccounts() {
+  const users = readUsers();
+  let changed = false;
+  for (const d of DEMO_ACCOUNTS) {
+    const existing = users.find((u) => u.email === d.email);
+    if (existing) {
+      if (existing.role !== d.role) {
+        existing.role = d.role;
+        changed = true;
+      }
+    } else {
+      users.push({
+        name: d.name,
+        email: d.email,
+        password: obfuscate(d.password),
+        role: d.role,
+        createdAt: 0,
+      });
+      changed = true;
+    }
+  }
+  if (changed) writeUsers(users);
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<SessionUser | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Restaurar sesión al cargar.
+  // Restaurar sesión al cargar (y sembrar las cuentas de demo).
   useEffect(() => {
     try {
+      seedDemoAccounts();
       const email = localStorage.getItem(SESSION_KEY);
       if (email) {
         const u = readUsers().find((x) => x.email === email);

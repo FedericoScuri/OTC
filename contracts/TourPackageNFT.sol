@@ -95,7 +95,9 @@ contract TourPackageNFT is ERC1155, Ownable {
         uint64 refundDeadline,
         uint256 maxSupply
     ) external returns (uint256 packageId) {
-        require(price > 0, "TourPackageNFT: precio debe ser > 0");
+        // price puede ser 0: habilita actividades GRATUITAS (ej. experiencias
+        // de cortesía o degustaciones introductorias). El escrow maneja el
+        // monto 0 sin problema (no transfiere nada al confirmarse).
         require(maxSupply > 0, "TourPackageNFT: supply debe ser > 0");
         require(checkOutDate > checkInDate, "TourPackageNFT: fechas invalidas");
         require(refundDeadline <= checkInDate, "TourPackageNFT: deadline tras el check-in");
