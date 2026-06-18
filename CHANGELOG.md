@@ -9,6 +9,16 @@ Formato: `[Fecha] — Descripción del cambio (autor)`
 
 ## Sin publicar
 
+### Frontend — Login/registro, landing y buscador funcional (RF-A01)
+
+- [2026-06-18] — Autenticación Web2 de demo (`lib/auth.tsx`): registro, login y sesión persistente en localStorage, con roles cliente/proveedor/agente (RF-A01, lado Web2 de la "autenticación híbrida") (Claude)
+- [2026-06-18] — Nuevas páginas: `/` ahora es la **landing pública** (hero, categorías, cómo funciona, beneficios); `/login` y `/registro` con formularios (Claude)
+- [2026-06-18] — El catálogo se movió a `/catalogo` (protegido); `/mercado`, `/proveedor` y `/agente` ahora exigen login vía `AuthGate` (redirige a `/login?next=` conservando el destino, así sobreviven los links de afiliado) (Claude)
+- [2026-06-18] — Header condicional: nav + wallet + menú de usuario (nombre, rol, cerrar sesión) si hay login; botones "Iniciar sesión"/"Crear cuenta" si no (Claude)
+- [2026-06-18] — Buscador 100% funcional: calendario real con selección de rango (check-in/check-out, navegación por meses) y selector de adultos/niños con steppers; el destino sigue filtrando en vivo (Claude)
+- [2026-06-18] — Clase `.input` reutilizable en `globals.css`; link de afiliado ahora apunta a `/catalogo?ref=` (Claude)
+- [2026-06-18] — NOTA: el login es de demo (usuarios en localStorage, contraseña ofuscada con base64, no es seguridad real); en producción iría con backend + Account Abstraction según el PRD (Claude)
+
 ### Frontend — Mercado secundario (RF-C02)
 
 - [2026-06-18] — Nueva página `/mercado` con interfaz de reventa, cerrando el último hueco visual del proyecto (Claude)

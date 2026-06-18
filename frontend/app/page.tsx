@@ -1,113 +1,136 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { Suspense, useState } from "react";
-import { isAddress, type Address } from "viem";
-import { usePackages } from "@/lib/contracts";
-import { PackageCard } from "@/components/PackageCard";
-import { UsdcBalance } from "@/components/UsdcBalance";
-import { SearchBar } from "@/components/SearchBar";
-import { shortAddress } from "@/lib/format";
+import Link from "next/link";
+import { useAuth } from "@/lib/auth";
+import { WineIcon, BuildingIcon, MountainIcon, CheckIcon } from "@/components/icons";
 
-function Catalog() {
-  const { packages, isLoading, refetch } = usePackages();
-  const [query, setQuery] = useState("");
-  const searchParams = useSearchParams();
-  const ref = searchParams.get("ref");
-  const agent: Address | undefined = ref && isAddress(ref) ? ref : undefined;
-
-  const resultados = packages
-    .filter((p) => p.active)
-    .filter((p) => p.name.toLowerCase().includes(query.trim().toLowerCase()));
+/**
+ * Página de inicio (landing pública). Presenta la propuesta de valor y lleva
+ * a registro / login. Una vez logueado, el usuario opera en /catalogo.
+ */
+export default function HomePage() {
+  const { user } = useAuth();
 
   return (
-    <div className="space-y-6">
-      <div className="animate-fade-in-up space-y-1">
-        <h1 className="text-2xl font-extrabold tracking-tight text-slate-800">
-          Encontrá tu próxima experiencia
-        </h1>
-        <p className="text-sm text-slate-500">
-          Reservás directo del proveedor. El pago queda en escrow y se reparte solo cuando confirman
-          el servicio.
-        </p>
-      </div>
+    <div className="space-y-20">
+      {/* Hero */}
+      <section className="relative overflow-hidden pt-6 text-center">
+        <div className="animate-fade-in-up space-y-6">
+          <span className="inline-flex items-center gap-2 rounded-full border border-violet-100 bg-white/70 px-4 py-1.5 text-xs font-semibold text-brand-dark backdrop-blur">
+            ⛓️ Turismo descentralizado sobre blockchain
+          </span>
+          <h1 className="mx-auto max-w-3xl text-4xl font-extrabold leading-tight tracking-tight text-slate-900 sm:text-5xl">
+            Reservá tu viaje sin intermediarios.{" "}
+            <span className="text-gradient">Comisiones justas, pagos al instante.</span>
+          </h1>
+          <p className="mx-auto max-w-2xl text-lg text-slate-500">
+            OTC conecta hoteles, bodegas y turismo aventura directo con vos y con agentes
+            independientes. Sin OTAs que se queden con el 25%: los contratos inteligentes reparten el
+            pago solos, de forma transparente y auditable.
+          </p>
 
-      <div className="animate-fade-in-up" style={{ animationDelay: "60ms" }}>
-        <SearchBar query={query} onQuery={setQuery} />
-      </div>
-
-      {agent && (
-        <div className="flex items-center gap-2 rounded-xl border border-violet-100 bg-violet-50/70 px-4 py-3 text-sm text-brand-dark">
-          🔗 Comprás a través del agente{" "}
-          <span className="font-mono font-semibold">{shortAddress(agent)}</span> — su comisión (12%)
-          se paga sola al confirmarse el servicio.
+          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+            {user ? (
+              <Link href="/catalogo" className="btn-primary shine animate-glow px-6 py-3 text-base">
+                Ir al catálogo →
+              </Link>
+            ) : (
+              <>
+                <Link href="/registro" className="btn-primary shine animate-glow px-6 py-3 text-base">
+                  Crear cuenta gratis
+                </Link>
+                <Link href="/login" className="btn-ghost px-6 py-3 text-base">
+                  Iniciar sesión
+                </Link>
+              </>
+            )}
+          </div>
         </div>
-      )}
+      </section>
 
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <h2 className="text-lg font-bold text-slate-800">
-          Paquetes disponibles
-          {!isLoading && (
-            <span className="ml-2 rounded-full bg-violet-50 px-2.5 py-0.5 text-xs font-semibold text-brand">
-              {resultados.length}
-            </span>
-          )}
-        </h2>
-        <UsdcBalance />
-      </div>
+      {/* Categorías */}
+      <section className="grid gap-5 sm:grid-cols-3">
+        {[
+          { icon: <WineIcon size={26} />, title: "Bodegas y enoturismo", desc: "Catas y experiencias gastronómicas regionales." },
+          { icon: <BuildingIcon size={26} />, title: "Hoteles", desc: "Desde grandes cadenas a hospedajes boutique." },
+          { icon: <MountainIcon size={26} />, title: "Turismo aventura", desc: "Rafting, trekking y excursiones locales." },
+        ].map((c, i) => (
+          <div
+            key={c.title}
+            className="glass card-hover animate-fade-in-up rounded-2xl p-6"
+            style={{ animationDelay: `${i * 80}ms` }}
+          >
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-brand to-brand-light text-white shadow-lg shadow-brand/30">
+              {c.icon}
+            </div>
+            <h3 className="mt-4 font-bold text-slate-800">{c.title}</h3>
+            <p className="mt-1 text-sm text-slate-500">{c.desc}</p>
+          </div>
+        ))}
+      </section>
 
-      {isLoading ? (
-        <SkeletonGrid />
-      ) : resultados.length === 0 ? (
-        <EmptyState hasQuery={query.trim().length > 0} />
-      ) : (
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {resultados.map((pkg, i) => (
-            <PackageCard key={pkg.id} pkg={pkg} agent={agent} onPurchased={refetch} index={i} />
+      {/* Cómo funciona */}
+      <section className="space-y-8">
+        <div className="text-center">
+          <h2 className="text-2xl font-extrabold tracking-tight text-slate-800">¿Cómo funciona?</h2>
+          <p className="mt-1 text-slate-500">Cuatro pasos, sin saber nada de cripto.</p>
+        </div>
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            ["1", "Pagás con tarjeta", "Tu dinero se convierte a USDC por detrás. No necesitás saber de blockchain."],
+            ["2", "Queda en escrow", "El pago se retiene en un contrato hasta que el servicio se confirme."],
+            ["3", "El hotel confirma", "Al prestar el servicio, el contrato libera los fondos automáticamente."],
+            ["4", "Reparto instantáneo", "85% al proveedor, 12% al agente, 3% a la plataforma. En segundos."],
+          ].map(([n, t, d]) => (
+            <div key={n} className="rounded-2xl border border-violet-100 bg-white/60 p-5 backdrop-blur">
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-brand text-sm font-black text-white">
+                {n}
+              </span>
+              <h3 className="mt-3 font-bold text-slate-800">{t}</h3>
+              <p className="mt-1 text-sm text-slate-500">{d}</p>
+            </div>
           ))}
         </div>
-      )}
-    </div>
-  );
-}
+      </section>
 
-function SkeletonGrid() {
-  return (
-    <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {Array.from({ length: 3 }).map((_, i) => (
-        <div
-          key={i}
-          className="h-72 animate-pulse rounded-2xl border border-slate-200/70 bg-white"
-          style={{ animationDelay: `${i * 100}ms` }}
-        />
-      ))}
-    </div>
-  );
-}
+      {/* Beneficios */}
+      <section className="glass rounded-3xl p-8 sm:p-12">
+        <div className="grid gap-8 sm:grid-cols-2">
+          <div>
+            <h2 className="text-2xl font-extrabold tracking-tight text-slate-800">
+              ¿Por qué OTC y no una OTA tradicional?
+            </h2>
+            <p className="mt-2 text-slate-500">
+              Devolvemos el margen a quienes generan el valor: proveedores y agentes.
+            </p>
+          </div>
+          <ul className="space-y-3">
+            {[
+              "Comisiones mucho más bajas que Booking o Expedia.",
+              "El proveedor cobra al instante, no en semanas.",
+              "Cualquiera puede ser agente y cobrar su comisión automática.",
+              "Podés revender tu reserva si no podés viajar (mercado secundario).",
+              "Todo es público y auditable: sin cláusulas ocultas ni overbooking.",
+            ].map((b) => (
+              <li key={b} className="flex items-start gap-3 text-sm text-slate-700">
+                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+                  <CheckIcon size={13} />
+                </span>
+                {b}
+              </li>
+            ))}
+          </ul>
+        </div>
 
-function EmptyState({ hasQuery }: { hasQuery: boolean }) {
-  return (
-    <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
-      {hasQuery ? (
-        <p className="font-medium text-slate-700">No encontramos paquetes con ese nombre.</p>
-      ) : (
-        <>
-          <p className="font-semibold text-slate-700">No hay paquetes publicados todavía.</p>
-          <p className="mt-1 text-sm text-slate-500">
-            ¿Levantaste el nodo local y corriste{" "}
-            <code className="rounded bg-slate-100 px-1">npm run deploy:local</code>? Verificá que tu
-            wallet esté en la red Hardhat (chainId 31337).
-          </p>
-        </>
-      )}
+        {!user && (
+          <div className="mt-8 flex flex-wrap items-center gap-3 border-t border-slate-200/60 pt-6">
+            <span className="text-sm font-medium text-slate-600">¿Listo para empezar?</span>
+            <Link href="/registro" className="btn-primary shine">
+              Crear mi cuenta
+            </Link>
+          </div>
+        )}
+      </section>
     </div>
-  );
-}
-
-export default function HomePage() {
-  return (
-    <Suspense fallback={<p className="text-slate-400">Cargando…</p>}>
-      <Catalog />
-    </Suspense>
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { AuthGate } from "@/components/AuthGate";
 import { ConnectGate } from "@/components/ConnectGate";
 import { CreatePackageForm } from "@/components/CreatePackageForm";
 import { ProviderPackages } from "@/components/ProviderPackages";
@@ -7,6 +8,7 @@ import { ProviderBookings } from "@/components/ProviderBookings";
 
 export default function ProveedorPage() {
   return (
+    <AuthGate>
     <div className="space-y-8">
       <div className="animate-fade-in-up">
         <h1 className="text-3xl font-extrabold tracking-tight text-gradient">Panel del proveedor</h1>
@@ -34,5 +36,6 @@ export default function ProveedorPage() {
         )}
       </ConnectGate>
     </div>
+    </AuthGate>
   );
 }

@@ -4,6 +4,7 @@ import { useState, type ReactNode } from "react";
 import { WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { config } from "@/lib/wagmi";
+import { AuthProvider } from "@/lib/auth";
 
 /**
  * Envuelve la app con wagmi (web3) + react-query (cache de lecturas on-chain).
@@ -14,7 +15,9 @@ export function Providers({ children }: { children: ReactNode }) {
 
   return (
     <WagmiProvider config={config}>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>{children}</AuthProvider>
+      </QueryClientProvider>
     </WagmiProvider>
   );
 }

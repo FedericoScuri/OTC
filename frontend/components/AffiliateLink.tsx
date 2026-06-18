@@ -10,7 +10,7 @@ export function AffiliateLink({ agent }: { agent: `0x${string}` }) {
   const [copied, setCopied] = useState(false);
 
   const origin = typeof window !== "undefined" ? window.location.origin : "";
-  const link = `${origin}/?ref=${agent}`;
+  const link = `${origin}/catalogo?ref=${agent}`;
 
   async function copy() {
     try {

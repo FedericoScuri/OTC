@@ -82,6 +82,13 @@ body {
   .text-gradient {
     @apply bg-gradient-to-r from-brand-dark via-brand to-brand-light bg-clip-text text-transparent;
   }
+
+  /* Campo de formulario */
+  .input {
+    @apply w-full rounded-xl border border-slate-200 bg-white/70 px-3.5 py-2.5 text-sm text-slate-900
+      outline-none transition focus:border-brand focus:ring-2 focus:ring-brand/20
+      placeholder:text-slate-400;
+  }
 }
 
 /* Brillo que recorre un elemento (efecto shimmer) */

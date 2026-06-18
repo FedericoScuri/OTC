@@ -140,7 +140,7 @@ El deploy crea 3 paquetes de ejemplo (bodega, hotel, aventura), reparte USDC de 
 | RF-C02 | Royalty forzoso en reventa | ✅ Implementado (contrato + UI `/mercado`) |
 | RF-D01 | On-ramp fiat (tarjeta → USDC) | ✅ Implementado (sandbox) |
 | RF-D02 | Generador de links de afiliado | ✅ Implementado |
-| RF-A01 | Login Web3 (MetaMask/WalletConnect) | ✅ Implementado (MetaMask) |
+| RF-A01 | Login híbrido Web2/Web3 | ✅ Implementado (email/registro + wallet MetaMask) |
 | RF-B01 | Sincronización con PMS/CRS | ✅ Implementado (mock de PMS + sync on-chain) |
 | RNF-P02 | Gas < $0.05 en L2 | ✅ Verificado (~111k gas en el split) |
 | RNF-S01 | Auditoría externa de contratos | ⏳ Fase de producción |

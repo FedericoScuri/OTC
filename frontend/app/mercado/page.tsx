@@ -1,11 +1,13 @@
 "use client";
 
+import { AuthGate } from "@/components/AuthGate";
 import { ConnectGate } from "@/components/ConnectGate";
 import { MarketListings } from "@/components/MarketListings";
 import { ResellReservation } from "@/components/ResellReservation";
 
 export default function MercadoPage() {
   return (
+    <AuthGate>
     <div className="space-y-8">
       <div className="animate-fade-in-up">
         <h1 className="text-3xl font-extrabold tracking-tight text-gradient">Mercado secundario</h1>
@@ -26,5 +28,6 @@ export default function MercadoPage() {
         <ConnectGate>{(address) => <ResellReservation owner={address} />}</ConnectGate>
       </section>
     </div>
+    </AuthGate>
   );
 }

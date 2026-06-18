@@ -51,14 +51,17 @@ Orden de arranque el día de la demo:
 - Mostrá la **Terminal 2** (deploy): se ven desplegarse los 4 contratos y crearse **3 paquetes mendocinos** (bodega, hotel, aventura) **on-chain**.
 - Frase: *"Cada paquete turístico es un NFT (ERC-1155) con sus fechas, cupo y política de cancelación grabados en la blockchain."* (RF-B02)
 
-### Escena 2 — "El cliente reserva" (frontend, cuenta Cliente)
-1. Abrí `http://localhost:3000`, **conectá MetaMask** con la cuenta **Cliente** (RF-A01).
-2. Mostrá el **catálogo** estilo sitio de reservas (cata de bodega, hotel, rafting).
-3. Reservá la **"Cata premium en Bodega Mendoza"** → botón **Reservar**.
-4. Señalá los **2 pasos**: `approve` de USDC + `purchase`. 
-5. Frase: *"El dinero NO va al hotel todavía: queda retenido en el contrato de escrow hasta que se preste el servicio."* (RF-C01)
+### Escena 2 — "El cliente entra y reserva" (frontend, cuenta Cliente)
+1. Abrí `http://localhost:3000` → **página de inicio**. Mostrá la propuesta de valor 5 seg.
+2. **Crear cuenta**: registrate (nombre, email, contraseña, rol "Cliente") → quedás logueado. (RF-A01, lado Web2)
+3. Ya en `/catalogo`, **conectá MetaMask** con la cuenta **Cliente** (RF-A01, lado Web3 — "autenticación híbrida").
+4. Probá el **buscador**: escribí en *Destino*, abrí el *calendario* y elegí fechas, sumá *personas* (adultos/niños).
+5. Reservá la **"Cata premium en Bodega Mendoza"** → botón **Reservar**. Señalá los **2 pasos**: `approve` de USDC + `purchase`.
+6. Frase: *"El dinero NO va al hotel todavía: queda retenido en el contrato de escrow hasta que se preste el servicio."* (RF-C01)
 
-> 💡 **Truco de afiliado (RF-D02):** entrá al catálogo con `http://localhost:3000/?ref=0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC`. Esa compra le atribuye la comisión al **agente**. Es el link que un influencer difundiría por WhatsApp.
+> 💡 **Truco de afiliado (RF-D02):** entrá con `http://localhost:3000/catalogo?ref=0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC`. Esa compra le atribuye la comisión al **agente**. Es el link que un influencer difundiría por WhatsApp.
+
+> 🧩 **Punto fuerte para la defensa:** OTC combina **login tradicional (email/contraseña)** para usuarios no-cripto con **wallet Web3** para firmar las transacciones. Eso es exactamente la "autenticación híbrida Web2/Web3" del RF-A01.
 
 ### Escena 3 — "El hotel confirma y el dinero se reparte solo" (panel Proveedor) ⭐
 **Este es el momento estrella.**
@@ -98,7 +101,7 @@ Orden de arranque el día de la demo:
 
 | ID | Requisito | Estado |
 |----|-----------|--------|
-| RF-A01 | Login Web3 (MetaMask) | ✅ |
+| RF-A01 | Login híbrido: email/contraseña (registro) + wallet Web3 | ✅ |
 | RF-B02 | Tokenización de paquetes (ERC-1155) | ✅ |
 | RF-C01 | Dispersión automática 85/12/3 | ✅ |
 | RF-C02 | Royalty forzoso en reventa | ✅ contrato + test + UI (`/mercado`) |
