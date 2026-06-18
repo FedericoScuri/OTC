@@ -9,6 +9,10 @@ Formato: `[Fecha] — Descripción del cambio (autor)`
 
 ## Sin publicar
 
+### Fase 6 — Presentación
+
+- [2026-06-18] — `PRESENTACION.md`: guion de demo paso a paso (6 escenas), checklist pre-demo con cuentas de MetaMask, los 3 argumentos de defensa, tabla de cobertura de requisitos, preguntas probables del tribunal y plan B (Claude)
+
 ### UI — Estilo sitio de reservas + paleta atardecer
 
 - [2026-06-16] — Nueva paleta: violeta como color de marca + rosa coral de acento (en `tailwind.config.ts` y `globals.css`); botón de acento `.btn-accent` (Claude)

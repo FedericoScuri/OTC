@@ -159,13 +159,13 @@ El proyecto se construye por fases. Prioridad: **contratos → tests → fronten
 | **3 — Deploy local** | Script de deploy con datos de demo | ✅ Hecho |
 | **4 — Frontend** | Next.js + wagmi: wallet, catálogo, compra, dashboard de agente (links de afiliado), panel de proveedor | ✅ Hecho |
 | **5 — Backend** | API REST Node.js: mock de PMS/CRS (RF-B01) + on-ramp fiat sandbox MoonPay/Transak (RF-D01) | ✅ Hecho |
-| **6 — Presentación** | Guion de demo + cierre de documentación | ⏳ Pendiente |
+| **6 — Presentación** | Guion de demo + argumentos de defensa ([`PRESENTACION.md`](PRESENTACION.md)) | ✅ Hecho |
 
 ### Próximos pasos concretos
 
 1. ~~**Frontend (Fase 4)**~~ ✅ Hecho — Next.js + wagmi: catálogo, compra, panel de proveedor y panel de agente con links de afiliado. Ver [`frontend/README.md`](frontend/README.md) para correrlo.
 2. ~~**Backend (Fase 5)**~~ ✅ Hecho — API REST (Express + ethers): mock de PMS/CRS con sync on-chain y on-ramp fiat sandbox. Ver [`backend/README.md`](backend/README.md).
-3. **Presentación (Fase 6)** — guion de demo en vivo y los 3 argumentos de defensa (eficiencia real, mercado regional bodegas/aventura, reventa secundaria). *(próximo)*
+3. ~~**Presentación (Fase 6)**~~ ✅ Hecho — guion de demo en vivo y argumentos de defensa en [`PRESENTACION.md`](PRESENTACION.md).
 
 ---
 
