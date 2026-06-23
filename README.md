@@ -183,11 +183,21 @@ El proyecto se construye por fases. Prioridad: **contratos → tests → fronten
 | **5 — Backend** | API REST Node.js: mock de PMS/CRS (RF-B01) + on-ramp fiat sandbox MoonPay/Transak (RF-D01) | ✅ Hecho |
 | **6 — Presentación** | Guion de demo + argumentos de defensa ([`PRESENTACION.md`](PRESENTACION.md)) | ✅ Hecho |
 
-### Próximos pasos concretos
+### Lo que falta por hacer
 
-1. ~~**Frontend (Fase 4)**~~ ✅ Hecho — Next.js + wagmi: catálogo, compra, panel de proveedor y panel de agente con links de afiliado. Ver [`frontend/README.md`](frontend/README.md) para correrlo.
-2. ~~**Backend (Fase 5)**~~ ✅ Hecho — API REST (Express + ethers): mock de PMS/CRS con sync on-chain y on-ramp fiat sandbox. Ver [`backend/README.md`](backend/README.md).
-3. ~~**Presentación (Fase 6)**~~ ✅ Hecho — guion de demo en vivo y argumentos de defensa en [`PRESENTACION.md`](PRESENTACION.md).
+Las fases 0-6 y los 5 deltas detectados al revisar el PRD/PDR están cerrados (ver tabla de cobertura). Queda:
+
+**Pendiente (bloquea cierre del MVP):**
+1. **Deploy real a testnet ([#3](https://github.com/FedericoScuri/OTC/issues/3)).** El código está listo (`npm run deploy:testnet` / `verify:testnet`); falta correrlo cargando en `.env` las claves reales: `BASE_SEPOLIA_RPC_URL`, `PRIVATE_KEY` (wallet de prueba con ETH de faucet) y `BASESCAN_API_KEY`. Deja los contratos vivos y auditables en BaseScan.
+
+**Opcional (robustez):**
+2. **Tests automatizados del backend.** Las features del backend (KYB, compra gasless/AA, holds anti-overbooking, on-ramp) se verificaron con E2E manuales; no tienen suite propia (los 26 tests del repo son de contratos).
+3. **Verificación por UI de KYB y retención.** Hoy viven detrás del `ConnectGate` (requieren MetaMask); conviene confirmarlas con la wallet conectada en una corrida local.
+
+**Fase de producción (fuera del alcance académico):**
+4. Auditoría externa de contratos (RNF-S01).
+5. Account Abstraction productiva: ERC-4337 con EntryPoint + bundler + nodos MPC/HSM (hoy emulada).
+6. Despliegue del frontend (ej. Vercel) y pulido de UX.
 
 ---
 
