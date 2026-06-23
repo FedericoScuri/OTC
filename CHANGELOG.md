@@ -9,6 +9,11 @@ Formato: `[Fecha] — Descripción del cambio (autor)`
 
 ## Sin publicar
 
+### Revisión de documentos (PRD/PDR) + deploy a testnet
+
+- [2026-06-22] — Revisión de PRD `OTC-PRD-001` y PDR `OTC-PDR-001` contra lo implementado. Se abrieron 5 issues en GitHub con los deltas reales: KYC/KYB (#1, RF-A02), Account Abstraction + Paymaster (#2, RF-A01/PDR §2.1), deploy a testnet pública (#3), capa de latencia anti-overbooking (#4, RNF-P01/PDR §2.2) y retención impositiva (#5, RNF-L01) (Claude)
+- [2026-06-22] — Infra (cierra el código de #3): habilitada la red `baseSepolia` en `hardhat.config.js` (chainId 84532) + verificación en BaseScan; nuevos scripts `deploy:testnet`/`verify:testnet` y `scripts/verify.js` (verifica los 4 contratos con sus args de constructor); el deploy siembra 3 paquetes en testnet e imprime los links del explorer; `.env.example` con `BASESCAN_API_KEY`. Falta sólo cargar claves + ETH de faucet y correrlo (Claude)
+
 ### Roles y actividades — separación creador / usuario + más demo
 
 - [2026-06-18] — Gateo por rol en `AuthGate` (prop `role`): `/proveedor` ahora es solo para el rol creador (proveedor) y `/agente` solo para agente; quien no corresponde ve un aviso de "Sección restringida" con link al catálogo (Claude)

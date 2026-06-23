@@ -111,6 +111,27 @@ async function main() {
     console.log(`  Cliente (admin1) : ${customer.address}`);
   }
 
+  // --- Seed mínimo en testnet pública (ej. Base Sepolia) ---
+  // En testnet sólo existe la cuenta del deployer (no hay signers extra), así que
+  // el propio deployer publica unos pocos paquetes para que el catálogo no quede
+  // vacío en la defensa. Sin reservas pre-cargadas ni reparto de USDC.
+  if (network.name === "baseSepolia") {
+    const now = Math.floor(Date.now() / 1000);
+    const day = 24 * 3600;
+    const seed = [
+      [Category.Bodega, "Cata premium en Bodega Mendoza", USDC(120), 20],
+      [Category.Hotel, "2 noches Hotel Cordillera", USDC(250), 15],
+      [Category.Aventura, "Rafting + trekking Potrerillos", USDC(80), 30],
+    ];
+    for (const [cat, name, price, supply] of seed) {
+      const checkIn = now + 30 * day;
+      await (
+        await nft.createPackage(cat, name, price, checkIn, checkIn + 2 * day, checkIn - 7 * day, supply)
+      ).wait();
+    }
+    console.log(`✓ ${seed.length} paquetes sembrados en testnet por el deployer`);
+  }
+
   // Guardamos las direcciones para el frontend/backend.
   const out = {
     network: network.name,
@@ -126,6 +147,15 @@ async function main() {
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, `${network.name}.json`), JSON.stringify(out, null, 2));
   console.log(`\n✓ Direcciones guardadas en deployments/${network.name}.json`);
+
+  if (network.name === "baseSepolia") {
+    const base = "https://sepolia.basescan.org/address/";
+    console.log(`\nVer en el explorer (públicos y auditables):`);
+    for (const [name, addr] of Object.entries(out.contracts)) {
+      console.log(`  ${name.padEnd(18)} ${base}${addr}`);
+    }
+    console.log(`\nVerificá el código fuente con: npm run verify:testnet`);
+  }
 
   // También las dejamos donde el frontend las lee en runtime.
   const frontendPublic = path.join(__dirname, "..", "frontend", "public");

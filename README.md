@@ -129,6 +129,23 @@ npm run deploy:local
 
 El deploy crea 3 paquetes de ejemplo (bodega, hotel, aventura), reparte USDC de prueba y guarda las direcciones en `deployments/localhost.json` para el frontend.
 
+### Demo en testnet pública (Base Sepolia)
+
+Dejar los contratos vivos en una L2 real los hace **públicos y auditables** en el explorer — el argumento de transparencia de la defensa (RNF-S01).
+
+```bash
+# 1. Completar en .env: BASE_SEPOLIA_RPC_URL, PRIVATE_KEY (wallet de PRUEBA) y BASESCAN_API_KEY
+#    Conseguí ETH de testnet gratis en un faucet de Base Sepolia.
+
+# 2. Desplegar a Base Sepolia (siembra 3 paquetes con la cuenta del deployer)
+npm run deploy:testnet
+
+# 3. Verificar el código fuente en sepolia.basescan.org
+npm run verify:testnet
+```
+
+El deploy imprime los links del explorer y guarda las direcciones en `deployments/baseSepolia.json`.
+
 ---
 
 ## Cobertura de requisitos (PRD)
@@ -143,7 +160,12 @@ El deploy crea 3 paquetes de ejemplo (bodega, hotel, aventura), reparte USDC de 
 | RF-A01 | Login híbrido Web2/Web3 | ✅ Implementado (email/registro + wallet MetaMask) |
 | RF-B01 | Sincronización con PMS/CRS | ✅ Implementado (mock de PMS + sync on-chain) |
 | RNF-P02 | Gas < $0.05 en L2 | ✅ Verificado (~111k gas en el split) |
+| RF-A02 | KYC / KYB automatizado de proveedores | ⏳ Pendiente ([#1](https://github.com/FedericoScuri/OTC/issues/1)) |
+| RNF-P01 | Latencia de sync PMS < 800ms (anti-overbooking) | ⏳ Pendiente ([#4](https://github.com/FedericoScuri/OTC/issues/4)) |
+| RNF-L01 | Retención impositiva por jurisdicción | ⏳ Pendiente ([#5](https://github.com/FedericoScuri/OTC/issues/5)) |
 | RNF-S01 | Auditoría externa de contratos | ⏳ Fase de producción |
+
+> **Brechas pendientes vs. PRD/PDR** (abiertas como issues tras la revisión de documentos): Account Abstraction real con Paymaster ([#2](https://github.com/FedericoScuri/OTC/issues/2)), deploy a testnet pública ([#3](https://github.com/FedericoScuri/OTC/issues/3) — *scaffolding listo*), KYC/KYB ([#1](https://github.com/FedericoScuri/OTC/issues/1)), capa de latencia ([#4](https://github.com/FedericoScuri/OTC/issues/4)) y retención fiscal ([#5](https://github.com/FedericoScuri/OTC/issues/5)).
 
 ---
 
