@@ -9,6 +9,13 @@ Formato: `[Fecha] — Descripción del cambio (autor)`
 
 ## Sin publicar
 
+### Frontend — Cableado de las features del backend a la UI
+
+- [2026-06-22] — Nuevo cliente `lib/backend.ts` (fetch tipado al backend, base URL configurable con `NEXT_PUBLIC_BACKEND_URL`) (Claude)
+- [2026-06-22] — Compra **gasless** en el catálogo (#2): botón "Pagar con tarjeta (sin wallet)" en cada tarjeta; un usuario logueado reserva sin wallet ni cripto. Verificado en navegador (muestra "Reserva #N creada sin wallet") (Claude)
+- [2026-06-22] — Cupo en tiempo real (#4): badge "N libres · Xms" en cada tarjeta, leído del Guardián de Latencia (supply on-chain − holds + latencia). Verificado en navegador (Claude)
+- [2026-06-22] — Panel KYB en `/proveedor` (#1): estado del trámite + formulario de envío + verificación admin (gate de publicación). Retención fiscal (#5) read-only on-chain. Ambos detrás del ConnectGate (Claude)
+
 ### Contrato — Retención impositiva por jurisdicción (RNF-L01, cierra #5)
 
 - [2026-06-22] — `CommissionEscrow` deja de tener el split 85/12/3 fijo: nueva `taxWallet` + `providerRetentionBps` por proveedor. Al liberar fondos, la retención (según la jurisdicción del proveedor) se descuenta de su parte y se gira a la cuenta recaudadora; evento `TaxWithheld`. Setters `setTaxWallet`/`setProviderRetention` (onlyOwner) (Claude)
