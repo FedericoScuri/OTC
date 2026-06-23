@@ -23,6 +23,11 @@ function tourPackage(signerOrProvider = provider) {
   return new ethers.Contract(config.addresses.TourPackageNFT, abis.TourPackageNFT, signerOrProvider);
 }
 
+/** Contrato de escrow/comisiones conectado a un signer (o solo lectura). */
+function escrow(signerOrProvider = provider) {
+  return new ethers.Contract(config.addresses.CommissionEscrow, abis.CommissionEscrow, signerOrProvider);
+}
+
 /** ¿Hay un nodo respondiendo en el RPC configurado? */
 async function isChainUp() {
   try {
@@ -38,6 +43,7 @@ module.exports = {
   wallet,
   usdc,
   tourPackage,
+  escrow,
   isChainUp,
   onrampSigner: () => wallet(config.onrampKey),
   providerSigner: () => wallet(config.providerKey),

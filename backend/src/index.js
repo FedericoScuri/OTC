@@ -5,6 +5,7 @@ const chain = require("./chain");
 const pmsRouter = require("./routes/pms");
 const onrampRouter = require("./routes/onramp");
 const inventoryRouter = require("./routes/inventory");
+const aaRouter = require("./routes/aa");
 
 const app = express();
 app.use(cors());
@@ -41,6 +42,9 @@ app.use("/api/onramp", onrampRouter);
 
 // RNF-P01 / PDR §2.2 — Guardián de Latencia: disponibilidad + holds anti-overbooking.
 app.use("/api/inventory", inventoryRouter);
+
+// RF-A01 / PDR §2.1 — Account Abstraction: Smart Account (mock MPC) + Paymaster.
+app.use("/api/aa", aaRouter);
 
 app.use((_req, res) => res.status(404).json({ error: "Ruta no encontrada" }));
 

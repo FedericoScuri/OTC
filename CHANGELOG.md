@@ -9,6 +9,14 @@ Formato: `[Fecha] — Descripción del cambio (autor)`
 
 ## Sin publicar
 
+### Backend — Account Abstraction gasless (RF-A01 / PDR §2.1, cierra #2)
+
+- [2026-06-22] — Nuevo módulo `backend/src/account-abstraction.js`: deriva la Smart Account del usuario Web2 de forma determinista a partir del email (mock MPC, HMAC con semilla `AA_MPC_SEED`) + Paymaster que patrocina el gas para que el turista no necesite cripto nativa (Claude)
+- [2026-06-22] — Nuevas rutas `/api/aa/*`: `account` (dirección determinista por email) y `purchase` (compra **gasless** de punta a punta: on-ramp acredita USDC → Paymaster patrocina gas → la Smart Account aprueba y compra) (Claude)
+- [2026-06-22] — `chain.escrow()` + ABI del escrow/approve en el backend; NonceManager en las cuentas de servicio y en la Smart Account para evitar "nonce too low" con automining (Claude)
+- [2026-06-22] — Verificado E2E: usuario `turista@gmail.com` sin ETH ni USDC compra el Hotel (250 USDC) → bookingId minteado, gas patrocinado (0.05 ETH), `userHeldNativeCrypto: false`; misma cuenta determinista en cada llamada (Claude)
+- [2026-06-22] — NOTA: AA emulada para la demo. En producción sería ERC-4337 (EntryPoint + bundler + contrato Paymaster) y nodos MPC/HSM reales (RNF-S02) (Claude)
+
 ### Backend — Guardián de Latencia anti-overbooking (RNF-P01 / PDR §2.2, cierra #4)
 
 - [2026-06-22] — Nuevo módulo `backend/src/latency-guard.js`: presupuesto de respuesta de 800ms (`withLatencyBudget`, aborta si se supera) + bloqueos lógicos temporales de inventario con TTL (holds) para evitar la venta simultánea de la misma unidad mientras la tx on-chain se confirma (Claude)
