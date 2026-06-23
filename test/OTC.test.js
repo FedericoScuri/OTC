@@ -172,6 +172,57 @@ describe("OTC - Open Tourism Commerce", function () {
       expect((await usdc.balanceOf(platform.address)) - platBefore).to.equal(USDC(3));
     });
 
+    it("con retención impositiva (RNF-L01): descuenta de la parte del proveedor y gira a taxWallet", async function () {
+      const { usdc, nft, escrow, deployer, provider, customer, platform, buyer } =
+        await loadFixture(deployFixture);
+      const taxWallet = buyer; // cuenta recaudadora para el test
+      const id = await createPackage(nft, provider);
+
+      // Jurisdicción del proveedor: 10% de retención (1000 bps).
+      await escrow.connect(deployer).setTaxWallet(taxWallet.address);
+      await escrow.connect(deployer).setProviderRetention(provider.address, 1000);
+
+      await usdc.connect(customer).approve(await escrow.getAddress(), USDC(100));
+      await escrow.connect(customer).purchase(id, 1, ethers.ZeroAddress); // venta directa
+
+      const provBefore = await usdc.balanceOf(provider.address);
+      const taxBefore = await usdc.balanceOf(taxWallet.address);
+      const platBefore = await usdc.balanceOf(platform.address);
+
+      await expect(escrow.connect(provider).confirmService(1))
+        .to.emit(escrow, "TaxWithheld")
+        .withArgs(1, taxWallet.address, USDC(10), 1000);
+
+      // Venta directa = 97% al proveedor; menos 10% de retención = 87%.
+      expect((await usdc.balanceOf(provider.address)) - provBefore).to.equal(USDC(87));
+      expect((await usdc.balanceOf(taxWallet.address)) - taxBefore).to.equal(USDC(10));
+      expect((await usdc.balanceOf(platform.address)) - platBefore).to.equal(USDC(3));
+      expect(await usdc.balanceOf(await escrow.getAddress())).to.equal(0n);
+    });
+
+    it("setProviderRetention exige taxWallet si la retención es > 0", async function () {
+      const { escrow, deployer, provider } = await loadFixture(deployFixture);
+      await expect(
+        escrow.connect(deployer).setProviderRetention(provider.address, 1000)
+      ).to.be.revertedWith("Escrow: falta taxWallet");
+    });
+
+    it("rechaza una retención mayor a la parte base del proveedor (PROVIDER_BPS)", async function () {
+      const { escrow, deployer, provider, buyer } = await loadFixture(deployFixture);
+      await escrow.connect(deployer).setTaxWallet(buyer.address);
+      await expect(
+        escrow.connect(deployer).setProviderRetention(provider.address, 8501)
+      ).to.be.revertedWith("Escrow: retencion excede la parte del proveedor");
+    });
+
+    it("solo el owner puede configurar la retención y la taxWallet", async function () {
+      const { escrow, provider, customer, buyer } = await loadFixture(deployFixture);
+      await expect(escrow.connect(customer).setTaxWallet(buyer.address)).to.be.reverted;
+      await expect(
+        escrow.connect(customer).setProviderRetention(provider.address, 500)
+      ).to.be.reverted;
+    });
+
     it("solo el proveedor puede confirmar el servicio", async function () {
       const { usdc, nft, escrow, provider, agent, customer } = await loadFixture(deployFixture);
       const id = await createPackage(nft, provider);

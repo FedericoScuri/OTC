@@ -9,6 +9,12 @@ Formato: `[Fecha] — Descripción del cambio (autor)`
 
 ## Sin publicar
 
+### Contrato — Retención impositiva por jurisdicción (RNF-L01, cierra #5)
+
+- [2026-06-22] — `CommissionEscrow` deja de tener el split 85/12/3 fijo: nueva `taxWallet` + `providerRetentionBps` por proveedor. Al liberar fondos, la retención (según la jurisdicción del proveedor) se descuenta de su parte y se gira a la cuenta recaudadora; evento `TaxWithheld`. Setters `setTaxWallet`/`setProviderRetention` (onlyOwner) (Claude)
+- [2026-06-22] — Backward-compatible: retención default 0 → el reparto sigue siendo 85/12/3, los 21 tests previos pasan sin cambios (Claude)
+- [2026-06-22] — 5 tests nuevos (26 en total): retención del 10% (proveedor 87% / tax 10% / plataforma 3%), exige taxWallet, tope PROVIDER_BPS, solo owner. ABIs resincronizados al frontend (Claude)
+
 ### Backend — KYC/KYB de proveedores (RF-A02, cierra #1)
 
 - [2026-06-22] — Nuevo módulo `backend/src/kyb.js`: trámite KYB de proveedores con estados NONE → PENDING → VERIFIED/REJECTED (mock del pipeline legal digital) (Claude)

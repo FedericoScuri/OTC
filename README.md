@@ -31,7 +31,7 @@ Cliente paga con tarjeta
 | Contrato | Estándar | Requisito | Rol |
 |----------|----------|-----------|-----|
 | [`TourPackageNFT.sol`](contracts/TourPackageNFT.sol) | ERC-1155 | RF-B02 | Tokeniza cada paquete/reserva con fechas, política de cancelación y proveedor. |
-| [`CommissionEscrow.sol`](contracts/CommissionEscrow.sol) | — | RF-C01 | Retiene el pago en escrow y lo divide **85 / 12 / 3** al confirmar el servicio. |
+| [`CommissionEscrow.sol`](contracts/CommissionEscrow.sol) | — | RF-C01 · RNF-L01 | Retiene el pago en escrow y lo divide **85 / 12 / 3** al confirmar; soporta retención fiscal opcional por proveedor (→ `taxWallet`). |
 | [`SecondaryMarket.sol`](contracts/SecondaryMarket.sol) | — | RF-C02 | Reventa P2P con **royalty forzoso** al proveedor original (5%) + fee plataforma (2%). |
 | [`MockUSDC.sol`](contracts/MockUSDC.sol) | ERC-20 | — | Stablecoin de prueba (6 decimales) para la demo local. |
 
@@ -162,10 +162,10 @@ El deploy imprime los links del explorer y guarda las direcciones en `deployment
 | RNF-P02 | Gas < $0.05 en L2 | ✅ Verificado (~111k gas en el split) |
 | RF-A02 | KYC / KYB automatizado de proveedores | ✅ Implementado (gate de KYB en la publicación de inventario) |
 | RNF-P01 | Latencia de sync PMS < 800ms (anti-overbooking) | ✅ Implementado (Guardián de Latencia: holds + presupuesto 800ms) |
-| RNF-L01 | Retención impositiva por jurisdicción | ⏳ Pendiente ([#5](https://github.com/FedericoScuri/OTC/issues/5)) |
+| RNF-L01 | Retención impositiva por jurisdicción | ✅ Implementado (retención por proveedor → taxWallet, configurable) |
 | RNF-S01 | Auditoría externa de contratos | ⏳ Fase de producción |
 
-> **Brechas pendientes vs. PRD/PDR** (abiertas como issues tras la revisión de documentos): retención fiscal ([#5](https://github.com/FedericoScuri/OTC/issues/5)) y correr el deploy real a testnet ([#3](https://github.com/FedericoScuri/OTC/issues/3) — *código listo*). Resueltas: capa de latencia anti-overbooking ([#4](https://github.com/FedericoScuri/OTC/issues/4)), Account Abstraction gasless ([#2](https://github.com/FedericoScuri/OTC/issues/2) — *emulada; prod = ERC-4337 + bundler*) y KYC/KYB de proveedores ([#1](https://github.com/FedericoScuri/OTC/issues/1)).
+> **Brechas vs. PRD/PDR** (detectadas al revisar los documentos, gestionadas como issues): todas resueltas en código salvo **correr el deploy real a testnet** ([#3](https://github.com/FedericoScuri/OTC/issues/3) — *código listo, falta correrlo con claves + ETH de faucet*). Cerradas: capa de latencia anti-overbooking ([#4](https://github.com/FedericoScuri/OTC/issues/4)), Account Abstraction gasless ([#2](https://github.com/FedericoScuri/OTC/issues/2) — *emulada; prod = ERC-4337 + bundler*), KYC/KYB de proveedores ([#1](https://github.com/FedericoScuri/OTC/issues/1)) y retención fiscal ([#5](https://github.com/FedericoScuri/OTC/issues/5)).
 
 ---
 

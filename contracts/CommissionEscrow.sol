@@ -54,6 +54,17 @@ contract CommissionEscrow is Ownable, ReentrancyGuard {
     /// @notice Cuenta que recibe el fee del 3% de la plataforma OTC.
     address public platformWallet;
 
+    /// @notice Cuenta recaudadora de la retención impositiva (RNF-L01).
+    /// Si hay retención > 0 para un proveedor, su porción se le descuenta y se
+    /// gira acá (ej: agente de retención local / cuenta fiscal de la plataforma).
+    address public taxWallet;
+
+    /// @notice Retención impositiva por proveedor, en basis points (RNF-L01).
+    /// El valor sale de la jurisdicción del proveedor (se fija en el onboarding).
+    /// Se descuenta de la parte del proveedor al liberar los fondos. Default 0
+    /// (sin retención): el reparto queda en el 85/12/3 clásico.
+    mapping(address => uint256) public providerRetentionBps;
+
     /// @dev Contador incremental de IDs de reserva.
     uint256 private _nextBookingId = 1;
 
@@ -76,6 +87,9 @@ contract CommissionEscrow is Ownable, ReentrancyGuard {
     );
     event Refunded(uint256 indexed bookingId, address indexed customer, uint256 amount);
     event PlatformWalletUpdated(address indexed wallet);
+    event TaxWalletUpdated(address indexed wallet);
+    event ProviderRetentionUpdated(address indexed provider, uint256 bps);
+    event TaxWithheld(uint256 indexed bookingId, address indexed taxWallet, uint256 amount, uint256 bps);
 
     constructor(address usdc_, address tourPackage_, address platformWallet_) Ownable(msg.sender) {
         require(usdc_ != address(0), "Escrow: usdc invalido");
@@ -91,6 +105,28 @@ contract CommissionEscrow is Ownable, ReentrancyGuard {
         require(wallet != address(0), "Escrow: wallet invalida");
         platformWallet = wallet;
         emit PlatformWalletUpdated(wallet);
+    }
+
+    /// @notice Define la cuenta recaudadora de la retención impositiva (RNF-L01).
+    function setTaxWallet(address wallet) external onlyOwner {
+        require(wallet != address(0), "Escrow: wallet invalida");
+        taxWallet = wallet;
+        emit TaxWalletUpdated(wallet);
+    }
+
+    /**
+     * @notice Fija la retención impositiva de un proveedor según su jurisdicción.
+     * @param provider Proveedor al que se le aplica la retención.
+     * @param bps      Retención en basis points (se descuenta de su parte).
+     * @dev Tope: no puede superar la porción base del proveedor (PROVIDER_BPS).
+     *      Requiere `taxWallet` configurada si bps > 0.
+     */
+    function setProviderRetention(address provider, uint256 bps) external onlyOwner {
+        require(provider != address(0), "Escrow: proveedor invalido");
+        require(bps <= PROVIDER_BPS, "Escrow: retencion excede la parte del proveedor");
+        require(bps == 0 || taxWallet != address(0), "Escrow: falta taxWallet");
+        providerRetentionBps[provider] = bps;
+        emit ProviderRetentionUpdated(provider, bps);
     }
 
     /**
@@ -141,7 +177,9 @@ contract CommissionEscrow is Ownable, ReentrancyGuard {
     /**
      * @notice El proveedor confirma que prestó el servicio y libera los fondos.
      * @dev Divide automáticamente 85/12/3. El proveedor también puede recibir
-     *      el 12% del agente si la venta fue directa.
+     *      el 12% del agente si la venta fue directa. Si el proveedor tiene una
+     *      retención impositiva configurada (RNF-L01), esa porción se descuenta
+     *      de su parte y se gira a la `taxWallet`.
      */
     function confirmService(uint256 bookingId) external nonReentrant {
         Booking storage b = bookings[bookingId];
@@ -161,6 +199,16 @@ contract CommissionEscrow is Ownable, ReentrancyGuard {
             usdc.safeTransfer(b.agent, agentAmount);
         } else {
             agentAmount = 0;
+        }
+
+        // Retención impositiva (RNF-L01): se descuenta de la parte del proveedor
+        // según su jurisdicción y se gira a la cuenta recaudadora. Default 0.
+        uint256 retentionAmount = (b.amount * providerRetentionBps[b.provider]) / TOTAL_BPS;
+        if (retentionAmount > 0) {
+            require(retentionAmount <= providerAmount, "Escrow: retencion mayor a la parte del proveedor");
+            providerAmount -= retentionAmount;
+            usdc.safeTransfer(taxWallet, retentionAmount);
+            emit TaxWithheld(bookingId, taxWallet, retentionAmount, providerRetentionBps[b.provider]);
         }
 
         usdc.safeTransfer(b.provider, providerAmount);
