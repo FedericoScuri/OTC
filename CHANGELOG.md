@@ -9,6 +9,13 @@ Formato: `[Fecha] — Descripción del cambio (autor)`
 
 ## Sin publicar
 
+### Backend — KYC/KYB de proveedores (RF-A02, cierra #1)
+
+- [2026-06-22] — Nuevo módulo `backend/src/kyb.js`: trámite KYB de proveedores con estados NONE → PENDING → VERIFIED/REJECTED (mock del pipeline legal digital) (Claude)
+- [2026-06-22] — Nuevas rutas `/api/kyb/*`: `submit`, `status/:provider`, `decide` (admin) y `list` (Claude)
+- [2026-06-22] — **Gate real**: `/api/pms/sync` ahora devuelve **403** si el proveedor que firma la publicación no tiene KYB verificado (RF-A02: verificar antes de publicar inventario masivo) (Claude)
+- [2026-06-22] — Verificado E2E: sync sin KYB → 403; tras submit (PENDING) → 403; tras decide(approve) → VERIFIED y el sync publica 4 paquetes (Claude)
+
 ### Backend — Account Abstraction gasless (RF-A01 / PDR §2.1, cierra #2)
 
 - [2026-06-22] — Nuevo módulo `backend/src/account-abstraction.js`: deriva la Smart Account del usuario Web2 de forma determinista a partir del email (mock MPC, HMAC con semilla `AA_MPC_SEED`) + Paymaster que patrocina el gas para que el turista no necesite cripto nativa (Claude)

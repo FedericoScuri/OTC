@@ -6,6 +6,7 @@ const pmsRouter = require("./routes/pms");
 const onrampRouter = require("./routes/onramp");
 const inventoryRouter = require("./routes/inventory");
 const aaRouter = require("./routes/aa");
+const kybRouter = require("./routes/kyb");
 
 const app = express();
 app.use(cors());
@@ -45,6 +46,9 @@ app.use("/api/inventory", inventoryRouter);
 
 // RF-A01 / PDR §2.1 — Account Abstraction: Smart Account (mock MPC) + Paymaster.
 app.use("/api/aa", aaRouter);
+
+// RF-A02 — KYC/KYB de proveedores (trámite + resolución).
+app.use("/api/kyb", kybRouter);
 
 app.use((_req, res) => res.status(404).json({ error: "Ruta no encontrada" }));
 

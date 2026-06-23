@@ -14,6 +14,9 @@ API de integración del marketplace OTC. Dos responsabilidades:
   poseer cripto nativa**. El backend deriva su Smart Account (mock MPC), un
   Paymaster patrocina el gas y el USDC llega vía on-ramp (PDR §2.1). *Emulado para
   la demo; en prod sería ERC-4337 con EntryPoint + bundler y nodos MPC/HSM reales.*
+- **RF-A02 — KYC/KYB:** pipeline de verificación de proveedores. Un proveedor sin
+  KYB verificado **no puede publicar inventario** (`/api/pms/sync` devuelve 403
+  hasta que el trámite quede en `VERIFIED`).
 
 ## Correr
 
@@ -35,7 +38,11 @@ npm run dev            # http://localhost:4000 (recarga con --watch)
 | GET | `/api/pms/inventory` | Inventario externo del PMS (mock) |
 | GET | `/api/pms/inventory/:extId` | Un item del PMS |
 | GET | `/api/pms/sync-status` | Qué items del PMS ya están on-chain |
-| POST | `/api/pms/sync` | Publica on-chain los items faltantes (dedup por nombre) |
+| POST | `/api/pms/sync` | Publica on-chain los items faltantes (**403 si el proveedor no tiene KYB verificado**) |
+| POST | `/api/kyb/submit` | Proveedor envía su KYB (`{provider, legalName, taxId, country}`) → PENDING |
+| GET | `/api/kyb/status/:provider` | Estado del trámite KYB |
+| POST | `/api/kyb/decide` | Resolución admin (`{provider, approve}`) → VERIFIED/REJECTED |
+| GET | `/api/kyb/list` | Todos los trámites KYB |
 | POST | `/api/onramp/quote` | Cotiza tarjeta → USDC (fee 1.5%), sin tocar la cadena |
 | POST | `/api/onramp/buy` | Simula el pago y acredita USDC en la wallet (mintea MockUSDC) |
 | GET | `/api/inventory/availability/:packageId` | Cupo libre = supply on-chain − holds activos |
