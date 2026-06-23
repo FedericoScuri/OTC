@@ -161,11 +161,11 @@ El deploy imprime los links del explorer y guarda las direcciones en `deployment
 | RF-B01 | Sincronización con PMS/CRS | ✅ Implementado (mock de PMS + sync on-chain) |
 | RNF-P02 | Gas < $0.05 en L2 | ✅ Verificado (~111k gas en el split) |
 | RF-A02 | KYC / KYB automatizado de proveedores | ⏳ Pendiente ([#1](https://github.com/FedericoScuri/OTC/issues/1)) |
-| RNF-P01 | Latencia de sync PMS < 800ms (anti-overbooking) | ⏳ Pendiente ([#4](https://github.com/FedericoScuri/OTC/issues/4)) |
+| RNF-P01 | Latencia de sync PMS < 800ms (anti-overbooking) | ✅ Implementado (Guardián de Latencia: holds + presupuesto 800ms) |
 | RNF-L01 | Retención impositiva por jurisdicción | ⏳ Pendiente ([#5](https://github.com/FedericoScuri/OTC/issues/5)) |
 | RNF-S01 | Auditoría externa de contratos | ⏳ Fase de producción |
 
-> **Brechas pendientes vs. PRD/PDR** (abiertas como issues tras la revisión de documentos): Account Abstraction real con Paymaster ([#2](https://github.com/FedericoScuri/OTC/issues/2)), deploy a testnet pública ([#3](https://github.com/FedericoScuri/OTC/issues/3) — *scaffolding listo*), KYC/KYB ([#1](https://github.com/FedericoScuri/OTC/issues/1)), capa de latencia ([#4](https://github.com/FedericoScuri/OTC/issues/4)) y retención fiscal ([#5](https://github.com/FedericoScuri/OTC/issues/5)).
+> **Brechas pendientes vs. PRD/PDR** (abiertas como issues tras la revisión de documentos): Account Abstraction real con Paymaster ([#2](https://github.com/FedericoScuri/OTC/issues/2)), KYC/KYB ([#1](https://github.com/FedericoScuri/OTC/issues/1)) y retención fiscal ([#5](https://github.com/FedericoScuri/OTC/issues/5)). Resueltas: deploy a testnet pública ([#3](https://github.com/FedericoScuri/OTC/issues/3) — *scaffolding listo*) y capa de latencia anti-overbooking ([#4](https://github.com/FedericoScuri/OTC/issues/4)).
 
 ---
 

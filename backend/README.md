@@ -6,6 +6,10 @@ API de integración del marketplace OTC. Dos responsabilidades:
   sincroniza on-chain como paquetes (`TourPackageNFT.createPackage`).
 - **RF-D01 — On-ramp fiat:** sandbox tipo MoonPay/Transak que convierte "tarjeta"
   a USDC, minteando USDC de prueba a la wallet del comprador.
+- **RNF-P01 — Guardián de Latencia:** bloqueos lógicos temporales de inventario
+  (con TTL) para evitar overbooking mientras la compra se confirma on-chain, bajo
+  un presupuesto de respuesta de **800ms** (PDR §2.2). Cada respuesta incluye la
+  cabecera `X-Response-Time`.
 
 ## Correr
 
@@ -30,6 +34,10 @@ npm run dev            # http://localhost:4000 (recarga con --watch)
 | POST | `/api/pms/sync` | Publica on-chain los items faltantes (dedup por nombre) |
 | POST | `/api/onramp/quote` | Cotiza tarjeta → USDC (fee 1.5%), sin tocar la cadena |
 | POST | `/api/onramp/buy` | Simula el pago y acredita USDC en la wallet (mintea MockUSDC) |
+| GET | `/api/inventory/availability/:packageId` | Cupo libre = supply on-chain − holds activos |
+| POST | `/api/inventory/hold` | Toma un bloqueo lógico temporal (`{packageId, qty}`); **409 si haría overbooking** |
+| POST | `/api/inventory/release` | Suelta el bloqueo (`{packageId, token}`) |
+| GET | `/api/inventory/holds` | Holds activos + presupuesto de latencia |
 
 ### Ejemplos
 
@@ -44,6 +52,11 @@ curl -X POST http://localhost:4000/api/onramp/quote \
 curl -X POST http://localhost:4000/api/onramp/buy \
   -H 'content-type: application/json' \
   -d '{"fiatAmount":250,"address":"0xTuWallet"}'
+
+# Guardián de Latencia: ver cupo, tomar un hold y comprobar el bloqueo de overbooking
+curl http://localhost:4000/api/inventory/availability/1
+curl -X POST http://localhost:4000/api/inventory/hold \
+  -H 'content-type: application/json' -d '{"packageId":1,"qty":1}'
 ```
 
 > Las claves del `.env.example` son las cuentas deterministas de Hardhat, **solo

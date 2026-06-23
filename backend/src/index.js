@@ -4,10 +4,24 @@ const config = require("./config");
 const chain = require("./chain");
 const pmsRouter = require("./routes/pms");
 const onrampRouter = require("./routes/onramp");
+const inventoryRouter = require("./routes/inventory");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Mide la latencia de cada request y la expone en la cabecera X-Response-Time
+// (visibilidad del presupuesto de 800ms del Guardián de Latencia, RNF-P01).
+app.use((_req, res, next) => {
+  const start = process.hrtime.bigint();
+  const origJson = res.json.bind(res);
+  res.json = (body) => {
+    const ms = Number(process.hrtime.bigint() - start) / 1e6;
+    if (!res.headersSent) res.setHeader("X-Response-Time", `${ms.toFixed(1)}ms`);
+    return origJson(body);
+  };
+  next();
+});
 
 // Estado del backend y de la conexión a la cadena.
 app.get("/health", async (_req, res) => {
@@ -24,6 +38,9 @@ app.use("/api/pms", pmsRouter);
 
 // RF-D01 — on-ramp fiat (tarjeta → USDC).
 app.use("/api/onramp", onrampRouter);
+
+// RNF-P01 / PDR §2.2 — Guardián de Latencia: disponibilidad + holds anti-overbooking.
+app.use("/api/inventory", inventoryRouter);
 
 app.use((_req, res) => res.status(404).json({ error: "Ruta no encontrada" }));
 

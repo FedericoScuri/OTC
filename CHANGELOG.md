@@ -9,6 +9,12 @@ Formato: `[Fecha] — Descripción del cambio (autor)`
 
 ## Sin publicar
 
+### Backend — Guardián de Latencia anti-overbooking (RNF-P01 / PDR §2.2, cierra #4)
+
+- [2026-06-22] — Nuevo módulo `backend/src/latency-guard.js`: presupuesto de respuesta de 800ms (`withLatencyBudget`, aborta si se supera) + bloqueos lógicos temporales de inventario con TTL (holds) para evitar la venta simultánea de la misma unidad mientras la tx on-chain se confirma (Claude)
+- [2026-06-22] — Nuevas rutas `/api/inventory/*`: `availability/:id` (cupo libre = supply on-chain − holds), `hold` (toma bloqueo, **409 si haría overbooking**), `release`, `holds`. Middleware que expone `X-Response-Time` en cada respuesta (Claude)
+- [2026-06-22] — Verificado E2E contra la cadena: paquete con cupo 19 libre → hold de 19 OK, la unidad 20 devuelve 409 OVERBOOKING; latencia ~15ms (< 800ms) (Claude)
+
 ### Revisión de documentos (PRD/PDR) + deploy a testnet
 
 - [2026-06-22] — Revisión de PRD `OTC-PRD-001` y PDR `OTC-PDR-001` contra lo implementado. Se abrieron 5 issues en GitHub con los deltas reales: KYC/KYB (#1, RF-A02), Account Abstraction + Paymaster (#2, RF-A01/PDR §2.1), deploy a testnet pública (#3), capa de latencia anti-overbooking (#4, RNF-P01/PDR §2.2) y retención impositiva (#5, RNF-L01) (Claude)
