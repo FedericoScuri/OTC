@@ -1,6 +1,7 @@
 const express = require("express");
 const { ethers } = require("ethers");
 const chain = require("../chain");
+const kyb = require("../kyb");
 const inventory = require("../data/pms-inventory.json");
 
 /**
@@ -72,6 +73,22 @@ router.get("/sync-status", async (_req, res) => {
 router.post("/sync", async (_req, res) => {
   if (!(await chain.isChainUp())) {
     return res.status(503).json({ error: "No hay nodo en el RPC. Corré `npm run node` en la raíz." });
+  }
+  // RF-A02 — Gate KYB: el proveedor que firma la publicación debe estar
+  // verificado antes de publicar inventario masivo on-chain.
+  let providerAddr;
+  try {
+    providerAddr = await chain.providerSigner().getAddress();
+  } catch {
+    return res.status(500).json({ error: "Falta PROVIDER_PRIVATE_KEY en .env" });
+  }
+  if (!kyb.isVerified(providerAddr)) {
+    return res.status(403).json({
+      error: "Proveedor sin KYB verificado: no puede publicar inventario (RF-A02)",
+      provider: providerAddr.toLowerCase(),
+      kyb: kyb.getStatus(providerAddr).status,
+      hint: "Enviá el KYB en POST /api/kyb/submit y verificá con POST /api/kyb/decide.",
+    });
   }
   try {
     const onChainNames = await readOnChainNames();

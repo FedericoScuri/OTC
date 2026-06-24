@@ -9,6 +9,8 @@
     "test:gas": "REPORT_GAS=true hardhat test",
     "node": "hardhat node",
     "deploy:local": "hardhat run scripts/deploy.js --network localhost",
+    "deploy:testnet": "hardhat run scripts/deploy.js --network baseSepolia",
+    "verify:testnet": "hardhat run scripts/verify.js --network baseSepolia",
     "sync:abis": "node scripts/sync-abis.js",
     "backend": "npm --prefix backend run dev"
   },

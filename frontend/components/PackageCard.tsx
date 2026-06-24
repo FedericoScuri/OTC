@@ -4,6 +4,9 @@ import { useState } from "react";
 import type { Address } from "viem";
 import type { Package } from "@/lib/contracts";
 import { BuyButton } from "./BuyButton";
+import { GaslessBuyButton } from "./GaslessBuyButton";
+import { AvailabilityBadge } from "./AvailabilityBadge";
+import { useAuth } from "@/lib/auth";
 import { categoryLabel, formatDate, formatUSDC } from "@/lib/format";
 import { MapPinIcon, StarIcon, HeartIcon, CheckIcon, WineIcon, BuildingIcon, MountainIcon, LandmarkIcon } from "./icons";
 
@@ -30,6 +33,7 @@ export function PackageCard({
   onPurchased?: () => void;
   index?: number;
 }) {
+  const { user } = useAuth();
   const [qty, setQty] = useState(1);
   const [fav, setFav] = useState(false);
   const available = Number(pkg.maxSupply - pkg.minted);
@@ -78,8 +82,11 @@ export function PackageCard({
           </span>
         </div>
 
-        <div className="mt-2 inline-flex items-center gap-1 text-[11px] font-medium text-emerald-600">
-          <CheckIcon size={13} /> Cancelación gratis hasta {formatDate(pkg.refundDeadline)}
+        <div className="mt-2 flex flex-wrap items-center gap-2">
+          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-600">
+            <CheckIcon size={13} /> Cancelación gratis hasta {formatDate(pkg.refundDeadline)}
+          </span>
+          <AvailabilityBadge packageId={pkg.id} />
         </div>
 
         <div className="mt-3 flex items-center justify-between text-xs text-slate-500">
@@ -127,6 +134,13 @@ export function PackageCard({
             <BuyButton pkg={pkg} quantity={qty} agent={agent} onDone={onPurchased} />
           </div>
         </div>
+
+        {/* Alternativa sin wallet: compra gasless vía Account Abstraction (RF-A01) */}
+        {user && (
+          <div className="mt-2">
+            <GaslessBuyButton pkg={pkg} quantity={qty} agent={agent} />
+          </div>
+        )}
       </div>
     </div>
   );

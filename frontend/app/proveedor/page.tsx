@@ -5,6 +5,8 @@ import { ConnectGate } from "@/components/ConnectGate";
 import { CreatePackageForm } from "@/components/CreatePackageForm";
 import { ProviderPackages } from "@/components/ProviderPackages";
 import { ProviderBookings } from "@/components/ProviderBookings";
+import { KybPanel } from "@/components/KybPanel";
+import { RetentionInfo } from "@/components/RetentionInfo";
 
 export default function ProveedorPage() {
   return (
@@ -21,6 +23,8 @@ export default function ProveedorPage() {
       <ConnectGate>
         {(address) => (
           <div className="space-y-8">
+            <KybPanel provider={address} />
+            <RetentionInfo provider={address} />
             <CreatePackageForm />
 
             <section className="space-y-3">

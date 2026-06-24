@@ -31,7 +31,7 @@ Cliente paga con tarjeta
 | Contrato | Estándar | Requisito | Rol |
 |----------|----------|-----------|-----|
 | [`TourPackageNFT.sol`](contracts/TourPackageNFT.sol) | ERC-1155 | RF-B02 | Tokeniza cada paquete/reserva con fechas, política de cancelación y proveedor. |
-| [`CommissionEscrow.sol`](contracts/CommissionEscrow.sol) | — | RF-C01 | Retiene el pago en escrow y lo divide **85 / 12 / 3** al confirmar el servicio. |
+| [`CommissionEscrow.sol`](contracts/CommissionEscrow.sol) | — | RF-C01 · RNF-L01 | Retiene el pago en escrow y lo divide **85 / 12 / 3** al confirmar; soporta retención fiscal opcional por proveedor (→ `taxWallet`). |
 | [`SecondaryMarket.sol`](contracts/SecondaryMarket.sol) | — | RF-C02 | Reventa P2P con **royalty forzoso** al proveedor original (5%) + fee plataforma (2%). |
 | [`MockUSDC.sol`](contracts/MockUSDC.sol) | ERC-20 | — | Stablecoin de prueba (6 decimales) para la demo local. |
 
@@ -129,6 +129,23 @@ npm run deploy:local
 
 El deploy crea 16 paquetes de ejemplo (incluidas 5 actividades gratuitas), reparte USDC de prueba, pre-carga 2 reservas y guarda las direcciones en `deployments/localhost.json` para el frontend.
 
+### Demo en testnet pública (Base Sepolia)
+
+Dejar los contratos vivos en una L2 real los hace **públicos y auditables** en el explorer — el argumento de transparencia de la defensa (RNF-S01).
+
+```bash
+# 1. Completar en .env: BASE_SEPOLIA_RPC_URL, PRIVATE_KEY (wallet de PRUEBA) y BASESCAN_API_KEY
+#    Conseguí ETH de testnet gratis en un faucet de Base Sepolia.
+
+# 2. Desplegar a Base Sepolia (siembra 3 paquetes con la cuenta del deployer)
+npm run deploy:testnet
+
+# 3. Verificar el código fuente en sepolia.basescan.org
+npm run verify:testnet
+```
+
+El deploy imprime los links del explorer y guarda las direcciones en `deployments/baseSepolia.json`.
+
 ---
 
 ## Cobertura de requisitos (PRD)
@@ -140,10 +157,15 @@ El deploy crea 16 paquetes de ejemplo (incluidas 5 actividades gratuitas), repar
 | RF-C02 | Royalty forzoso en reventa | ✅ Implementado (contrato + UI `/mercado`) |
 | RF-D01 | On-ramp fiat (tarjeta → USDC) | ✅ Implementado (sandbox) |
 | RF-D02 | Generador de links de afiliado | ✅ Implementado |
-| RF-A01 | Login híbrido Web2/Web3 | ✅ Implementado (email/registro + wallet MetaMask) |
+| RF-A01 | Login híbrido Web2/Web3 + Account Abstraction | ✅ Implementado (email/registro + MetaMask + Smart Account gasless con Paymaster, emulada) |
 | RF-B01 | Sincronización con PMS/CRS | ✅ Implementado (mock de PMS + sync on-chain) |
 | RNF-P02 | Gas < $0.05 en L2 | ✅ Verificado (~111k gas en el split) |
+| RF-A02 | KYC / KYB automatizado de proveedores | ✅ Implementado (gate de KYB en la publicación de inventario) |
+| RNF-P01 | Latencia de sync PMS < 800ms (anti-overbooking) | ✅ Implementado (Guardián de Latencia: holds + presupuesto 800ms) |
+| RNF-L01 | Retención impositiva por jurisdicción | ✅ Implementado (retención por proveedor → taxWallet, configurable) |
 | RNF-S01 | Auditoría externa de contratos | ⏳ Fase de producción |
+
+> **Brechas vs. PRD/PDR** (detectadas al revisar los documentos, gestionadas como issues): todas resueltas en código salvo **correr el deploy real a testnet** ([#3](https://github.com/FedericoScuri/OTC/issues/3) — *código listo, falta correrlo con claves + ETH de faucet*). Cerradas: capa de latencia anti-overbooking ([#4](https://github.com/FedericoScuri/OTC/issues/4)), Account Abstraction gasless ([#2](https://github.com/FedericoScuri/OTC/issues/2) — *emulada; prod = ERC-4337 + bundler*), KYC/KYB de proveedores ([#1](https://github.com/FedericoScuri/OTC/issues/1)) y retención fiscal ([#5](https://github.com/FedericoScuri/OTC/issues/5)).
 
 ---
 
@@ -161,11 +183,21 @@ El proyecto se construye por fases. Prioridad: **contratos → tests → fronten
 | **5 — Backend** | API REST Node.js: mock de PMS/CRS (RF-B01) + on-ramp fiat sandbox MoonPay/Transak (RF-D01) | ✅ Hecho |
 | **6 — Presentación** | Guion de demo + argumentos de defensa ([`PRESENTACION.md`](PRESENTACION.md)) | ✅ Hecho |
 
-### Próximos pasos concretos
+### Lo que falta por hacer
 
-1. ~~**Frontend (Fase 4)**~~ ✅ Hecho — Next.js + wagmi: catálogo, compra, panel de proveedor y panel de agente con links de afiliado. Ver [`frontend/README.md`](frontend/README.md) para correrlo.
-2. ~~**Backend (Fase 5)**~~ ✅ Hecho — API REST (Express + ethers): mock de PMS/CRS con sync on-chain y on-ramp fiat sandbox. Ver [`backend/README.md`](backend/README.md).
-3. ~~**Presentación (Fase 6)**~~ ✅ Hecho — guion de demo en vivo y argumentos de defensa en [`PRESENTACION.md`](PRESENTACION.md).
+Las fases 0-6 y los 5 deltas detectados al revisar el PRD/PDR están cerrados (ver tabla de cobertura). Queda:
+
+**Pendiente (bloquea cierre del MVP):**
+1. **Deploy real a testnet ([#3](https://github.com/FedericoScuri/OTC/issues/3)).** El código está listo (`npm run deploy:testnet` / `verify:testnet`); falta correrlo cargando en `.env` las claves reales: `BASE_SEPOLIA_RPC_URL`, `PRIVATE_KEY` (wallet de prueba con ETH de faucet) y `BASESCAN_API_KEY`. Deja los contratos vivos y auditables en BaseScan.
+
+**Opcional (robustez):**
+2. **Tests automatizados del backend.** Las features del backend (KYB, compra gasless/AA, holds anti-overbooking, on-ramp) se verificaron con E2E manuales; no tienen suite propia (los 26 tests del repo son de contratos).
+3. **Verificación por UI de KYB y retención.** Hoy viven detrás del `ConnectGate` (requieren MetaMask); conviene confirmarlas con la wallet conectada en una corrida local.
+
+**Fase de producción (fuera del alcance académico):**
+4. Auditoría externa de contratos (RNF-S01).
+5. Account Abstraction productiva: ERC-4337 con EntryPoint + bundler + nodos MPC/HSM (hoy emulada).
+6. Despliegue del frontend (ej. Vercel) y pulido de UX.
 
 ---
 

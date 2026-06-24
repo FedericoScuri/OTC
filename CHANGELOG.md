@@ -14,6 +14,45 @@ Formato: `[Fecha] — Descripción del cambio (autor)`
 - [2026-06-18] — Nueva sección en la página de inicio que explica POR QUÉ se usa blockchain, con 4 motivos concretos (pagos al instante, sin intermediarios que retengan fondos, transparente/auditable, la reserva es tuya como NFT revendible) + íconos nuevos (Claude)
 - [2026-06-18] — Doc al día: `README.md` y `PRESENTACION.md` ahora dicen 16 paquetes (5 gratis) y 22 tests, en línea con el estado actual (Claude)
 
+### Frontend — Cableado de las features del backend a la UI
+
+- [2026-06-22] — Nuevo cliente `lib/backend.ts` (fetch tipado al backend, base URL configurable con `NEXT_PUBLIC_BACKEND_URL`) (Claude)
+- [2026-06-22] — Compra **gasless** en el catálogo (#2): botón "Pagar con tarjeta (sin wallet)" en cada tarjeta; un usuario logueado reserva sin wallet ni cripto. Verificado en navegador (muestra "Reserva #N creada sin wallet") (Claude)
+- [2026-06-22] — Cupo en tiempo real (#4): badge "N libres · Xms" en cada tarjeta, leído del Guardián de Latencia (supply on-chain − holds + latencia). Verificado en navegador (Claude)
+- [2026-06-22] — Panel KYB en `/proveedor` (#1): estado del trámite + formulario de envío + verificación admin (gate de publicación). Retención fiscal (#5) read-only on-chain. Ambos detrás del ConnectGate (Claude)
+
+### Contrato — Retención impositiva por jurisdicción (RNF-L01, cierra #5)
+
+- [2026-06-22] — `CommissionEscrow` deja de tener el split 85/12/3 fijo: nueva `taxWallet` + `providerRetentionBps` por proveedor. Al liberar fondos, la retención (según la jurisdicción del proveedor) se descuenta de su parte y se gira a la cuenta recaudadora; evento `TaxWithheld`. Setters `setTaxWallet`/`setProviderRetention` (onlyOwner) (Claude)
+- [2026-06-22] — Backward-compatible: retención default 0 → el reparto sigue siendo 85/12/3, los 21 tests previos pasan sin cambios (Claude)
+- [2026-06-22] — 5 tests nuevos (26 en total): retención del 10% (proveedor 87% / tax 10% / plataforma 3%), exige taxWallet, tope PROVIDER_BPS, solo owner. ABIs resincronizados al frontend (Claude)
+
+### Backend — KYC/KYB de proveedores (RF-A02, cierra #1)
+
+- [2026-06-22] — Nuevo módulo `backend/src/kyb.js`: trámite KYB de proveedores con estados NONE → PENDING → VERIFIED/REJECTED (mock del pipeline legal digital) (Claude)
+- [2026-06-22] — Nuevas rutas `/api/kyb/*`: `submit`, `status/:provider`, `decide` (admin) y `list` (Claude)
+- [2026-06-22] — **Gate real**: `/api/pms/sync` ahora devuelve **403** si el proveedor que firma la publicación no tiene KYB verificado (RF-A02: verificar antes de publicar inventario masivo) (Claude)
+- [2026-06-22] — Verificado E2E: sync sin KYB → 403; tras submit (PENDING) → 403; tras decide(approve) → VERIFIED y el sync publica 4 paquetes (Claude)
+
+### Backend — Account Abstraction gasless (RF-A01 / PDR §2.1, cierra #2)
+
+- [2026-06-22] — Nuevo módulo `backend/src/account-abstraction.js`: deriva la Smart Account del usuario Web2 de forma determinista a partir del email (mock MPC, HMAC con semilla `AA_MPC_SEED`) + Paymaster que patrocina el gas para que el turista no necesite cripto nativa (Claude)
+- [2026-06-22] — Nuevas rutas `/api/aa/*`: `account` (dirección determinista por email) y `purchase` (compra **gasless** de punta a punta: on-ramp acredita USDC → Paymaster patrocina gas → la Smart Account aprueba y compra) (Claude)
+- [2026-06-22] — `chain.escrow()` + ABI del escrow/approve en el backend; NonceManager en las cuentas de servicio y en la Smart Account para evitar "nonce too low" con automining (Claude)
+- [2026-06-22] — Verificado E2E: usuario `turista@gmail.com` sin ETH ni USDC compra el Hotel (250 USDC) → bookingId minteado, gas patrocinado (0.05 ETH), `userHeldNativeCrypto: false`; misma cuenta determinista en cada llamada (Claude)
+- [2026-06-22] — NOTA: AA emulada para la demo. En producción sería ERC-4337 (EntryPoint + bundler + contrato Paymaster) y nodos MPC/HSM reales (RNF-S02) (Claude)
+
+### Backend — Guardián de Latencia anti-overbooking (RNF-P01 / PDR §2.2, cierra #4)
+
+- [2026-06-22] — Nuevo módulo `backend/src/latency-guard.js`: presupuesto de respuesta de 800ms (`withLatencyBudget`, aborta si se supera) + bloqueos lógicos temporales de inventario con TTL (holds) para evitar la venta simultánea de la misma unidad mientras la tx on-chain se confirma (Claude)
+- [2026-06-22] — Nuevas rutas `/api/inventory/*`: `availability/:id` (cupo libre = supply on-chain − holds), `hold` (toma bloqueo, **409 si haría overbooking**), `release`, `holds`. Middleware que expone `X-Response-Time` en cada respuesta (Claude)
+- [2026-06-22] — Verificado E2E contra la cadena: paquete con cupo 19 libre → hold de 19 OK, la unidad 20 devuelve 409 OVERBOOKING; latencia ~15ms (< 800ms) (Claude)
+
+### Revisión de documentos (PRD/PDR) + deploy a testnet
+
+- [2026-06-22] — Revisión de PRD `OTC-PRD-001` y PDR `OTC-PDR-001` contra lo implementado. Se abrieron 5 issues en GitHub con los deltas reales: KYC/KYB (#1, RF-A02), Account Abstraction + Paymaster (#2, RF-A01/PDR §2.1), deploy a testnet pública (#3), capa de latencia anti-overbooking (#4, RNF-P01/PDR §2.2) y retención impositiva (#5, RNF-L01) (Claude)
+- [2026-06-22] — Infra (cierra el código de #3): habilitada la red `baseSepolia` en `hardhat.config.js` (chainId 84532) + verificación en BaseScan; nuevos scripts `deploy:testnet`/`verify:testnet` y `scripts/verify.js` (verifica los 4 contratos con sus args de constructor); el deploy siembra 3 paquetes en testnet e imprime los links del explorer; `.env.example` con `BASESCAN_API_KEY`. Falta sólo cargar claves + ETH de faucet y correrlo (Claude)
+
 ### Roles y actividades — separación creador / usuario + más demo
 
 - [2026-06-18] — Gateo por rol en `AuthGate` (prop `role`): `/proveedor` ahora es solo para el rol creador (proveedor) y `/agente` solo para agente; quien no corresponde ve un aviso de "Sección restringida" con link al catálogo (Claude)
