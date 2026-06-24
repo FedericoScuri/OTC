@@ -130,7 +130,7 @@ Con **tarjeta**. Un proveedor on-ramp (MoonPay/Transak) convierte el dinero a US
 El dinero está en **escrow**: si se cancela dentro del plazo de la política, el cliente recupera el 100%. El hotel solo cobra cuando confirma.
 
 **¿Está auditado / es seguro para producción?**
-Usamos **OpenZeppelin** (librerías estándar de la industria) y tenemos 22 tests. Para Mainnet faltaría una **auditoría externa** (RNF-S01), que es el paso previo al lanzamiento real.
+Usamos **OpenZeppelin** (librerías estándar de la industria) y tenemos 26 tests. Para Mainnet faltaría una **auditoría externa** (RNF-S01), que es el paso previo al lanzamiento real.
 
 **¿Qué falta para que sea un producto real?**
 La interfaz del mercado secundario, el KYC/KYB de proveedores, las integraciones reales con Channel Managers, y la auditoría de seguridad. El núcleo económico (la lógica de comisiones) ya funciona.
@@ -142,7 +142,7 @@ La interfaz del mercado secundario, el KYC/KYB de proveedores, las integraciones
 Si la web o MetaMask fallan, **los tests son la red de seguridad**: demuestran todo el comportamiento sin depender de la UI.
 
 ```bash
-npm test          # 22 tests: split, reembolsos, royalty, permisos
+npm test          # 26 tests: split, reembolsos, royalty, permisos
 npm run test:gas  # prueba del costo de gas (RNF-P02)
 ```
-Frase de respaldo: *"Más allá de la interfaz, la lógica de negocio está 100% testeada; estos 22 tests son la prueba de que el reparto, los reembolsos y los royalties funcionan exactamente como deben."*
+Frase de respaldo: *"Más allá de la interfaz, la lógica de negocio está 100% testeada; estos 26 tests son la prueba de que el reparto, los reembolsos y los royalties funcionan exactamente como deben."*

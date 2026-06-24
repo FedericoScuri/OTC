@@ -38,7 +38,7 @@ Cliente paga con tarjeta
 ## Stack
 
 - **Contratos:** Solidity `0.8.28` + OpenZeppelin v5 (corre sobre la EVM)
-- **Testing:** Hardhat + Chai (22 tests)
+- **Testing:** Hardhat + Chai (26 tests)
 - **Red:** Hardhat local para la demo · en producción una L2 EVM (Base / Polygon) para gas < $0.05 (RNF-P02)
 - **Frontend:** Next.js + wagmi *(en construcción)*
 - **Backend:** Node.js + Express + ethers, mock de PMS/CRS y on-ramp fiat sandbox
@@ -177,7 +177,7 @@ El proyecto se construye por fases. Prioridad: **contratos → tests → fronten
 |------|-------------|--------|
 | **0 — Setup** | Monorepo, Hardhat, OpenZeppelin, configuración | ✅ Hecho |
 | **1 — Contratos core** | `MockUSDC`, `TourPackageNFT`, `CommissionEscrow`, `SecondaryMarket` | ✅ Hecho |
-| **2 — Testing** | 22 tests (split, reembolsos, royalty, permisos) + reporte de gas | ✅ Hecho |
+| **2 — Testing** | 26 tests (split, reembolsos, royalty, permisos) + reporte de gas | ✅ Hecho |
 | **3 — Deploy local** | Script de deploy con datos de demo | ✅ Hecho |
 | **4 — Frontend** | Next.js + wagmi: wallet, catálogo, compra, dashboard de agente (links de afiliado), panel de proveedor | ✅ Hecho |
 | **5 — Backend** | API REST Node.js: mock de PMS/CRS (RF-B01) + on-ramp fiat sandbox MoonPay/Transak (RF-D01) | ✅ Hecho |

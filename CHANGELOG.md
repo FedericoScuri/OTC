@@ -12,7 +12,7 @@ Formato: `[Fecha] — Descripción del cambio (autor)`
 ### Landing — sección "¿Por qué blockchain?"
 
 - [2026-06-18] — Nueva sección en la página de inicio que explica POR QUÉ se usa blockchain, con 4 motivos concretos (pagos al instante, sin intermediarios que retengan fondos, transparente/auditable, la reserva es tuya como NFT revendible) + íconos nuevos (Claude)
-- [2026-06-18] — Doc al día: `README.md` y `PRESENTACION.md` ahora dicen 16 paquetes (5 gratis) y 22 tests, en línea con el estado actual (Claude)
+- [2026-06-18] — Doc al día: `README.md` y `PRESENTACION.md` ahora dicen 16 paquetes (5 gratis) y 26 tests, en línea con el estado actual (Claude)
 
 ### Frontend — Cableado de las features del backend a la UI
 
