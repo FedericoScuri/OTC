@@ -103,3 +103,35 @@ export function LandmarkIcon({ className, size }: IconProps) {
     </svg>
   );
 }
+export function BoltIcon({ className, size }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z" />
+    </svg>
+  );
+}
+export function CoinsIcon({ className, size }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <circle cx="8" cy="8" r="6" />
+      <path d="M18.09 10.37A6 6 0 1 1 10.34 18" />
+      <path d="M7 6h1v4M16.71 13.88l.7.71-2.82 2.82" />
+    </svg>
+  );
+}
+export function ShieldCheckIcon({ className, size }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
+      <path d="m9 12 2 2 4-4" />
+    </svg>
+  );
+}
+export function RefreshIcon({ className, size }: IconProps) {
+  return (
+    <svg {...base(size, className)}>
+      <path d="M3 12a9 9 0 0 1 15-6.7L21 8M21 3v5h-5" />
+      <path d="M21 12a9 9 0 0 1-15 6.7L3 16M3 21v-5h5" />
+    </svg>
+  );
+}

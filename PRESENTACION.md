@@ -29,7 +29,7 @@ Orden de arranque el día de la demo:
 | Terminal | Comando | Qué hace |
 |----------|---------|----------|
 | **1** | `npm run node` | Nodo blockchain local (chainId 31337). **Dejar corriendo.** |
-| **2** | `npm run deploy:local` | Despliega los 4 contratos + crea 3 paquetes de demo |
+| **2** | `npm run deploy:local` | Despliega los 4 contratos + crea 16 paquetes de demo (5 gratis) + 2 reservas |
 | **3** | `npm run backend` | API REST (PMS/CRS + on-ramp) en `http://localhost:4000` |
 | **4** | `cd frontend && npm run dev` | Web en `http://localhost:3000` |
 
@@ -50,7 +50,7 @@ Orden de arranque el día de la demo:
 ## 3. Guion de demo paso a paso
 
 ### Escena 1 — "Nace el inventario" (contratos)
-- Mostrá la **Terminal 2** (deploy): se ven desplegarse los 4 contratos y crearse **3 paquetes mendocinos** (bodega, hotel, aventura) **on-chain**.
+- Mostrá la **Terminal 2** (deploy): se ven desplegarse los 4 contratos y crearse **16 paquetes mendocinos on-chain** (bodega, hotel, aventura y más, incluidas **5 actividades gratuitas**).
 - Frase: *"Cada paquete turístico es un NFT (ERC-1155) con sus fechas, cupo y política de cancelación grabados en la blockchain."* (RF-B02)
 
 ### Escena 2 — "El cliente entra y reserva" (frontend, cuenta Cliente)
@@ -130,7 +130,7 @@ Con **tarjeta**. Un proveedor on-ramp (MoonPay/Transak) convierte el dinero a US
 El dinero está en **escrow**: si se cancela dentro del plazo de la política, el cliente recupera el 100%. El hotel solo cobra cuando confirma.
 
 **¿Está auditado / es seguro para producción?**
-Usamos **OpenZeppelin** (librerías estándar de la industria) y tenemos 21 tests. Para Mainnet faltaría una **auditoría externa** (RNF-S01), que es el paso previo al lanzamiento real.
+Usamos **OpenZeppelin** (librerías estándar de la industria) y tenemos 22 tests. Para Mainnet faltaría una **auditoría externa** (RNF-S01), que es el paso previo al lanzamiento real.
 
 **¿Qué falta para que sea un producto real?**
 La interfaz del mercado secundario, el KYC/KYB de proveedores, las integraciones reales con Channel Managers, y la auditoría de seguridad. El núcleo económico (la lógica de comisiones) ya funciona.
@@ -142,7 +142,7 @@ La interfaz del mercado secundario, el KYC/KYB de proveedores, las integraciones
 Si la web o MetaMask fallan, **los tests son la red de seguridad**: demuestran todo el comportamiento sin depender de la UI.
 
 ```bash
-npm test          # 21 tests: split, reembolsos, royalty, permisos
+npm test          # 22 tests: split, reembolsos, royalty, permisos
 npm run test:gas  # prueba del costo de gas (RNF-P02)
 ```
-Frase de respaldo: *"Más allá de la interfaz, la lógica de negocio está 100% testeada; estos 21 tests son la prueba de que el reparto, los reembolsos y los royalties funcionan exactamente como deben."*
+Frase de respaldo: *"Más allá de la interfaz, la lógica de negocio está 100% testeada; estos 22 tests son la prueba de que el reparto, los reembolsos y los royalties funcionan exactamente como deben."*

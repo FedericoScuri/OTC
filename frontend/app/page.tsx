@@ -2,7 +2,16 @@
 
 import Link from "next/link";
 import { useAuth } from "@/lib/auth";
-import { WineIcon, BuildingIcon, MountainIcon, CheckIcon } from "@/components/icons";
+import {
+  WineIcon,
+  BuildingIcon,
+  MountainIcon,
+  CheckIcon,
+  BoltIcon,
+  CoinsIcon,
+  ShieldCheckIcon,
+  RefreshIcon,
+} from "@/components/icons";
 
 /**
  * Página de inicio (landing pública). Presenta la propuesta de valor y lleva
@@ -91,6 +100,63 @@ export default function HomePage() {
             </div>
           ))}
         </div>
+      </section>
+
+      {/* ¿Por qué blockchain? */}
+      <section className="space-y-8">
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className="text-2xl font-extrabold tracking-tight text-slate-800">
+            ¿Por qué blockchain?
+          </h2>
+          <p className="mt-2 text-slate-500">
+            No la usamos por moda. Resuelve cuatro problemas concretos del turismo que una base de
+            datos común no puede <span className="font-semibold text-slate-700">garantizar</span>.
+          </p>
+        </div>
+
+        <div className="grid gap-5 sm:grid-cols-2">
+          {[
+            {
+              icon: <BoltIcon size={22} />,
+              title: "Pagos al instante, no en semanas",
+              desc: "Los contratos mueven el dinero solos, sin esperar liquidaciones bancarias. El proveedor cobra en segundos apenas confirma el servicio.",
+            },
+            {
+              icon: <CoinsIcon size={22} />,
+              title: "Sin intermediarios que retengan tu plata",
+              desc: "El reparto 85/12/3 lo ejecuta el contrato automáticamente. Nadie puede quedarse con el dinero, demorarlo ni cambiar las reglas a mitad de camino.",
+            },
+            {
+              icon: <ShieldCheckIcon size={22} />,
+              title: "Transparente y auditable",
+              desc: "Cada reserva y cada pago queda registrado en una cadena pública. Imposible esconder cláusulas, inventar reseñas falsas o hacer overbooking.",
+            },
+            {
+              icon: <RefreshIcon size={22} />,
+              title: "La reserva es tuya de verdad",
+              desc: "Cada reserva es un NFT que controlás vos: si no podés viajar, la revendés en el mercado secundario, con un royalty justo para el proveedor original.",
+            },
+          ].map((r, i) => (
+            <div
+              key={r.title}
+              className="glass card-hover animate-fade-in-up flex gap-4 rounded-2xl p-6"
+              style={{ animationDelay: `${i * 70}ms` }}
+            >
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand to-brand-light text-white shadow-lg shadow-brand/30">
+                {r.icon}
+              </div>
+              <div>
+                <h3 className="font-bold text-slate-800">{r.title}</h3>
+                <p className="mt-1 text-sm text-slate-500">{r.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p className="mx-auto max-w-2xl text-center text-sm text-slate-400">
+          En criollo: el código reemplaza la confianza ciega en un intermediario. Las reglas están a
+          la vista y se cumplen solas.
+        </p>
       </section>
 
       {/* Beneficios */}

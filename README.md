@@ -38,7 +38,7 @@ Cliente paga con tarjeta
 ## Stack
 
 - **Contratos:** Solidity `0.8.28` + OpenZeppelin v5 (corre sobre la EVM)
-- **Testing:** Hardhat + Chai (21 tests)
+- **Testing:** Hardhat + Chai (22 tests)
 - **Red:** Hardhat local para la demo · en producción una L2 EVM (Base / Polygon) para gas < $0.05 (RNF-P02)
 - **Frontend:** Next.js + wagmi *(en construcción)*
 - **Backend:** Node.js + Express + ethers, mock de PMS/CRS y on-ramp fiat sandbox
@@ -127,7 +127,7 @@ npm run node
 npm run deploy:local
 ```
 
-El deploy crea 3 paquetes de ejemplo (bodega, hotel, aventura), reparte USDC de prueba y guarda las direcciones en `deployments/localhost.json` para el frontend.
+El deploy crea 16 paquetes de ejemplo (incluidas 5 actividades gratuitas), reparte USDC de prueba, pre-carga 2 reservas y guarda las direcciones en `deployments/localhost.json` para el frontend.
 
 ---
 
@@ -155,7 +155,7 @@ El proyecto se construye por fases. Prioridad: **contratos → tests → fronten
 |------|-------------|--------|
 | **0 — Setup** | Monorepo, Hardhat, OpenZeppelin, configuración | ✅ Hecho |
 | **1 — Contratos core** | `MockUSDC`, `TourPackageNFT`, `CommissionEscrow`, `SecondaryMarket` | ✅ Hecho |
-| **2 — Testing** | 21 tests (split, reembolsos, royalty, permisos) + reporte de gas | ✅ Hecho |
+| **2 — Testing** | 22 tests (split, reembolsos, royalty, permisos) + reporte de gas | ✅ Hecho |
 | **3 — Deploy local** | Script de deploy con datos de demo | ✅ Hecho |
 | **4 — Frontend** | Next.js + wagmi: wallet, catálogo, compra, dashboard de agente (links de afiliado), panel de proveedor | ✅ Hecho |
 | **5 — Backend** | API REST Node.js: mock de PMS/CRS (RF-B01) + on-ramp fiat sandbox MoonPay/Transak (RF-D01) | ✅ Hecho |

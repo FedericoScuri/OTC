@@ -9,6 +9,11 @@ Formato: `[Fecha] — Descripción del cambio (autor)`
 
 ## Sin publicar
 
+### Landing — sección "¿Por qué blockchain?"
+
+- [2026-06-18] — Nueva sección en la página de inicio que explica POR QUÉ se usa blockchain, con 4 motivos concretos (pagos al instante, sin intermediarios que retengan fondos, transparente/auditable, la reserva es tuya como NFT revendible) + íconos nuevos (Claude)
+- [2026-06-18] — Doc al día: `README.md` y `PRESENTACION.md` ahora dicen 16 paquetes (5 gratis) y 22 tests, en línea con el estado actual (Claude)
+
 ### Roles y actividades — separación creador / usuario + más demo
 
 - [2026-06-18] — Gateo por rol en `AuthGate` (prop `role`): `/proveedor` ahora es solo para el rol creador (proveedor) y `/agente` solo para agente; quien no corresponde ve un aviso de "Sección restringida" con link al catálogo (Claude)
