@@ -9,6 +9,12 @@ Formato: `[Fecha] — Descripción del cambio (autor)`
 
 ## Sin publicar
 
+### Reservas "sin wallet" (gasless) ahora aparecen en "Mis reservas"
+
+- [2026-06-25] — Las compras gasless (botón "Reservar gratis / Pagar con tarjeta — sin wallet") quedan a nombre de la Smart Account que el backend deriva del email; antes no se veían en "Mis reservas" (que solo miraba la wallet conectada). Ahora `MyReservations` resuelve esa Smart Account vía `POST /api/aa/account` y muestra también esas reservas, con una etiqueta "sin wallet" (Claude)
+- [2026-06-25] — `/reservas` ya no exige conectar MetaMask: con sólo estar logueado ves tus reservas sin wallet; si conectás una wallet, se suman las hechas con MetaMask. Botón para conectar opcional (Claude)
+- [2026-06-25] — Verificado end-to-end: compra gasless del paquete gratis → booking on-chain a nombre de la Smart Account del email → coincide con lo que muestra "Mis reservas" (Claude)
+
 ### UX — Actividades gratuitas se muestran como "Gratis" + ayuda de nonce
 
 - [2026-06-25] — Los paquetes/reservas sin costo ahora muestran **"Gratis"** en vez de "0,00 USDC" en todo el sitio: tarjeta del catálogo, "Mis reservas", panel proveedor (paquetes y reservas en escrow) y reventa. Los botones de reserva en paquetes gratis dicen "Reservar gratis". Helpers `isFree`/`formatPrice` en `lib/format.ts` (Claude)
