@@ -9,6 +9,15 @@ Formato: `[Fecha] — Descripción del cambio (autor)`
 
 ## Sin publicar
 
+### Flujo de venta por agente intermedio — link de pago con sobreprecio (RF-D02)
+
+Modelo (sin tocar el contrato): el agente arma un link de pago para un paquete con su
+**sobreprecio**. El cliente paga `base + sobreprecio`; la base va al escrow (reparto
+85/12/3) y el sobreprecio se transfiere directo al agente. El agente cobra 12% del base
++ el sobreprecio íntegro.
+
+- [2026-06-25] — **Etapa 1 (backend):** store en memoria de links de pago (`backend/src/paylinks.js`) + rutas REST (`/api/paylinks`): crear link con sobreprecio, datos públicos para la página de venta, listar links/ventas de un agente y registrar la venta concretada. El desglose (base, sobreprecio, comisión plataforma 3%, comisión agente 12%+sobreprecio, precio final) se calcula leyendo el precio del paquete on-chain. Verificado por API (Claude)
+
 ### Reservas "sin wallet" (gasless) ahora aparecen en "Mis reservas"
 
 - [2026-06-25] — Las compras gasless (botón "Reservar gratis / Pagar con tarjeta — sin wallet") quedan a nombre de la Smart Account que el backend deriva del email; antes no se veían en "Mis reservas" (que solo miraba la wallet conectada). Ahora `MyReservations` resuelve esa Smart Account vía `POST /api/aa/account` y muestra también esas reservas, con una etiqueta "sin wallet" (Claude)
