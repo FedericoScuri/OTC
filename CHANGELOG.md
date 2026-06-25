@@ -21,6 +21,15 @@ Modelo (sin tocar el contrato): el agente arma un link de pago para un paquete c
 - [2026-06-25] — **Etapa 3 (página pública de venta):** nueva ruta `/pay/[código]` con la info comercial del paquete (foto, fechas, servicios), el precio final, el **disclaimer de comisiones** (base + sobreprecio = final, con detalle del reparto) y el checkout. El pago real on-chain hace `approve(base)` → `purchase` → transferencia del sobreprecio al agente → registra la venta; incluye QR (`qrcode.react`) y la dirección de recepción. Verificado end-to-end: pago de 270 USDC → reserva on-chain + agente cobra los 150 del sobreprecio al instante + venta registrada (Claude)
 - [2026-06-25] — **Etapa 4 (registro + liquidación):** nuevo reporte en `/agente` (`AgentSalesReport`) con todas las ventas por link y los datos mínimos de cada reserva (reserva, cliente, email, teléfono, wallet, hash, base, sobreprecio, comisiones, estado, fecha), totales de liquidación (ventas, sobreprecio cobrado, comisión total) y exportación a **CSV**. Cierra el flujo de venta por agente intermedio (Claude)
 
+**Lo que falta / próximos pasos (no bloquea la demo):**
+
+- **Pago "sin wallet" en `/pay`:** hoy la página de venta paga solo con wallet (MetaMask). Falta sumar el botón gasless por email (como en el catálogo) para que un cliente sin cripto también pueda pagar el link.
+- **Persistencia de los links:** el store de links/ventas es **en memoria** (se pierde al reiniciar el backend). Para producción: base de datos o archivo JSON (igual que se haría con el KYB).
+- **Cantidad / sobreprecio por unidad:** el link es de **1 unidad** y sobreprecio plano. Falta permitir elegir cantidad y/o sobreprecio por unidad.
+- **Liquidación automática:** hoy es consulta + export CSV (liquidación manual). Falta el disparo de liquidación automática (programada o por evento on-chain).
+- **Validaciones en `/pay`:** avisar si la wallet no está en la red Hardhat local o no tiene USDC suficiente, antes de iniciar el pago.
+- **Entorno (no es código):** desarrollar dentro de OneDrive corrompe `.next` (errores `UNKNOWN read` / `EINVAL`). Mitigar con "Conservar siempre en este dispositivo", pausar OneDrive o mover el repo fuera de OneDrive.
+
 ### Reservas "sin wallet" (gasless) ahora aparecen en "Mis reservas"
 
 - [2026-06-25] — Las compras gasless (botón "Reservar gratis / Pagar con tarjeta — sin wallet") quedan a nombre de la Smart Account que el backend deriva del email; antes no se veían en "Mis reservas" (que solo miraba la wallet conectada). Ahora `MyReservations` resuelve esa Smart Account vía `POST /api/aa/account` y muestra también esas reservas, con una etiqueta "sin wallet" (Claude)

@@ -77,6 +77,17 @@ Orden de arranque el día de la demo:
 2. Mostrá el **dashboard de comisiones**: su 12% ya está cobrado.
 3. Mostrá el **generador de link de afiliado** (el que se difunde). (RF-D02)
 
+### Escena 4-bis — "El agente arma su propia oferta con sobreprecio" (link de pago) ⭐
+**Este es el flujo de venta por agente intermedio (RF-D02).**
+1. En `/agente` (cuenta **Agente**), bajá a **"Generar link de venta"**: elegí un paquete y cargá un **sobreprecio** (ej. 150 USDC). La **vista previa** muestra en vivo el desglose: precio base + sobreprecio = **precio final**, y cuánto cobra el agente (12% del base + sobreprecio).
+2. **Generar link** → se crea una URL única `/pay/<CÓDIGO>`. Copiala (o mostrá el **QR**).
+3. Abrí esa URL en otra pestaña (es la **página pública de venta** que vería el cliente): info comercial del paquete, **precio final**, **disclaimer de comisiones** ("el precio incluye las comisiones del intermediario...") y el detalle del reparto.
+4. Cargá email/teléfono, **conectá la wallet Cliente** y **Pagá**. Por detrás pasan: `approve` de la base + `purchase` (la base queda en escrow) + **transferencia del sobreprecio directo al agente**.
+5. Volvé a `/agente` → **"Ventas y liquidación por link"**: la venta aparece con todos los datos (cliente, hash, base, sobreprecio, comisiones, estado) y podés **exportar el reporte en CSV**.
+6. Frase: *"El agente no necesita armar su propia web: arma un link, le pone su margen, y cobra su sobreprecio al instante. Todo queda trazado en blockchain y asociado a él."*
+
+> 💡 **Reparto (sin tocar el contrato):** la **base** del paquete se reparte 85/12/3 al confirmar el servicio; el **sobreprecio** se le transfiere al agente en el acto. Por eso el agente cobra 12% del base + el sobreprecio íntegro.
+
 ### Escena 5 — "Paga con tarjeta, sin saber de cripto" (on-ramp, opcional)
 - Mostrá que el cliente puede pagar con **tarjeta** y el sistema le acredita USDC (sandbox MoonPay/Transak). (RF-D01)
 - Frase: *"El usuario final nunca toca una billetera cripto si no quiere; la complejidad queda escondida."*
