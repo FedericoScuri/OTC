@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { WalletButton } from "./WalletButton";
+import { LogoMark } from "./Logo";
 import { useAuth, ROLE_LABELS } from "@/lib/auth";
 
 // `roles` limita el ítem a esos roles; sin `roles`, lo ve cualquier usuario.
@@ -24,8 +25,8 @@ export function Header() {
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
         <div className="flex items-center gap-7">
           <Link href="/" className="group flex items-center gap-2">
-            <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-brand to-brand-light text-sm font-black text-white shadow-md shadow-brand/30 transition-transform group-hover:scale-110 group-hover:rotate-3">
-              O
+            <span className="drop-shadow-sm transition-transform group-hover:scale-110 group-hover:-rotate-3">
+              <LogoMark size={34} />
             </span>
             <span className="text-lg font-extrabold tracking-tight text-gradient">OTC</span>
           </Link>

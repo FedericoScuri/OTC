@@ -139,6 +139,8 @@ La interfaz del mercado secundario, el KYC/KYB de proveedores, las integraciones
 
 ## 7. Plan B (si algo falla en vivo)
 
+**Presentación interactiva de respaldo:** abrí [`presentacion/index.html`](presentacion/index.html) con doble click (no necesita nodo, backend ni internet). Es un deck navegable con flechas, con el mismo estilo de la web y una calculadora interactiva del reparto 85/12/3. Si la demo en vivo no arranca, presentás con esto.
+
 Si la web o MetaMask fallan, **los tests son la red de seguridad**: demuestran todo el comportamiento sin depender de la UI.
 
 ```bash

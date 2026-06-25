@@ -9,6 +9,11 @@ Formato: `[Fecha] — Descripción del cambio (autor)`
 
 ## Sin publicar
 
+### Branding + presentación de respaldo
+
+- [2026-06-25] — Logo nuevo (`components/Logo.tsx`): un pin de destino con el degradé de la marca (violeta→coral) y un destello, en reemplazo de la "O" pelada del header (Claude)
+- [2026-06-25] — Presentación interactiva de respaldo (`presentacion/index.html`): deck autónomo de 12 slides con el estilo de la web, navegable con flechas/click, con calculadora interactiva del reparto 85/12/3. Se abre sin nodo/backend/internet — plan B si la demo en vivo falla (Claude)
+
 ### Landing — sección "¿Por qué blockchain?"
 
 - [2026-06-18] — Nueva sección en la página de inicio que explica POR QUÉ se usa blockchain, con 4 motivos concretos (pagos al instante, sin intermediarios que retengan fondos, transparente/auditable, la reserva es tuya como NFT revendible) + íconos nuevos (Claude)
