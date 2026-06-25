@@ -70,6 +70,62 @@ export type GaslessPurchase = {
   userHeldNativeCrypto: boolean;
 };
 
+// --- Flujo de venta por agente (link de pago con sobreprecio) ---
+
+export type PayLinkPackage = {
+  id: number;
+  provider: string;
+  category: number;
+  name: string;
+  priceUsdc: string;
+  checkInDate: number;
+  checkOutDate: number;
+  refundDeadline: number;
+  active: boolean;
+};
+
+export type PayLinkBreakdown = {
+  package: PayLinkPackage;
+  quantity: number;
+  basePriceUsdc: string;
+  surchargeUsdc: string;
+  platformFeeUsdc: string;
+  agentBaseCommissionUsdc: string;
+  agentCommissionUsdc: string;
+  providerNetUsdc: string;
+  finalPriceUsdc: string;
+};
+
+export type PayLinkSale = {
+  bookingId: number | null;
+  customer: string | null;
+  email: string | null;
+  phone: string | null;
+  wallet: string | null;
+  txHash: string | null;
+  surchargeTxHash: string | null;
+  quantity: number;
+  basePriceUsdc: string | null;
+  surchargeUsdc: string | null;
+  platformFeeUsdc: string | null;
+  agentCommissionUsdc: string | null;
+  finalPriceUsdc: string | null;
+  status: string;
+  createdAt: string;
+};
+
+/** Link de pago (datos públicos del link + desglose comercial). */
+export type PayLink = {
+  code: string;
+  agent: string;
+  packageId: number;
+  note: string;
+  createdAt: string;
+  salesCount: number;
+} & Partial<PayLinkBreakdown>;
+
+export type PayLinkWithSales = PayLink & { sales: PayLinkSale[] };
+
 export type KybStatusValue = "NONE" | "PENDING" | "VERIFIED" | "REJECTED";
 export type KybRecord = {
   provider: string;

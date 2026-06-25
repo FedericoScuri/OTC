@@ -17,6 +17,7 @@ Modelo (sin tocar el contrato): el agente arma un link de pago para un paquete c
 + el sobreprecio íntegro.
 
 - [2026-06-25] — **Etapa 1 (backend):** store en memoria de links de pago (`backend/src/paylinks.js`) + rutas REST (`/api/paylinks`): crear link con sobreprecio, datos públicos para la página de venta, listar links/ventas de un agente y registrar la venta concretada. El desglose (base, sobreprecio, comisión plataforma 3%, comisión agente 12%+sobreprecio, precio final) se calcula leyendo el precio del paquete on-chain. Verificado por API (Claude)
+- [2026-06-25] — **Etapa 2 (panel del agente):** nuevo generador de links en `/agente` (`AgentPayLinkGenerator`): elegir paquete + cargar sobreprecio, vista previa del desglose en vivo, botón "Generar link" → muestra la URL `/pay/<código>` con copiar/abrir, y lista de los links creados con sus ventas. Tipos del cliente backend en `lib/backend.ts` (Claude)
 
 ### Reservas "sin wallet" (gasless) ahora aparecen en "Mis reservas"
 

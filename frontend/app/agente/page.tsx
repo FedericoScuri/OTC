@@ -3,6 +3,7 @@
 import { AuthGate } from "@/components/AuthGate";
 import { ConnectGate } from "@/components/ConnectGate";
 import { AffiliateLink } from "@/components/AffiliateLink";
+import { AgentPayLinkGenerator } from "@/components/AgentPayLinkGenerator";
 import { AgentDashboard } from "@/components/AgentDashboard";
 
 export default function AgentePage() {
@@ -20,6 +21,7 @@ export default function AgentePage() {
       <ConnectGate>
         {(address) => (
           <div className="space-y-8">
+            <AgentPayLinkGenerator agent={address} />
             <AffiliateLink agent={address} />
             <section className="space-y-3">
               <h2 className="text-lg font-semibold">Mis comisiones</h2>
