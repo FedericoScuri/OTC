@@ -24,6 +24,11 @@ deployments/
 # Config local de Claude / editor
 .claude/
 
+# Capturas locales para la presentación (pesadas y personales de cada corrida)
+presentacion/capturas/*.png
+presentacion/capturas/*.jpg
+presentacion/capturas/*.jpeg
+
 # Sistema
 .DS_Store
 *.log

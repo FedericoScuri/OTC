@@ -1,0 +1,40 @@
+CAPTURAS DE LA DEMO — instrucciones
+====================================
+
+La presentación de respaldo (presentacion/index.html) muestra TUS capturas
+reales de la app en secuencia, navegables con las flechas. Para que aparezcan,
+poné las imágenes en ESTA carpeta con estos nombres exactos:
+
+  01-inicio.png      → Página de inicio (/)              [sin login]
+  02-login.png       → /login (mostrando las cuentas de demo)
+  03-catalogo.png    → /catalogo (los 16 destinos)        [logueado]
+  04-reservar.png    → una ficha / el momento de reservar (botón Reservar)
+  05-reservas.png    → /reservas (Mis reservas, con las 2 pre-cargadas)
+  06-proveedor.png   → /proveedor (confirmar servicio)    [login CREADOR + wallet Proveedor]
+  07-agente.png      → /agente (comisiones + link afiliado)[login AGENTE]
+  08-mercado.png     → /mercado (reventa)
+  09-tarjeta.png     → catálogo mostrando "Pagar con tarjeta" (compra gasless)
+
+(Podés cambiar nombres, orden o textos editando la lista SLIDES arriba de todo
+en presentacion/index.html.)
+
+CÓMO SACAR LAS CAPTURAS (Windows)
+---------------------------------
+1. Tené la app andando (nodo + frontend + backend) y la wallet conectada.
+2. Para cada pantalla, logueate con la cuenta que corresponde:
+     - Catálogo / Mis reservas / Mercado → admin1@otc.com  (usuario)
+     - Panel proveedor                   → creador@otc.com (+ wallet Proveedor en MetaMask)
+     - Panel agente                      → agente@otc.com
+3. Capturá con  Win + Shift + S  (recorte) o  Alt + Impr Pant (ventana activa).
+   Tip: poné la ventana del navegador ancha y sin la barra de marcadores, queda
+   más prolijo. Capturá el contenido de la página (no toda la pantalla).
+4. Guardá cada imagen en esta carpeta con el nombre de la lista (PNG o JPG; si
+   usás JPG cambiá la extensión en la lista SLIDES).
+
+LISTO
+-----
+Abrí presentacion/index.html con doble click. Si falta alguna captura, el visor
+te avisa cuál y qué tenía que mostrar (no se rompe).
+
+Nota: las imágenes .png/.jpg de esta carpeta están ignoradas por git (no se
+suben al repo, son pesadas y personales de tu corrida). El visor las lee local.

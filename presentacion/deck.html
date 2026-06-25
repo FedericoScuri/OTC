@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>OTC — Presentación interactiva</title>
+<style>
+  :root{
+    --violet:#7c3aed; --violet-dark:#6d28d9; --violet-light:#a855f7;
+    --coral:#fb6f92; --coral-dark:#e84f78;
+    --ink:#1f2433; --muted:#6b7280; --line:#e9e3f3;
+    --bg1:#f8f5fc; --bg2:#eee7f7;
+    --glass:rgba(255,255,255,.62);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(900px 500px at 8% -10%, rgba(139,92,246,.18), transparent 60%),
+      radial-gradient(800px 500px at 100% 0%, rgba(251,111,146,.16), transparent 55%),
+      linear-gradient(180deg,var(--bg1),var(--bg2));
+    overflow:hidden;
+  }
+  .aurora{position:fixed;inset:0;overflow:hidden;z-index:0;pointer-events:none}
+  .blob{position:absolute;border-radius:50%;filter:blur(60px);opacity:.5}
+  .b1{width:32rem;height:32rem;left:-10rem;top:-10rem;background:rgba(167,139,250,.5);animation:float 14s ease-in-out infinite}
+  .b2{width:28rem;height:28rem;right:-8rem;bottom:-8rem;background:rgba(251,111,146,.4);animation:float 18s ease-in-out infinite reverse}
+  @keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,-30px)}}
+
+  .deck{position:relative;z-index:1;height:100vh;display:flex;align-items:center;justify-content:center;padding:28px}
+  .slide{
+    display:none;width:100%;max-width:880px;
+    background:var(--glass);backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,.7);border-radius:28px;
+    box-shadow:0 30px 70px -30px rgba(80,40,120,.4);
+    padding:48px 52px;
+    animation:in .5s ease both;
+  }
+  .slide.active{display:block}
+  @keyframes in{from{opacity:0;transform:translateY(16px) scale(.99)}to{opacity:1;transform:none}}
+
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--violet-dark);background:rgba(124,58,237,.1);padding:6px 14px;border-radius:999px}
+  .dot-live{width:7px;height:7px;border-radius:50%;background:var(--violet);animation:pulse 1.6s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  h1{font-size:46px;line-height:1.08;letter-spacing:-.02em;margin:18px 0 14px}
+  h2{font-size:34px;line-height:1.12;letter-spacing:-.02em;margin:14px 0}
+  .grad{background:linear-gradient(90deg,var(--violet-dark),var(--violet),var(--coral));-webkit-background-clip:text;background-clip:text;color:transparent}
+  p.lead{font-size:19px;line-height:1.6;color:#4b5563;max-width:46ch}
+  .muted{color:var(--muted)}
+
+  .grid{display:grid;gap:16px;margin-top:26px}
+  .g2{grid-template-columns:1fr 1fr}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(2,1fr)}
+  .card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;transition:transform .2s, box-shadow .2s}
+  .card:hover{transform:translateY(-4px);box-shadow:0 18px 40px -22px rgba(80,40,120,.45)}
+  .card .ic{width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;background:linear-gradient(135deg,var(--violet),var(--coral));margin-bottom:12px}
+  .card h3{font-size:17px;margin-bottom:5px}
+  .card p{font-size:14px;color:var(--muted);line-height:1.5}
+
+  .step{display:flex;gap:14px;align-items:flex-start}
+  .num{flex:0 0 auto;width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--violet),var(--violet-dark));color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center}
+
+  /* Calculadora de reparto */
+  .calc{margin-top:26px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:24px}
+  .sliderRow{display:flex;align-items:center;gap:16px;margin-bottom:6px}
+  input[type=range]{flex:1;accent-color:var(--violet);height:6px}
+  .price{font-size:26px;font-weight:800;color:var(--violet-dark);min-width:160px;text-align:right}
+  .bars{display:grid;grid-template-columns:1fr;gap:12px;margin-top:18px}
+  .bar{display:flex;align-items:center;gap:12px}
+  .bar .lbl{width:120px;font-size:14px;font-weight:600}
+  .track{flex:1;height:30px;background:#f1ecf7;border-radius:9px;overflow:hidden}
+  .fill{height:100%;border-radius:9px;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;color:#fff;font-weight:700;font-size:13px;transition:width .35s}
+  .fProv{background:linear-gradient(90deg,#7c3aed,#a855f7)}
+  .fAg{background:linear-gradient(90deg,#d6418a,#fb6f92)}
+  .fPlat{background:linear-gradient(90deg,#64748b,#94a3b8)}
+
+  table{width:100%;border-collapse:collapse;margin-top:22px;font-size:15px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
+  th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+  .ok{color:#16a34a;font-weight:700}
+  .pill{display:inline-block;background:rgba(124,58,237,.1);color:var(--violet-dark);font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px}
+
+  .demoTag{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--coral-dark);background:rgba(251,111,146,.12);padding:5px 12px;border-radius:999px}
+  ul.checks{margin-top:18px;list-style:none;display:grid;gap:12px}
+  ul.checks li{display:flex;gap:12px;align-items:flex-start;font-size:16px;color:#374151}
+  ul.checks .ck{flex:0 0 auto;width:24px;height:24px;border-radius:50%;background:rgba(34,197,94,.15);color:#16a34a;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800}
+
+  /* Header / footer chrome */
+  .brand{position:fixed;top:20px;left:24px;z-index:3;display:flex;align-items:center;gap:9px}
+  .brand b{font-size:18px;font-weight:800;letter-spacing:-.02em}
+  .controls{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:3;display:flex;align-items:center;gap:14px;background:var(--glass);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.7);border-radius:999px;padding:8px 12px;box-shadow:0 14px 30px -16px rgba(80,40,120,.5)}
+  .nav{width:40px;height:40px;border-radius:50%;border:none;cursor:pointer;font-size:20px;background:linear-gradient(135deg,var(--violet),var(--violet-dark));color:#fff;display:flex;align-items:center;justify-content:center;transition:transform .15s}
+  .nav:hover{transform:scale(1.08)}
+  .nav:disabled{opacity:.35;cursor:default;transform:none}
+  .dots{display:flex;gap:7px}
+  .dt{width:9px;height:9px;border-radius:50%;background:#cbb9ec;border:none;cursor:pointer;padding:0;transition:transform .15s}
+  .dt.on{background:var(--violet);transform:scale(1.3)}
+  .count{font-size:13px;font-weight:700;color:var(--violet-dark);min-width:44px;text-align:center}
+  .progress{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,var(--violet),var(--coral));z-index:4;transition:width .3s}
+  .hint{position:fixed;bottom:74px;left:50%;transform:translateX(-50%);z-index:3;font-size:12px;color:var(--muted)}
+  .logo{filter:drop-shadow(0 4px 8px rgba(124,58,237,.3))}
+  @media (max-width:640px){
+    .slide{padding:30px 24px} h1{font-size:34px} h2{font-size:26px}
+    .g2,.g3,.g4{grid-template-columns:1fr} .price{min-width:auto}
+  }
+</style>
+</head>
+<body>
+<div class="aurora"><div class="blob b1"></div><div class="blob b2"></div></div>
+<div class="progress" id="progress"></div>
+
+<div class="brand">
+  <svg class="logo" width="30" height="30" viewBox="0 0 40 40" fill="none"><defs><linearGradient id="bg" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#7c3aed"/><stop offset=".55" stop-color="#a855f7"/><stop offset="1" stop-color="#fb6f92"/></linearGradient></defs><rect width="40" height="40" rx="12" fill="url(#bg)"/><rect width="40" height="20" rx="12" fill="#fff" opacity=".12"/><path d="M20 9.5a7.2 7.2 0 0 0-7.2 7.2c0 5.3 7.2 13.8 7.2 13.8s7.2-8.5 7.2-13.8A7.2 7.2 0 0 0 20 9.5z" fill="#fff"/><circle cx="20" cy="16.4" r="3" fill="url(#bg)"/><path d="M30 8.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z" fill="#fff" opacity=".9"/></svg>
+  <b class="grad">OTC</b>
+</div>
+
+<div class="deck" id="deck">
+
+  <!-- 1. Portada -->
+  <section class="slide active">
+    <span class="eyebrow"><span class="dot-live"></span> Turismo descentralizado sobre blockchain</span>
+    <h1>Reservá tu viaje <span class="grad">sin intermediarios</span>.</h1>
+    <p class="lead">OTC conecta hoteles, bodegas y turismo aventura directo con el viajero. Los contratos inteligentes reparten el pago solos: justo, instantáneo y auditable.</p>
+    <p class="muted" style="margin-top:24px;font-size:14px">Open Tourism Commerce · Proyecto académico — Universidad Champagnat, Mendoza</p>
+  </section>
+
+  <!-- 2. El problema -->
+  <section class="slide">
+    <span class="pill">El problema</span>
+    <h2>Las OTAs se quedan con todo y pagan tarde.</h2>
+    <div class="grid g3">
+      <div class="card"><div class="ic">%</div><h3>15–25% de comisión</h3><p>Booking, Expedia y similares se llevan una tajada enorme de cada reserva.</p></div>
+      <div class="card"><div class="ic">⏳</div><h3>El hotel cobra en semanas</h3><p>El dinero queda retenido por el intermediario; el proveedor espera la liquidación.</p></div>
+      <div class="card"><div class="ic">🔒</div><h3>Reglas opacas</h3><p>Cláusulas ocultas, overbooking, reseñas dudosas. Vos confiás a ciegas.</p></div>
+    </div>
+  </section>
+
+  <!-- 3. La solución + calculadora -->
+  <section class="slide">
+    <span class="pill">La solución</span>
+    <h2>Un contrato reparte el pago <span class="grad">solo</span>.</h2>
+    <p class="lead">El cliente paga, el dinero queda en <b>escrow</b>, y cuando el proveedor confirma el servicio se divide automáticamente. Movés el slider y mirá el reparto:</p>
+    <div class="calc">
+      <div class="sliderRow">
+        <span style="font-size:14px;font-weight:600;color:#6b7280">Precio de la reserva</span>
+        <input type="range" id="price" min="20" max="1000" value="250" step="10" />
+        <span class="price" id="priceOut">250,00 USDC</span>
+      </div>
+      <div class="bars">
+        <div class="bar"><span class="lbl">Proveedor 85%</span><div class="track"><div class="fill fProv" id="fProv">—</div></div></div>
+        <div class="bar"><span class="lbl">Agente 12%</span><div class="track"><div class="fill fAg" id="fAg">—</div></div></div>
+        <div class="bar"><span class="lbl">Plataforma 3%</span><div class="track"><div class="fill fPlat" id="fPlat">—</div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. ¿Por qué blockchain? -->
+  <section class="slide">
+    <span class="pill">¿Por qué blockchain?</span>
+    <h2>No es por moda. Resuelve 4 problemas reales.</h2>
+    <div class="grid g4">
+      <div class="card"><div class="ic">⚡</div><h3>Pagos al instante</h3><p>El proveedor cobra en segundos, no en semanas. Sin liquidaciones bancarias.</p></div>
+      <div class="card"><div class="ic">🤝</div><h3>Sin intermediarios</h3><p>El reparto lo ejecuta el contrato. Nadie retiene ni cambia las reglas.</p></div>
+      <div class="card"><div class="ic">🔎</div><h3>Transparente y auditable</h3><p>Cada reserva y pago queda público. Imposible falsear o esconder.</p></div>
+      <div class="card"><div class="ic">🎫</div><h3>La reserva es tuya</h3><p>Es un NFT: si no podés viajar, lo revendés con royalty al proveedor.</p></div>
+    </div>
+  </section>
+
+  <!-- 5. Cómo funciona -->
+  <section class="slide">
+    <span class="pill">Cómo funciona</span>
+    <h2>Cuatro pasos, sin saber de cripto.</h2>
+    <div class="grid g2" style="margin-top:24px">
+      <div class="step"><div class="num">1</div><div><h3>Pagás con tarjeta</h3><p class="muted">Tu dinero se convierte a USDC por detrás. No tocás una billetera si no querés.</p></div></div>
+      <div class="step"><div class="num">2</div><div><h3>Queda en escrow</h3><p class="muted">El pago se retiene en el contrato hasta que el servicio se confirme.</p></div></div>
+      <div class="step"><div class="num">3</div><div><h3>El proveedor confirma</h3><p class="muted">Al prestar el servicio, el contrato libera los fondos automáticamente.</p></div></div>
+      <div class="step"><div class="num">4</div><div><h3>Reparto instantáneo</h3><p class="muted">85% proveedor · 12% agente · 3% plataforma. En segundos.</p></div></div>
+    </div>
+  </section>
+
+  <!-- 6. Demo: cliente reserva -->
+  <section class="slide">
+    <span class="demoTag">Demo · Escena 1</span>
+    <h2>El cliente entra y reserva.</h2>
+    <p class="lead">Se registra con email (login tradicional) y conecta su wallet — la <b>autenticación híbrida</b>. Elige un paquete y reserva en 2 pasos: aprueba el USDC y compra.</p>
+    <div class="grid g2" style="margin-top:22px">
+      <div class="card"><h3>🍷 Cata premium en Bodega Mendoza</h3><p>120 USDC · Luján de Cuyo · cancelación gratis</p></div>
+      <div class="card"><h3>💳 El dinero NO va al hotel todavía</h3><p>Queda retenido en el escrow hasta que se preste el servicio.</p></div>
+    </div>
+  </section>
+
+  <!-- 7. Demo: proveedor confirma (estrella) -->
+  <section class="slide">
+    <span class="demoTag">Demo · Escena 2 — el momento estrella ⭐</span>
+    <h2>El proveedor confirma y el dinero <span class="grad">se reparte solo</span>.</h2>
+    <p class="lead">En una sola transacción, lo que en Booking tarda semanas, acá pasa en 2 segundos y queda registrado público:</p>
+    <div class="grid g3" style="margin-top:20px">
+      <div class="card"><div class="ic">🏨</div><h3>+85% Proveedor</h3><p>Cobra al instante por el servicio prestado.</p></div>
+      <div class="card"><div class="ic">🧑‍💼</div><h3>+12% Agente</h3><p>Su comisión se paga sola, sin esperar.</p></div>
+      <div class="card"><div class="ic">🌐</div><h3>+3% Plataforma</h3><p>El fee que sostiene OTC. Mínimo y transparente.</p></div>
+    </div>
+  </section>
+
+  <!-- 8. Demo: agente -->
+  <section class="slide">
+    <span class="demoTag">Demo · Escena 3</span>
+    <h2>El agente cobró sin esperar.</h2>
+    <p class="lead">Cualquiera puede ser agente: genera un <b>link de afiliado</b> y lo difunde (como un influencer por WhatsApp). Cada venta por su link le paga el 12% automáticamente.</p>
+    <div class="grid g2" style="margin-top:22px">
+      <div class="card"><div class="ic">🔗</div><h3>Link de afiliado</h3><p>otc.app/catalogo?ref=0x3C44…93BC</p></div>
+      <div class="card"><div class="ic">📊</div><h3>Comisión cobrada</h3><p>Su 12% ya está en su wallet, sin reclamos ni demoras.</p></div>
+    </div>
+  </section>
+
+  <!-- 9. Demo: mercado secundario -->
+  <section class="slide">
+    <span class="demoTag">Demo · Escena 4 — la innovación Web3 ⭐</span>
+    <h2>Si no podés viajar, <span class="grad">revendés</span>.</h2>
+    <p class="lead">Las OTAs te prohíben revender tu reserva. Acá es un NFT: lo publicás y otro viajero lo compra. El reparto forzoso lo aplica el contrato:</p>
+    <div class="grid g3" style="margin-top:20px">
+      <div class="card"><div class="ic">💰</div><h3>Vendedor</h3><p>Recupera su plata (lo que pagó, o más).</p></div>
+      <div class="card"><div class="ic">🏨</div><h3>Royalty 5%</h3><p>Va al proveedor original. No pierde la ocupación.</p></div>
+      <div class="card"><div class="ic">🌐</div><h3>Fee 2%</h3><p>Para la plataforma. Ganan todos.</p></div>
+    </div>
+  </section>
+
+  <!-- 10. Pagar con tarjeta sin cripto -->
+  <section class="slide">
+    <span class="demoTag">Demo · Escena 5</span>
+    <h2>Pagás con tarjeta, sin saber de cripto.</h2>
+    <p class="lead">Un usuario que entra con email reserva <b>sin tener wallet ni cripto</b>: el sistema le crea una cuenta inteligente, patrocina el gas (Paymaster) y le acredita el USDC con la tarjeta. La complejidad queda escondida.</p>
+    <div class="grid g3" style="margin-top:20px">
+      <div class="card"><div class="ic">💳</div><h3>Tarjeta → USDC</h3><p>On-ramp sandbox (MoonPay/Transak).</p></div>
+      <div class="card"><div class="ic">⛽</div><h3>Gas patrocinado</h3><p>El usuario no paga ni entiende el gas.</p></div>
+      <div class="card"><div class="ic">✅</div><h3>Reserva creada</h3><p>Sin instalar nada, sin frase semilla.</p></div>
+    </div>
+  </section>
+
+  <!-- 11. Cobertura de requisitos -->
+  <section class="slide">
+    <span class="pill">Estado del proyecto</span>
+    <h2>Todo el PRD, cubierto.</h2>
+    <table>
+      <tr><th>Requisito</th><th>Estado</th></tr>
+      <tr><td>Login híbrido email + wallet (RF-A01)</td><td class="ok">✓</td></tr>
+      <tr><td>Tokenización de paquetes ERC-1155 (RF-B02)</td><td class="ok">✓</td></tr>
+      <tr><td>Reparto automático 85/12/3 (RF-C01)</td><td class="ok">✓</td></tr>
+      <tr><td>Reventa con royalty forzoso (RF-C02)</td><td class="ok">✓</td></tr>
+      <tr><td>On-ramp tarjeta → USDC (RF-D01)</td><td class="ok">✓</td></tr>
+      <tr><td>Links de afiliado (RF-D02)</td><td class="ok">✓</td></tr>
+      <tr><td>Sincronización con PMS/CRS (RF-B01)</td><td class="ok">✓</td></tr>
+      <tr><td>26 tests automatizados + reporte de gas</td><td class="ok">✓</td></tr>
+    </table>
+  </section>
+
+  <!-- 12. Cierre -->
+  <section class="slide">
+    <span class="eyebrow"><span class="dot-live"></span> Cierre</span>
+    <h2>Por qué OTC convence.</h2>
+    <ul class="checks">
+      <li><span class="ck">1</span><div><b>El beneficio es real, no la palabra "blockchain".</b> Pagar al hotel al instante y al agente en segundos: algo que el sistema tradicional tarda semanas.</div></li>
+      <li><span class="ck">2</span><div><b>Enfoque regional.</b> Apunta al enoturismo y turismo aventura de Mendoza, donde los pequeños productores sufren las comisiones globales.</div></li>
+      <li><span class="ck">3</span><div><b>El mercado secundario.</b> Convierte una reserva en un activo transferible con royalty forzoso: un ganar-ganar que las OTAs no permiten.</div></li>
+    </ul>
+    <p class="grad" style="font-size:24px;font-weight:800;margin-top:26px">Gracias.</p>
+  </section>
+
+</div>
+
+<div class="hint" id="hint">Usá ← → (o la barra espaciadora) para navegar</div>
+<div class="controls">
+  <button class="nav" id="prev" aria-label="Anterior">‹</button>
+  <div class="dots" id="dots"></div>
+  <span class="count" id="count">1 / 12</span>
+  <button class="nav" id="next" aria-label="Siguiente">›</button>
+</div>
+
+<script>
+  const slides = [...document.querySelectorAll('.slide')];
+  const dotsBox = document.getElementById('dots');
+  const prev = document.getElementById('prev');
+  const next = document.getElementById('next');
+  const count = document.getElementById('count');
+  const progress = document.getElementById('progress');
+  const hint = document.getElementById('hint');
+  let i = 0;
+
+  slides.forEach((_, k) => {
+    const d = document.createElement('button');
+    d.className = 'dt' + (k === 0 ? ' on' : '');
+    d.onclick = () => go(k);
+    dotsBox.appendChild(d);
+  });
+  const dots = [...dotsBox.children];
+
+  function go(n){
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach((s, k) => s.classList.toggle('active', k === i));
+    dots.forEach((d, k) => d.classList.toggle('on', k === i));
+    count.textContent = (i + 1) + ' / ' + slides.length;
+    progress.style.width = ((i + 1) / slides.length * 100) + '%';
+    prev.disabled = i === 0;
+    next.disabled = i === slides.length - 1;
+    if (i > 0 && hint) hint.style.display = 'none';
+  }
+  prev.onclick = () => go(i - 1);
+  next.onclick = () => go(i + 1);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(i + 1); }
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(i - 1); }
+    if (e.key === 'Home') go(0);
+    if (e.key === 'End') go(slides.length - 1);
+  });
+  go(0);
+
+  // Calculadora de reparto
+  const price = document.getElementById('price');
+  const priceOut = document.getElementById('priceOut');
+  const fmt = n => n.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  function split(){
+    const p = Number(price.value);
+    priceOut.textContent = fmt(p) + ' USDC';
+    const parts = [['fProv', .85], ['fAg', .12], ['fPlat', .03]];
+    for (const [id, pct] of parts){
+      const el = document.getElementById(id);
+      el.style.width = (pct * 100) + '%';
+      el.textContent = fmt(p * pct);
+    }
+  }
+  price.addEventListener('input', split);
+  split();
+</script>
+</body>
+</html>

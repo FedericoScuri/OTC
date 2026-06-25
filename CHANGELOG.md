@@ -9,6 +9,12 @@ Formato: `[Fecha] — Descripción del cambio (autor)`
 
 ## Sin publicar
 
+### Presentación de respaldo → clickthrough de capturas reales
+
+- [2026-06-25] — `presentacion/index.html` pasó a ser un visor navegable de capturas REALES de la app (se ve literalmente como el sitio), con marco tipo navegador y cartel por pantalla. La lista de slides se edita arriba del archivo; si falta una captura, avisa cuál (Claude)
+- [2026-06-25] — `presentacion/capturas/LEEME.txt` con la lista exacta de capturas a sacar y con qué cuenta/rol; las imágenes quedan gitignoreadas (Claude)
+- [2026-06-25] — El deck narrado anterior (con calculadora interactiva 85/12/3) queda como alternativa en `presentacion/deck.html` (Claude)
+
 ### Branding + presentación de respaldo
 
 - [2026-06-25] — Logo nuevo (`components/Logo.tsx`): un pin de destino con el degradé de la marca (violeta→coral) y un destello, en reemplazo de la "O" pelada del header (Claude)
