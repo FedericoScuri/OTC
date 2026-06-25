@@ -9,6 +9,11 @@ Formato: `[Fecha] — Descripción del cambio (autor)`
 
 ## Sin publicar
 
+### UX — Actividades gratuitas se muestran como "Gratis" + ayuda de nonce
+
+- [2026-06-25] — Los paquetes/reservas sin costo ahora muestran **"Gratis"** en vez de "0,00 USDC" en todo el sitio: tarjeta del catálogo, "Mis reservas", panel proveedor (paquetes y reservas en escrow) y reventa. Los botones de reserva en paquetes gratis dicen "Reservar gratis". Helpers `isFree`/`formatPrice` en `lib/format.ts` (Claude)
+- [2026-06-25] — Mensaje de error más útil al reservar: si MetaMask quedó desincronizada tras reiniciar el nodo local (error de *nonce*), el `BuyButton` explica cómo arreglarlo (Configuración → Avanzado → "Borrar datos de actividad y nonce") en vez de un genérico (Claude)
+
 ### Presentación de respaldo → clickthrough de capturas reales
 
 - [2026-06-25] — `presentacion/index.html` pasó a ser un visor navegable de capturas REALES de la app (se ve literalmente como el sitio), con marco tipo navegador y cartel por pantalla. La lista de slides se edita arriba del archivo; si falta una captura, avisa cuál (Claude)

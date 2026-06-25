@@ -10,7 +10,7 @@ import {
   type Booking,
 } from "@/lib/contracts";
 import { useTx } from "@/lib/useTx";
-import { formatUSDC, formatDate, shortAddress, categoryLabel } from "@/lib/format";
+import { formatPrice, formatDate, shortAddress, categoryLabel } from "@/lib/format";
 
 /**
  * Banner que aclara qué wallet se está viendo (las reservas son on-chain,
@@ -117,7 +117,7 @@ export function MyReservations({ owner }: { owner: `0x${string}` }) {
                 {pkg ? `viaje ${formatDate(pkg.checkInDate)} · ` : ""}
                 {directa ? "venta directa" : `agente ${shortAddress(b.agent)}`}
               </p>
-              <p className="font-medium text-brand">{formatUSDC(b.amount)} USDC</p>
+              <p className="font-medium text-brand">{formatPrice(b.amount)}</p>
             </div>
 
             {b.status === 1 && (

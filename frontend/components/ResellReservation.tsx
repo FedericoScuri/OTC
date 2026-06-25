@@ -6,7 +6,7 @@ import { readContract } from "wagmi/actions";
 import { config } from "@/lib/wagmi";
 import { useContracts, useOwnedReservations, type OwnedReservation } from "@/lib/contracts";
 import { useTx } from "@/lib/useTx";
-import { formatUSDC, formatDate, categoryLabel } from "@/lib/format";
+import { formatUSDC, formatDate, categoryLabel, isFree } from "@/lib/format";
 import { USDC_DECIMALS } from "@/lib/format";
 
 /**
@@ -96,7 +96,8 @@ function ResellCard({
         </span>
         <p className="mt-2 font-semibold leading-tight">{pkg.name}</p>
         <p className="text-xs text-slate-500">
-          Tenés {Number(balance)} u. · pagaste {formatUSDC(pkg.price)} USDC c/u · viaje{" "}
+          Tenés {Number(balance)} u. ·{" "}
+          {isFree(pkg.price) ? "fue gratis" : `pagaste ${formatUSDC(pkg.price)} USDC c/u`} · viaje{" "}
           {formatDate(pkg.checkInDate)}
         </p>
       </div>

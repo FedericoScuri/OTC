@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { zeroAddress } from "viem";
 import { useContracts, useBookings, type Booking } from "@/lib/contracts";
 import { useTx } from "@/lib/useTx";
-import { formatUSDC, formatDate, shortAddress } from "@/lib/format";
+import { formatUSDC, formatDate, shortAddress, isFree } from "@/lib/format";
 
 /**
  * Reservas pendientes del proveedor conectado. Permite:
@@ -64,7 +64,9 @@ export function ProviderBookings({ provider }: { provider: `0x${string}` }) {
                 {directa ? "venta directa" : `agente ${shortAddress(b.agent)}`} · vence{" "}
                 {formatDate(b.refundDeadline)}
               </p>
-              <p className="font-medium text-brand">{formatUSDC(b.amount)} USDC en escrow</p>
+              <p className="font-medium text-brand">
+                {isFree(b.amount) ? "Gratis · sin pago en escrow" : `${formatUSDC(b.amount)} USDC en escrow`}
+              </p>
             </div>
             <div className="flex shrink-0 gap-2">
               <button

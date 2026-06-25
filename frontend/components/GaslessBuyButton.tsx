@@ -68,7 +68,11 @@ export function GaslessBuyButton({
         className="btn-accent shine w-full !py-2 text-xs"
         title="Reservá con tu email, sin necesidad de wallet ni cripto"
       >
-        {status === "loading" ? "Procesando…" : "💳 Pagar con tarjeta (sin wallet)"}
+        {status === "loading"
+          ? "Procesando…"
+          : pkg.price === 0n
+            ? "Reservar gratis (sin wallet)"
+            : "💳 Pagar con tarjeta (sin wallet)"}
       </button>
       {error && <p className="text-[11px] text-red-600">{error}</p>}
     </div>
