@@ -13,7 +13,7 @@ import { WalletButton } from "./WalletButton";
 import { CheckIcon } from "./icons";
 
 type FullLink = PayLink & PayLinkBreakdown;
-type Status = "idle" | "approving" | "paying" | "surcharge" | "recording" | "done" | "error";
+type Status = "idle" | "approving" | "paying" | "surcharge" | "recording" | "gasless" | "done" | "error";
 
 /**
  * Checkout de un link de pago (RF-D02). El cliente carga sus datos y paga el
@@ -49,8 +49,36 @@ export function PayLinkCheckout({
   const base = parseUnits(link.basePriceUsdc, 6);
   const surcharge = parseUnits(link.surchargeUsdc, 6);
   const agent = link.agent as Address;
-  const busy = status === "approving" || status === "paying" || status === "surcharge" || status === "recording";
+  const busy =
+    status === "approving" ||
+    status === "paying" ||
+    status === "surcharge" ||
+    status === "recording" ||
+    status === "gasless";
   const pageUrl = typeof window !== "undefined" ? window.location.href : "";
+
+  /** Pago "sin wallet": el backend deriva la Smart Account del email y paga todo. */
+  async function payGasless() {
+    if (!email || !email.includes("@")) {
+      setError("Cargá un email válido para pagar sin wallet.");
+      return;
+    }
+    setError(undefined);
+    setStatus("gasless");
+    try {
+      const r = await backend.post<{
+        bookingId: number | null;
+        txHash: string;
+        surchargeTxHash: string | null;
+      }>(`/api/paylinks/${code}/pay-gasless`, { email });
+      setResult({ bookingId: r.bookingId, txHash: r.txHash, surchargeTxHash: r.surchargeTxHash });
+      setStatus("done");
+      onPaid?.();
+    } catch (e) {
+      setStatus("error");
+      setError(e instanceof Error ? e.message : "No se pudo completar el pago sin wallet.");
+    }
+  }
 
   async function pay() {
     if (!address) return;
@@ -198,6 +226,24 @@ export function PayLinkCheckout({
           {busy && <Spinner />} {statusLabel}
         </button>
       )}
+
+      {/* Alternativa sin wallet: pago gasless por email (RF-A01) */}
+      <div className="flex items-center gap-3 text-xs text-slate-400">
+        <span className="h-px flex-1 bg-slate-200" /> o <span className="h-px flex-1 bg-slate-200" />
+      </div>
+      <button onClick={payGasless} disabled={busy} className="btn-accent shine w-full">
+        {status === "gasless" ? (
+          <>
+            <Spinner /> Procesando pago sin wallet…
+          </>
+        ) : (
+          "💳 Pagar sin wallet (con tu email)"
+        )}
+      </button>
+      <p className="text-center text-[11px] text-slate-400">
+        Pagás con tu email, sin cripto ni MetaMask. El gas lo cubre la plataforma.
+      </p>
+
       {error && <p className="text-sm text-red-600">{error}</p>}
 
       {/* QR + dirección de recepción */}
