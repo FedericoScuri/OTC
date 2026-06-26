@@ -7,6 +7,7 @@ const onrampRouter = require("./routes/onramp");
 const inventoryRouter = require("./routes/inventory");
 const aaRouter = require("./routes/aa");
 const kybRouter = require("./routes/kyb");
+const paylinksRouter = require("./routes/paylinks");
 
 const app = express();
 app.use(cors());
@@ -49,6 +50,9 @@ app.use("/api/aa", aaRouter);
 
 // RF-A02 — KYC/KYB de proveedores (trámite + resolución).
 app.use("/api/kyb", kybRouter);
+
+// RF-D02 — Flujo de venta por agente intermedio (link de pago con sobreprecio).
+app.use("/api/paylinks", paylinksRouter);
 
 app.use((_req, res) => res.status(404).json({ error: "Ruta no encontrada" }));
 

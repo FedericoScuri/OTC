@@ -35,6 +35,7 @@ export function BuyButton({
 
   const available = Number(pkg.maxSupply - pkg.minted);
   const soldOut = available <= 0;
+  const free = pkg.price === 0n;
   const busy = status === "approving" || status === "purchasing";
 
   async function handleBuy() {
@@ -104,7 +105,9 @@ export function BuyButton({
                 ? "Reservando…"
                 : status === "done"
                   ? "¡Reservado! ✓"
-                  : "Reservar"}
+                  : free
+                    ? "Reservar gratis"
+                    : "Reservar"}
       </button>
       {error && <p className="text-xs text-red-600">{error}</p>}
     </div>
@@ -126,5 +129,9 @@ function parseError(e: unknown): string {
   const match = msg.match(/(Escrow|TourPackageNFT|Market): [^"\n]+/);
   if (match) return match[0];
   if (msg.includes("User rejected")) return "Cancelaste la transacción.";
+  // Tras reiniciar el nodo local, MetaMask queda con un nonce viejo y la red lo rechaza.
+  if (/nonce/i.test(msg)) {
+    return "MetaMask quedó desincronizada con la red. En MetaMask: Configuración → Avanzado → “Borrar datos de actividad y nonce”, y reintentá.";
+  }
   return "No se pudo completar la operación.";
 }

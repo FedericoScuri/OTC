@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 import { useContracts, usePackages } from "@/lib/contracts";
 import { useTx } from "@/lib/useTx";
-import { categoryLabel, formatUSDC } from "@/lib/format";
+import { categoryLabel, formatPrice } from "@/lib/format";
 
 /** Lista los paquetes del proveedor conectado con toggle de activo/pausado. */
 export function ProviderPackages({ provider }: { provider: `0x${string}` }) {
@@ -43,7 +43,7 @@ export function ProviderPackages({ provider }: { provider: `0x${string}` }) {
               #{p.id} · {p.name}
             </p>
             <p className="text-slate-500">
-              {categoryLabel(p.category)} · {formatUSDC(p.price)} USDC ·{" "}
+              {categoryLabel(p.category)} · {formatPrice(p.price)} ·{" "}
               {Number(p.minted)}/{Number(p.maxSupply)} vendidos
             </p>
           </div>

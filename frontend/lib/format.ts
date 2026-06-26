@@ -9,6 +9,14 @@ export function formatUSDC(amount: bigint): string {
   return n.toLocaleString("es-AR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
+/** true si el paquete/reserva no tiene costo (actividad gratuita de demo). */
+export const isFree = (amount: bigint): boolean => amount === 0n;
+
+/** Precio para mostrar inline: "Gratis" si es 0; si no, "1,234.50 USDC". */
+export function formatPrice(amount: bigint): string {
+  return isFree(amount) ? "Gratis" : `${formatUSDC(amount)} USDC`;
+}
+
 /** Acorta una direccion: 0x1234...abcd */
 export function shortAddress(addr?: string): string {
   if (!addr) return "";

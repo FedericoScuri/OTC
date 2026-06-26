@@ -9,6 +9,38 @@ Formato: `[Fecha] — Descripción del cambio (autor)`
 
 ## Sin publicar
 
+### Flujo de venta por agente intermedio — link de pago con sobreprecio (RF-D02)
+
+Modelo (sin tocar el contrato): el agente arma un link de pago para un paquete con su
+**sobreprecio**. El cliente paga `base + sobreprecio`; la base va al escrow (reparto
+85/12/3) y el sobreprecio se transfiere directo al agente. El agente cobra 12% del base
++ el sobreprecio íntegro.
+
+- [2026-06-25] — **Etapa 1 (backend):** store en memoria de links de pago (`backend/src/paylinks.js`) + rutas REST (`/api/paylinks`): crear link con sobreprecio, datos públicos para la página de venta, listar links/ventas de un agente y registrar la venta concretada. El desglose (base, sobreprecio, comisión plataforma 3%, comisión agente 12%+sobreprecio, precio final) se calcula leyendo el precio del paquete on-chain. Verificado por API (Claude)
+- [2026-06-25] — **Etapa 2 (panel del agente):** nuevo generador de links en `/agente` (`AgentPayLinkGenerator`): elegir paquete + cargar sobreprecio, vista previa del desglose en vivo, botón "Generar link" → muestra la URL `/pay/<código>` con copiar/abrir, y lista de los links creados con sus ventas. Tipos del cliente backend en `lib/backend.ts` (Claude)
+- [2026-06-25] — **Etapa 3 (página pública de venta):** nueva ruta `/pay/[código]` con la info comercial del paquete (foto, fechas, servicios), el precio final, el **disclaimer de comisiones** (base + sobreprecio = final, con detalle del reparto) y el checkout. El pago real on-chain hace `approve(base)` → `purchase` → transferencia del sobreprecio al agente → registra la venta; incluye QR (`qrcode.react`) y la dirección de recepción. Verificado end-to-end: pago de 270 USDC → reserva on-chain + agente cobra los 150 del sobreprecio al instante + venta registrada (Claude)
+- [2026-06-25] — **Etapa 4 (registro + liquidación):** nuevo reporte en `/agente` (`AgentSalesReport`) con todas las ventas por link y los datos mínimos de cada reserva (reserva, cliente, email, teléfono, wallet, hash, base, sobreprecio, comisiones, estado, fecha), totales de liquidación (ventas, sobreprecio cobrado, comisión total) y exportación a **CSV**. Cierra el flujo de venta por agente intermedio (Claude)
+- [2026-06-26] — **Pago "sin wallet" en `/pay`:** la página de venta ahora también permite pagar **sin MetaMask**, con solo el email (gasless / Account Abstraction). Nuevo endpoint `POST /api/paylinks/:code/pay-gasless`: deriva la Smart Account del email, le acredita el USDC (on-ramp), patrocina el gas, compra la base y transfiere el sobreprecio al agente. Botón "💳 Pagar sin wallet" en el checkout. Verificado end-to-end: reserva on-chain a nombre de la Smart Account del email + el agente cobra el sobreprecio al instante (Claude)
+
+**Lo que falta / próximos pasos (no bloquea la demo):**
+
+- **Persistencia de los links:** el store de links/ventas es **en memoria** (se pierde al reiniciar el backend). Para producción: base de datos o archivo JSON (igual que se haría con el KYB).
+- **Cantidad / sobreprecio por unidad:** el link es de **1 unidad** y sobreprecio plano. Falta permitir elegir cantidad y/o sobreprecio por unidad.
+- **Liquidación automática:** hoy es consulta + export CSV (liquidación manual). Falta el disparo de liquidación automática (programada o por evento on-chain).
+- **Validaciones en `/pay`:** avisar si la wallet no está en la red Hardhat local o no tiene USDC suficiente, antes de iniciar el pago.
+- **Entorno (no es código):** desarrollar dentro de OneDrive corrompe `.next` (errores `UNKNOWN read` / `EINVAL`). Mitigar con "Conservar siempre en este dispositivo", pausar OneDrive o mover el repo fuera de OneDrive.
+
+### Reservas "sin wallet" (gasless) ahora aparecen en "Mis reservas"
+
+- [2026-06-25] — Las compras gasless (botón "Reservar gratis / Pagar con tarjeta — sin wallet") quedan a nombre de la Smart Account que el backend deriva del email; antes no se veían en "Mis reservas" (que solo miraba la wallet conectada). Ahora `MyReservations` resuelve esa Smart Account vía `POST /api/aa/account` y muestra también esas reservas, con una etiqueta "sin wallet" (Claude)
+- [2026-06-25] — `/reservas` ya no exige conectar MetaMask: con sólo estar logueado ves tus reservas sin wallet; si conectás una wallet, se suman las hechas con MetaMask. Botón para conectar opcional (Claude)
+- [2026-06-25] — Verificado end-to-end: compra gasless del paquete gratis → booking on-chain a nombre de la Smart Account del email → coincide con lo que muestra "Mis reservas" (Claude)
+
+### UX — Actividades gratuitas se muestran como "Gratis" + ayuda de nonce
+
+- [2026-06-25] — Los paquetes/reservas sin costo ahora muestran **"Gratis"** en vez de "0,00 USDC" en todo el sitio: tarjeta del catálogo, "Mis reservas", panel proveedor (paquetes y reservas en escrow) y reventa. Los botones de reserva en paquetes gratis dicen "Reservar gratis". Helpers `isFree`/`formatPrice` en `lib/format.ts` (Claude)
+- [2026-06-25] — Mensaje de error más útil al reservar: si MetaMask quedó desincronizada tras reiniciar el nodo local (error de *nonce*), el `BuyButton` explica cómo arreglarlo (Configuración → Avanzado → "Borrar datos de actividad y nonce") en vez de un genérico (Claude)
+
 ### Presentación de respaldo → clickthrough de capturas reales
 
 - [2026-06-25] — `presentacion/index.html` pasó a ser un visor navegable de capturas REALES de la app (se ve literalmente como el sitio), con marco tipo navegador y cartel por pantalla. La lista de slides se edita arriba del archivo; si falta una captura, avisa cuál (Claude)

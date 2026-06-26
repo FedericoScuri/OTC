@@ -7,7 +7,7 @@ import { BuyButton } from "./BuyButton";
 import { GaslessBuyButton } from "./GaslessBuyButton";
 import { AvailabilityBadge } from "./AvailabilityBadge";
 import { useAuth } from "@/lib/auth";
-import { categoryLabel, formatDate, formatUSDC } from "@/lib/format";
+import { categoryLabel, formatDate, formatUSDC, isFree } from "@/lib/format";
 import { MapPinIcon, StarIcon, HeartIcon, CheckIcon, WineIcon, BuildingIcon, MountainIcon, LandmarkIcon } from "./icons";
 
 /**
@@ -122,12 +122,18 @@ export function PackageCard({
 
         <div className="mt-auto flex items-end justify-between border-t border-slate-100 pt-3">
           <div>
-            <span className="text-xl font-extrabold text-brand-dark">{formatUSDC(pkg.price)}</span>
-            <span className="text-xs font-medium text-slate-400"> USDC</span>
-            {qty > 1 && (
-              <p className="text-[11px] text-slate-400">
-                Total {formatUSDC(pkg.price * BigInt(qty))} USDC
-              </p>
+            {isFree(pkg.price) ? (
+              <span className="text-xl font-extrabold text-emerald-600">Gratis</span>
+            ) : (
+              <>
+                <span className="text-xl font-extrabold text-brand-dark">{formatUSDC(pkg.price)}</span>
+                <span className="text-xs font-medium text-slate-400"> USDC</span>
+                {qty > 1 && (
+                  <p className="text-[11px] text-slate-400">
+                    Total {formatUSDC(pkg.price * BigInt(qty))} USDC
+                  </p>
+                )}
+              </>
             )}
           </div>
           <div className="w-[44%]">
