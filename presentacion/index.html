@@ -99,15 +99,18 @@
      el cartelito de abajo (lo que contás en la demo).
      =========================================================== */
   const SLIDES = [
-    { file:"capturas/01-inicio.png",   url:"otc.app",                 title:"Página de inicio",        desc:"La propuesta: reservá turismo sin intermediarios. Comisiones justas, pagos al instante." },
-    { file:"capturas/02-login.png",    url:"otc.app/login",           title:"Login híbrido (RF-A01)",  desc:"Entrás con email/contraseña y conectás la wallet para firmar. Hay cuentas de demo de un click." },
-    { file:"capturas/03-catalogo.png", url:"otc.app/catalogo",        title:"Catálogo on-chain (RF-B02)", desc:"16 paquetes leídos de la blockchain, incluidas actividades gratis. Cada uno es un NFT." },
-    { file:"capturas/04-reservar.png", url:"otc.app/catalogo",        title:"Reservar (RF-C01)",       desc:"Reservás en 2 pasos (approve + purchase). El pago queda en escrow, no va al hotel todavía." },
-    { file:"capturas/05-reservas.png", url:"otc.app/reservas",        title:"Mis reservas",            desc:"Tus reservas viven on-chain, atadas a tu wallet. Estado, fechas y monto." },
-    { file:"capturas/06-proveedor.png",url:"otc.app/proveedor",       title:"Confirmar servicio ⭐",    desc:"El proveedor confirma y, en una sola tx, el dinero se reparte 85/12/3 automáticamente." },
-    { file:"capturas/07-agente.png",   url:"otc.app/agente",          title:"El agente cobró (RF-D02)",desc:"Dashboard de comisiones + generador de link de afiliado. Su 12% ya está cobrado." },
-    { file:"capturas/08-mercado.png",  url:"otc.app/mercado",         title:"Mercado secundario (RF-C02)", desc:"Si no podés viajar, revendés tu reserva. Royalty 5% al proveedor + fee 2% plataforma." },
-    { file:"capturas/09-tarjeta.png",  url:"otc.app/catalogo",        title:"Pagar con tarjeta (AA)",  desc:"Un usuario sin cripto reserva con tarjeta: cuenta inteligente + gas patrocinado." },
+    { file:"capturas/01-inicio.png",        url:"otc.app",            title:"Reservá sin intermediarios", desc:"La propuesta: turismo directo del proveedor. Comisiones justas y pagos al instante, sin OTAs que retengan el 25%." },
+    { file:"capturas/12-comofunciona.png",  url:"otc.app",            title:"¿Cómo funciona?",          desc:"Cuatro pasos, sin saber nada de cripto: pagás, el dinero queda en escrow, el proveedor confirma y el reparto se hace solo." },
+    { file:"capturas/10-porque-blockchain.png", url:"otc.app",        title:"¿Por qué blockchain?",     desc:"No es capricho: pagos al instante, sin intermediario que retenga fondos, todo transparente y tu reserva es un NFT revendible." },
+    { file:"capturas/02-login.png",         url:"otc.app/login",      title:"Login híbrido (RF-A01)",   desc:"Entrás con email/contraseña (o wallet). Hay cuentas de demo de un click por cada rol." },
+    { file:"capturas/03-catalogo.png",      url:"otc.app/catalogo",   title:"Catálogo on-chain (RF-B02)", desc:"16 paquetes leídos de la blockchain, incluidas actividades gratis. Cada uno es un NFT. Muestra el cupo en tiempo real." },
+    { file:"capturas/09-tarjeta.png",       url:"otc.app/catalogo",   title:"Pagar con tarjeta, sin wallet ⭐", desc:"Account Abstraction (RF-A01): un usuario sin cripto reserva con tarjeta. El backend le crea una cuenta inteligente y el gas lo paga un Paymaster." },
+    { file:"capturas/04-reservar.png",      url:"otc.app/catalogo",   title:"Reservar (RF-C01)",        desc:"Con wallet: approve + purchase. El pago queda retenido en escrow; no va al hotel hasta que confirme el servicio." },
+    { file:"capturas/05-reservas.png",      url:"otc.app/reservas",   title:"Mis reservas",             desc:"Las reservas viven on-chain. Se ven tanto las hechas con wallet como las 'sin wallet' (gasless), con su estado." },
+    { file:"capturas/08-mercado.png",       url:"otc.app/mercado",    title:"Mercado secundario (RF-C02)", desc:"Si no podés viajar, revendés tu reserva (NFT). Royalty forzoso 5% al proveedor original + fee 2% plataforma." },
+    { file:"capturas/11-pay-publico.png",   url:"otc.app/pay/…",      title:"Venta por agente (RF-D02)", desc:"El agente arma un link de pago con su sobreprecio. El cliente ve el precio final y el detalle; el agente cobra 12% + el sobreprecio al instante." },
+    { file:"capturas/06-proveedor.png",     url:"otc.app/proveedor",  title:"Panel del proveedor",      desc:"Publica paquetes (con KYB verificado) y confirma el servicio. Al confirmar, en una sola tx el pago se reparte 85/12/3. (Requiere wallet.)" },
+    { file:"capturas/07-agente.png",        url:"otc.app/agente",     title:"Panel del agente",         desc:"Genera sus links de afiliado y sigue sus comisiones cobradas. (Requiere wallet.)" },
   ];
 
   const shot = document.getElementById('shot');
